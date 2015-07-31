@@ -25,5 +25,8 @@
 	<mvc:resources mapping="/resources/**" location="/resources/" />
  
 	<mvc:annotation-driven />
+	
+	<!-- 导入数据库配置 -->
+	<import resource="classpath:spring/db.xml" />
  
 </beans>

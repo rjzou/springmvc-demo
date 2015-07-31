@@ -1,4 +1,4 @@
-package com.tiaotiao.web;
+package com.tiaotiao.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
