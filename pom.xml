@@ -56,11 +56,17 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>${jstl.version}</version>
-		</dependency>
+		 <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+        </dependency>
 
 	</dependencies>
 	<build>
@@ -84,7 +90,7 @@
 					<artifactId>tomcat7-maven-plugin</artifactId>
 					<version>2.2</version>
 					<configuration>
-						<port>8888</port>
+						<port>8080</port>
 						<path>/${project.artifactId}</path>
 						<charset>utf-8</charset>
 						<uriEncoding>UTF-8</uriEncoding>

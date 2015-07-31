@@ -26,11 +26,13 @@ public class LoginController {
 		
 		User u = new User();
 		u.setEmail(inputEmail);
-		u.setPwd(inputPassword);
+		u.setPassword(inputPassword);
 		boolean b = loginService.CheckUserLogin(u);
 		if (b) {
+			
 			return "main";
 		}
+		model.addAttribute("message", "用户名和密码错误");
 		return "login";
 	}
  

@@ -31,18 +31,14 @@ import com.tiaotiao.web.utils.dbutils.HumpMatcher;
 /**
  * dbutils常用模板，使用log4jdbc监控sql执行，需要用到dao的地方直接注入即可
  * 
- * @author dj
+ * @author 
  * 
  */
 @Repository
 public class Dao {
-	// 主库数据源 master
 	private DataSource dataSource;
-	// 从库数据源 slave
-	private DataSource readOnlyDataSource;
 	private QueryRunner queryRunner;
 	private static ResourceBundle rb = null;
-	private static final String CONFIG_FILE = "config.jdbc";
 	
 	private static final Logger logger = LoggerFactory.getLogger(Dao.class);
 
@@ -56,13 +52,6 @@ public class Dao {
 	}
 
 
-	public DataSource getReadOnlyDataSource() {
-		return readOnlyDataSource;
-	}
-
-	public void setReadOnlyDataSource(DataSource readOnlyDataSource) {
-		this.readOnlyDataSource = readOnlyDataSource;
-	}
 
 	/**
 	 * 执行sql语句
@@ -213,11 +202,7 @@ public class Dao {
 	 * @throws SQLException
 	 */
 	public List<Map<String, Object>> find(String sql, Object[] params) throws SQLException {
-		if (sql.indexOf("select nextval(") >= 0) {
-			queryRunner = new QueryRunner(dataSource);
-		} else {
-			queryRunner = new QueryRunner(readOnlyDataSource);
-		}
+		queryRunner = new QueryRunner(dataSource);
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		try {
 			if (params == null) {
@@ -233,11 +218,7 @@ public class Dao {
 	}
 
 	public List<Map<String, Object>> find(String sql, Object[] params, boolean useMaster) throws SQLException {
-		if (sql.indexOf("select nextval(") >= 0 || useMaster) {
 			queryRunner = new QueryRunner(dataSource);
-		} else {
-			queryRunner = new QueryRunner(readOnlyDataSource);
-		}
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		try {
 			if (params == null) {
@@ -283,11 +264,7 @@ public class Dao {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Long count = 0l;
 		try {
-			if (sql.indexOf("select nextval(") >= 0) {
 				queryRunner = new QueryRunner(dataSource);
-			} else {
-				queryRunner = new QueryRunner(readOnlyDataSource);
-			}
 			count = count(sql, params);
 			String limit = " limit " + pageRequest.getOffset() + " ," + pageRequest.getPageSize();
 			sql += limit;
@@ -309,11 +286,7 @@ public class Dao {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Long count = 0l;
 		try {
-			if (sql.indexOf("select nextval(") >= 0 || useMaster) {
 				queryRunner = new QueryRunner(dataSource);
-			} else {
-				queryRunner = new QueryRunner(readOnlyDataSource);
-			}
 			count = count(sql, params);
 			String limit = " limit " + pageRequest.getOffset() + " ," + pageRequest.getPageSize();
 			sql += limit;
@@ -357,7 +330,7 @@ public class Dao {
 	 * @throws Exception
 	 */
 	public Page<Map<String, Object>> find1(String sql, Object[] params, PageRequest pageRequest) throws Exception {
-		queryRunner = new QueryRunner(readOnlyDataSource);
+		queryRunner = new QueryRunner(dataSource);
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Long count = count1(sql, params);
 		String limit = " limit " + pageRequest.getOffset() + " ," + pageRequest.getPageSize();
@@ -420,11 +393,7 @@ public class Dao {
 	 * @throws SQLException
 	 */
 	public <T> List<T> find(Class<T> entityClass, String sql, Object[] params) throws SQLException {
-		if (sql.indexOf("select nextval(") >= 0) {
 			queryRunner = new QueryRunner(dataSource);
-		} else {
-			queryRunner = new QueryRunner(readOnlyDataSource);
-		}
 		List<T> list = new ArrayList<T>();
 		try {
 			if (params == null) {
@@ -440,11 +409,7 @@ public class Dao {
 	}
 
 	public <T> List<T> find(Class<T> entityClass, String sql, Object[] params, boolean useMaster) throws SQLException {
-		if (sql.indexOf("select nextval(") >= 0 || useMaster) {
 			queryRunner = new QueryRunner(dataSource);
-		} else {
-			queryRunner = new QueryRunner(readOnlyDataSource);
-		}
 		List<T> list = new ArrayList<T>();
 		try {
 			if (params == null) {
@@ -503,11 +468,7 @@ public class Dao {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T findFirst(Class<T> entityClass, String sql, Object[] params) throws SQLException {
-		if (sql.indexOf("select nextval(") >= 0) {
-			queryRunner = new QueryRunner(dataSource);
-		} else {
-			queryRunner = new QueryRunner(readOnlyDataSource);
-		}
+		queryRunner = new QueryRunner(dataSource);
 		Object object = null;
 		try {
 			if (params == null) {
@@ -523,11 +484,7 @@ public class Dao {
 	}
 
 	public <T> T findFirst(Class<T> entityClass, String sql, Object[] params, boolean useMaster) throws SQLException {
-		if (sql.indexOf("select nextval(") >= 0 || useMaster) {
 			queryRunner = new QueryRunner(dataSource);
-		} else {
-			queryRunner = new QueryRunner(readOnlyDataSource);
-		}
 		Object object = null;
 		try {
 			if (params == null) {
@@ -585,11 +542,7 @@ public class Dao {
 	public Map<String, Object> findFirst(String sql, Object[] params){
 		Map<String, Object> map = null;
 		try {
-			if (sql.indexOf("select nextval(") >= 0) {
 				queryRunner = new QueryRunner(dataSource);
-			} else {
-				queryRunner = new QueryRunner(readOnlyDataSource);
-			}
 			if (params == null) {
 				map = (Map<String, Object>) queryRunner.query(sql, new MapHandler());
 			} else {
@@ -628,11 +581,7 @@ public class Dao {
 	}
 
 	public Map<String, Object> findFirst(String sql, Object[] params, boolean useMaster) throws SQLException {
-		if (sql.indexOf("select nextval(") >= 0 || useMaster) {
 			queryRunner = new QueryRunner(dataSource);
-		} else {
-			queryRunner = new QueryRunner(readOnlyDataSource);
-		}
 		Map<String, Object> map = null;
 		try {
 			if (params == null) {
@@ -690,11 +639,7 @@ public class Dao {
 	 * @throws SQLException
 	 */
 	public <T> T findBy(String sql, String columnName, Object[] params) throws SQLException {
-		if (sql.indexOf("select nextval(") >= 0) {
 			queryRunner = new QueryRunner(dataSource);
-		} else {
-			queryRunner = new QueryRunner(readOnlyDataSource);
-		}
 		T object = null;
 		try {
 			if (params == null) {
@@ -710,11 +655,7 @@ public class Dao {
 	}
 
 	public <T> T findBy(String sql, String columnName, Object[] params, boolean useMaster) throws SQLException {
-		if (sql.indexOf("select nextval(") >= 0 || useMaster) {
 			queryRunner = new QueryRunner(dataSource);
-		} else {
-			queryRunner = new QueryRunner(readOnlyDataSource);
-		}
 		T object = null;
 		try {
 			if (params == null) {
@@ -772,11 +713,7 @@ public class Dao {
 	 * @throws SQLException
 	 */
 	public <T> T findBy(String sql, int columnIndex, Object[] params) throws SQLException {
-		if (sql.indexOf("select nextval(") >= 0) {
 			queryRunner = new QueryRunner(dataSource);
-		} else {
-			queryRunner = new QueryRunner(readOnlyDataSource);
-		}
 		T object = null;
 		try {
 			if (params == null) {
@@ -792,11 +729,7 @@ public class Dao {
 	}
 
 	public <T> T findBy(String sql, int columnIndex, Object[] params, boolean useMaster) throws SQLException {
-		if (sql.indexOf("select nextval(") >= 0 || useMaster) {
 			queryRunner = new QueryRunner(dataSource);
-		} else {
-			queryRunner = new QueryRunner(readOnlyDataSource);
-		}
 		T object = null;
 		try {
 			if (params == null) {
@@ -928,28 +861,28 @@ public class Dao {
 	private void loggerInfo(String sql, Object params,int affectedRows) {
 	}
 	
-	/**
-	 * 直接JDBC，从读写库中获取数据库连接
-	 *  @return
-	 *  @author zengja
-	 *  @date 2015年6月3日 下午7:30:53
-	 */
-	public Connection getConnByJDBC() {
-		Connection conn = null;
-		try {
-        	rb = ResourceBundle.getBundle(CONFIG_FILE);
-        	String className = rb.getString("master.driverClassName");
-			className = StringUtils.isEmpty(className) ? "com.mysql.jdbc.Driver" : className;
-        	String url = rb.getString("master.url");
-        	String username = rb.getString("master.username");
-        	String password = rb.getString("master.password");
-		    Class.forName(className);
-		    conn = DriverManager.getConnection(url, username, password);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return conn;
-	}
+//	/**
+//	 * 直接JDBC，从读写库中获取数据库连接
+//	 *  @return
+//	 *  @author zengja
+//	 *  @date 2015年6月3日 下午7:30:53
+//	 */
+//	public Connection getConnByJDBC() {
+//		Connection conn = null;
+//		try {
+//        	rb = ResourceBundle.getBundle(CONFIG_FILE);
+//        	String className = rb.getString("master.driverClassName");
+//			className = StringUtils.isEmpty(className) ? "com.mysql.jdbc.Driver" : className;
+//        	String url = rb.getString("master.url");
+//        	String username = rb.getString("master.username");
+//        	String password = rb.getString("master.password");
+//		    Class.forName(className);
+//		    conn = DriverManager.getConnection(url, username, password);
+//		} catch (ClassNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return conn;
+//	}
 }
