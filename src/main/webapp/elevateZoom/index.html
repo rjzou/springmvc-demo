@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head> 
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+        <title>演示：jQuery结合elevateZoom演示多种放大镜效果</title>
+        <meta name="keywords" content="放大镜,elevateZoom" />
+        <meta name="description" content="分享一款电商网站jQuery放大镜代码。这是一款基于jquery.elevatezoom插件实现的类似淘宝放大镜代码，提供40多种参数，可自由配置多种效果，适合电商或图片类网站使用。" />
+        <link rel="stylesheet" type="text/css" href="http://www.sucaihuo.com/jquery/css/common.css" />
+<style type = "text/css">
+/*水平翻转*/
+.flipx {
+    -moz-transform:scaleX(-1);
+    -webkit-transform:scaleX(-1);
+    -o-transform:scaleX(-1);
+    transform:scaleX(-1);
+    filter:FlipH();
+}
+/*垂直翻转*/
+.flipy {
+    -moz-transform:scaleY(-1);
+    -webkit-transform:scaleY(-1);
+    -o-transform:scaleY(-1);
+    transform:scaleY(-1);
+    filter:FlipV();
+}
+/*顺时针旋转90度*/
+.rotate90 {
+   filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+   -moz-transform: rotate(90deg);
+   -o-transform: rotate(90deg);
+   -webkit-transform: rotate(90deg);
+   transform: rotate(90deg);
+}
+/*顺时针旋转180度*/
+.rotate180 {
+   filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+   -moz-transform: rotate(180deg);
+   -o-transform: rotate(180deg);
+   -webkit-transform: rotate(180deg);
+   transform: rotate(180deg);
+}
+/*顺时针旋转270度*/
+.rotate270 {
+   filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+   -moz-transform: rotate(270deg);
+   -o-transform: rotate(270deg);
+   -webkit-transform: rotate(270deg);
+   transform: rotate(270deg);
+}
+</style>
+    </head>
+    <body>
+        <div class="container">
+
+            <div class="demo">
+                <img id="zoom_06" src='images/small/image1.png' data-zoom-image="images/large/image1.jpg" />
+            </div>
+        </div>
+         <input type="button" value="向右旋转" onclick="test();">
+        <script type="text/javascript" src="http://www.sucaihuo.com/Public/js/other/jquery.js"></script> 
+         <script src='js/jquery.elevateZoom-3.0.8.min.js'></script>
+         <script type="text/javascript" src="http://jquery-rotate.googlecode.com/files/jquery.rotate.1-1.js"></script>
+        <script type="text/javascript">
+        
+            $("#zoom_06").elevateZoom({ //鼠标滚动
+                scrollZoom: true //是否开启鼠标滚动
+            });
+      	function test(){
+            $('#zoom_06').attr('class', 'rotate90');
+        }
+        </script>
+    </body>
+</html>
