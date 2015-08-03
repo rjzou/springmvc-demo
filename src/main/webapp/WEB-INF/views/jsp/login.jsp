@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,7 +12,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>登录2</title>
+    <title>登录</title>
 
     <!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
@@ -31,7 +31,7 @@
     <div class="container">
       <form class="form-signin" method="post">
         <h2 class="form-signin-heading">Please sign in </h2>
-                  <c:if test="">  
+                  <c:if test="${!empty message}">  
                              <div class="alert alert-danger" role="alert">${message}</div>
                  </c:if> 
         
