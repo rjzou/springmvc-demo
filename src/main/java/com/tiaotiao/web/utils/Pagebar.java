@@ -85,30 +85,21 @@ public class Pagebar extends BodyTagSupport {
 		JspWriter out = pageContext.getOut();
 		try {
 			if (current > total || current <= 0 || total <= 0) {
-				out.append("<div class=\"pagebar\">\n");
-				out.append("\t<span class=\"error\"><!--页码错误--></span>\n");
+				out.append("<ul class=\"pagination\">\n");
+				out.append("\t<li class=\"error\"><!--页码错误--></li>\n");
 				return super.doStartTag();
 			}
 
-			out.append("<div class=\"pagebar\">\n");
-			out.append("\t<span class=\"pages\">");
-			out.append("第").append(Integer.toString(current)).append("页/共").append(Integer.toString(total)).append("页");
-			out.append("</span>\n");
+			out.append("<ul class=\"pagination\">\n");
 
 			if (total  == 1) {
 				return super.doStartTag();
 			}
 
 			if (current != 1) {
-				out.append("\t<a href=\"").append(buildLink(1, params)).append("\" class=\"first page\" title=\"第一页\">第一页</a>\n");
+				out.append("\t<li><a href=\"").append(buildLink(1, params)).append("\">&laquo;</a></li>\n");
 			} else {
-				out.append("\t<span class=\"disabled\"").append(buildLink(1, params)).append("\" class=\"first page\" title=\"第一页\">第一页</span>\n");
-			}
-
-			if (current > 1) {
-				out.append("\t<a href=\"").append(buildLink(current - 1, params)).append("\" class=\"prev page\" title=\"上一页\">上一页</a>\n");
-			} else {
-				out.append("\t<span class=\"disabled\"").append(buildLink(current - 1, params)).append("\" class=\"prev page\" title=\"上一页\">上一页</span>\n");
+				out.append("\t <li class=\"disabled\"><a ").append(buildLink(1, params)).append("\" >&laquo;</a></li>\n");
 			}
 
 			if (total > 10) {
@@ -171,16 +162,10 @@ public class Pagebar extends BodyTagSupport {
 				appendLinks(out, params, 1, total);
 			}
 
-			if (current < total) {
-				out.append("\t<a href=\"").append(buildLink(current + 1, params)).append("\" class=\"prev page\" title=\"下一页\">下一页</a>");
-			} else {
-				out.append("\t<span class=\"disabled\"").append(buildLink(current + 1, params)).append("\" class=\"prev page\" title=\"下一页\">下一页</span>");
-			}
-
 			if (current != total) {
-				out.append("\t<a href=\"").append(buildLink(total, params)).append("\" class=\"last page\" title=\"最后一页\">最后一页</a>\n");
+				out.append("\t<li><a href=\"").append(buildLink(total, params)).append("\" >&raquo;</a></li>\n");
 			} else {
-				out.append("\t<span class=\"disabled\"").append(buildLink(total, params)).append("\" class=\"last page\" title=\"最后一页\">最后一页</span>\n");
+				out.append("\t<li class=\"disabled\"><a ").append(buildLink(total, params)).append("\" >&raquo;</a></li>\n");
 			}
 		} catch (IOException e) {
 			throw new JspException(e);
@@ -221,11 +206,11 @@ public class Pagebar extends BodyTagSupport {
 		for (int i = start; i <= end; i++) {
 			String page = Integer.toString(i);
 			if (i == current) {
-				out.append("\t<span class=\"current\" title=\"第")
-				.append(page).append("页\">").append(page).append("</span>\n");
+				out.append("\t<li class=\"active\"><a ")
+				.append(">").append(page).append("</a></li>\n");
 			} else {
-				out.append("\t<a href=\"").append(buildLink(i, link)).append("\" class=\"page\" title=\"第")
-				.append(page).append("页\">").append(page).append("</a>\n");
+				out.append("\t<li><a href=\"").append(buildLink(i, link)).append("\" ")
+				.append(">").append(page).append("</a></li>\n");
 			}
 		}
 	}
@@ -237,7 +222,7 @@ public class Pagebar extends BodyTagSupport {
 	public int doEndTag() throws JspException {
 		JspWriter out = this.pageContext.getOut();
 		try {
-			out.append("\n</div>");
+			out.append("\n</ul>");
 		} catch (IOException e) {
 			throw new JspException(e);
 		}

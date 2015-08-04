@@ -1,29 +1,37 @@
 package com.tiaotiao.web.entity;
 
 public class Room {
-	private int house_id;
-	private int room_no;
-	private int month_money;
+	private int houseid;
+	private int roomno;
+	private int monthmoney;
+	private int pressmoney;
 	private String description;
 	private long created;
 	private long updated;
-	public int getHouse_id() {
-		return house_id;
+	public int getHouseid() {
+		return houseid;
 	}
-	public void setHouse_id(int house_id) {
-		this.house_id = house_id;
+	public void setHouseid(int houseid) {
+		this.houseid = houseid;
 	}
-	public int getRoom_no() {
-		return room_no;
+	public int getRoomno() {
+		return roomno;
 	}
-	public void setRoom_no(int room_no) {
-		this.room_no = room_no;
+	public void setRoomno(int roomno) {
+		this.roomno = roomno;
 	}
-	public int getMonth_money() {
-		return month_money;
+	public int getMonthmoney() {
+		return monthmoney;
 	}
-	public void setMonth_money(int month_money) {
-		this.month_money = month_money;
+	public void setMonthmoney(int monthmoney) {
+		this.monthmoney = monthmoney;
+	}
+	
+	public int getPressmoney() {
+		return pressmoney;
+	}
+	public void setPressmoney(int pressmoney) {
+		this.pressmoney = pressmoney;
 	}
 	public String getDescription() {
 		return description;
@@ -43,5 +51,6 @@ public class Room {
 	public void setUpdated(long updated) {
 		this.updated = updated;
 	}
+	
 	
 }

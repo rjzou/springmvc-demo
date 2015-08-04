@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@include file="/tag.jsp"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,10 +15,10 @@
     <title>登录</title>
 
     <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+	<link rel="stylesheet" href="${ctx}/resources/css/bootstrap.min.css">
 
     <!-- Custom styles for this template -->
-    <link href="${pageContext.request.contextPath}/resources/css/signin.css" rel="stylesheet">
+    <link href="${ctx}/resources/css/signin.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>

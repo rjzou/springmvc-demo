@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="sitemesh" uri="http://www.opensymphony.com/sitemesh/decorator" %>
+<%@include file="/tag.jsp"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,13 +15,13 @@
     <title>Dashboard Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${ctx}/resources/css/bootstrap.min.css">
 
     <!-- Custom styles for this template -->
-    <link href="${pageContext.request.contextPath}/resources/css/dashboard.css" rel="stylesheet">
+    <link href="${ctx}/resources/css/dashboard.css" rel="stylesheet">
 
- 	<script src="${pageContext.request.contextPath}/resources/js/jquery-1.11.3.min.js"></script>
-  	<script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+ 	<script src="${ctx}/resources/js/jquery-1.11.3.min.js"></script>
+  	<script src="${ctx}/resources/js/bootstrap.min.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -61,7 +61,7 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+            <li class="active"><a href="${ ctx}/room_checkin">开始入住 <span class="sr-only">(current)</span></a></li>
             <li><a href="#">Reports</a></li>
             <li><a href="#">Analytics</a></li>
             <li><a href="#">Export</a></li>
@@ -74,7 +74,8 @@
             <li><a href="">More navigation</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="${pageContext.request.contextPath}/room">房间设置</a></li>
+          	<li><a href="${pageContext.request.contextPath}/house">楼房配置</a></li>
+            <li><a href="${pageContext.request.contextPath}/room">房间配置</a></li>
             <li><a href="">One more nav</a></li>
             <li><a href="">Another nav item</a></li>
           </ul>

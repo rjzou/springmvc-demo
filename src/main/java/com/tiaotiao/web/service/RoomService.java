@@ -32,8 +32,20 @@ public class RoomService {
 	 * @throws Exception
 	 */
 	public int insertRoom(Room room) throws Exception{
-		Object[] params = { room.getHouse_id(), room.getRoom_no(), room.getMonth_money(), room.getDescription(), room.getCreated()};
-		String sql = "insert into t_room(house_id,room_no,month_money,description,created) values(?,?,?,?,?) ";
+		Object[] params = { room.getHouseid(), room.getRoomno(), room.getMonthmoney(),room.getPressmoney(), room.getDescription(), room.getCreated()};
+		String sql = "insert into t_room(houseid,roomno,monthmoney,pressmoney,description,created) values(?,?,?,?,?,?) ";
+		int n = dao.update(sql, params);
+		return n;
+	}
+	/**
+	 * 
+	 * @param room
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateRoom(Room room,int sourceHouseid,int sourceRoomno) throws Exception{
+		Object[] params = { room.getHouseid(), room.getRoomno(), room.getMonthmoney(),room.getPressmoney(), room.getDescription(), room.getUpdated(),sourceHouseid, sourceRoomno};
+		String sql = "update t_room set houseid = ?,roomno = ?,monthmoney = ?,pressmoney = ?,description = ?,updated =? where houseid=? and roomno =? ";
 		int n = dao.update(sql, params);
 		return n;
 	}
@@ -45,7 +57,12 @@ public class RoomService {
 	 * @throws Exception
 	 */
 	public Page<Map<String, Object>> selectAllRoom(Map<String, String> params, final PageRequest pageRequest) throws Exception{
-		String sql = "select house_id,room_no,month_money,description,created from t_room ";
+		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.description,r.created from t_room as r,t_house h where r.houseid = h.id ";
+		return dao.find(sql, null, pageRequest);
+	}
+	
+	public Page<Map<String, Object>> selectAllEmptyRoom(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.description,r.created from t_room as r,t_house h where r.houseid = h.id ";
 		return dao.find(sql, null, pageRequest);
 	}
 	
@@ -56,10 +73,10 @@ public class RoomService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<String,Object> selectRoomById(String house_id,String room_no) throws Exception{
-		Object[] params = { house_id,room_no};
-		String sql = "select house_id,room_no,month_money,description,created from t_room where house_id = ? and room_no = ? ";
-		return dao.findFirst(sql, params);
+	public Room selectRoomById(String houseid,String roomno) throws Exception{
+		Object[] params = { houseid,roomno};
+		String sql = "select houseid,roomno,monthmoney,pressmoney,description,created from t_room where houseid = ? and roomno = ? ";
+		return dao.findFirst(Room.class,sql, params);
 	}
 	
 }
