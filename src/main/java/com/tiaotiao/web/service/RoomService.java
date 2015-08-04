@@ -60,9 +60,16 @@ public class RoomService {
 		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.description,r.created from t_room as r,t_house h where r.houseid = h.id ";
 		return dao.find(sql, null, pageRequest);
 	}
-	
+	/**
+	 * 查找空房
+	 * @param params
+	 * @param pageRequest
+	 * @return
+	 * @throws Exception
+	 */
 	public Page<Map<String, Object>> selectAllEmptyRoom(Map<String, String> params, final PageRequest pageRequest) throws Exception{
-		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.description,r.created from t_room as r,t_house h where r.houseid = h.id ";
+		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.description,r.created from t_room as r,t_house h "
+				+ " where r.houseid = h.id and (r.houseid,r.roomno) not in (select houseid,roomno from t_checkin)  ";
 		return dao.find(sql, null, pageRequest);
 	}
 	

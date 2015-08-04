@@ -51,8 +51,9 @@ public class CheckinController extends BaseController {
 		return "room_checkin";
 	}
 	
-	@RequestMapping(value = "/room_toadda", method = RequestMethod.GET)
-	public String toRoomAdd(ModelMap model) throws Exception {
+	@RequestMapping(value = "/room_checkin_search", method = RequestMethod.POST)
+	public String roomCheckinSearch(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
+		String house = params.get("selectHouse");
 		List<House> houses = houseService.selectAllHouse();
 		model.put("houses", houses);
 		return "room_add";
