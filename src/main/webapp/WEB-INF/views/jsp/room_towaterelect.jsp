@@ -15,7 +15,17 @@
 	<form role="form" method="post" action="${ctx}/room_waterelect_save">
 	  <c:if test="${!empty message}">  
             <div class="alert alert-success" role="alert">${message}</div>
+            <script type="text/javascript">
+            function autojump(){
+            	location.href="${ctx}/room_waterelect";
+            }
+            setTimeout("autojump()",10000);
+            </script>
       </c:if> 
+       <div class="form-group">
+      		<button type="submit" class="btn btn-primary">保存</button>
+			<a class="btn btn-default" href="${ctx}/room_waterelect" role="button">返回</a>
+	   </div>
       <table class="table table-bordered">
         <tr>
             <th class="col-sm-2">楼房</th>

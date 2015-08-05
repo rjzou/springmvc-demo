@@ -25,8 +25,8 @@ public class WaterelectService {
 	 * @throws Exception
 	 */
 	public int insertWaterElect(WaterElect we) throws Exception{
-		Object[] params = { we.getHouseid(), we.getRoomno(), we.getWater(),we.getElect(),we.getYear(), we.getMonth(),we.getDay(), we.getCreated()};
-		String sql = "insert into t_waterelect(houseid,roomno,water,elect,year,month,day,created) values(?,?,?,?,?,?,?,?) ";
+		Object[] params = { we.getHouseid(), we.getRoomno(), we.getWater(),we.getWaterprice(),we.getElect(),we.getElectprice(),we.getYear(), we.getMonth(),we.getDay(), we.getCreated()};
+		String sql = "insert into t_waterelect(houseid,roomno,water,waterprice,elect,electprice,year,month,day,created) values(?,?,?,?,?,?,?,?,?,?) ";
 		int n = dao.update(sql, params);
 		return n;
 	}

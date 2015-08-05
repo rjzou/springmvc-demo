@@ -86,7 +86,9 @@ public class WaterelectController extends BaseController {
 		we.setHouseid(houseid);
 		we.setRoomno(roomno);
 		we.setWater(inputWater);
+		we.setWaterprice(4.5);
 		we.setElect(inputElect);
+		we.setElectprice(1.5);
 		Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month=cal.get(Calendar.MONTH);//获取月份
@@ -118,12 +120,12 @@ public class WaterelectController extends BaseController {
 				n = waterelectService.insertWaterElect(we);
 			}
 			if (n > 0) {
-				model.addAttribute("message", "抄表保存成功");
+				model.addAttribute("message", "抄表保存成功,10秒钟自动返回");
 			}else{
-				model.addAttribute("message", "抄表保存失败");
+				model.addAttribute("message", "抄表保存失败,10秒钟自动返回");
 			}
 		} catch (Exception e) {
-			model.addAttribute("message", "保存失败,错误信息:"+e.getMessage());
+			model.addAttribute("message", "保存失败,10秒钟自动返回,错误信息:"+e.getMessage());
 		}
 		model.put("params", params);
 		return "room_towaterelect";
@@ -131,8 +133,8 @@ public class WaterelectController extends BaseController {
 	
 	@RequestMapping(value = "/room_toedita", method = RequestMethod.GET)
 	public String toRoomEdit(@RequestParam Map<String, String> params,ModelMap model) throws Exception {
-		String houseid = params.get("houseid");
-		String roomno = params.get("roomno");
+		int houseid = Integer.valueOf(params.get("houseid"));
+		int roomno = Integer.valueOf(params.get("roomno"));
 		//System.out.println(houseid);
 		Room room = roomService.selectRoomById(houseid, roomno);
 		params.put("monthmoney", String.valueOf(room.getMonthmoney()));

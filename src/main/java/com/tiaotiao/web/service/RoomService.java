@@ -110,7 +110,7 @@ public class RoomService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Room selectRoomById(String houseid,String roomno) throws Exception{
+	public Room selectRoomById(int houseid,int roomno) throws Exception{
 		Object[] params = { houseid,roomno};
 		String sql = "select houseid,roomno,monthmoney,pressmoney,typecode,description,created from t_room where houseid = ? and roomno = ? ";
 		return dao.findFirst(Room.class,sql, params);

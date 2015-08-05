@@ -18,11 +18,20 @@
             function autojump(){
             	location.href="${ctx}/room_checkout";
             }
-            setTimeout("autojump()",10000);
+            setTimeout("autojump()",100000);
             </script>
-      </c:if> 
+      </c:if>
+      <c:if test="${!empty danger}">  
+            <div class="alert alert-danger" role="alert">${danger}</div>
+            <script type="text/javascript">
+            function autojump(){
+            	location.href="${ctx}/room_checkout";
+            }
+            setTimeout("autojump()",100000);
+            </script>
+      </c:if>  
       <div class="form-group">
-      	<button type="submit" class="btn btn-primary" data-toggle="confirmation"  data-placement="bottom" data-popout="true">确认退房</button>
+      	<button type="submit" class="btn btn-primary" data-toggle="confirmation"  data-placement="bottom" data-popout="true" <c:if test="${!empty danger}">disabled</c:if> >确认退房</button>
 		<a class="btn btn-default" href="${ctx}/room_checkout" role="button">返回</a>
 	  </div>
       <table class="table table-bordered">
@@ -44,11 +53,29 @@
         </tr>
          <tr>
             <th class="col-sm-2">用水费(元)</th>
-            <td>(${params.curwater}-${params.water})*${params.waterprice} = <span class="label label-danger">${params.usedwaterprice}</span></td>
+            <td>
+	            <c:choose>
+				    <c:when test="${!empty danger}">
+				       <span class="label label-danger">没有抄水表</span>
+				    </c:when>
+				    <c:otherwise>
+				        (${params.curwater}-${params.water})*${params.waterprice} = <span class="label label-danger">${params.usedwaterprice}</span>
+				    </c:otherwise>
+				</c:choose>
+            </td>
         </tr>
          <tr>
             <th class="col-sm-2">用电费(元)</th>
-            <td>(${params.curelect}-${params.elect})*${params.electprice} = <span class="label label-danger">${params.usedelectprice}</span></td>
+            <td>
+            	<c:choose>
+				    <c:when test="${!empty danger}">
+				       <span class="label label-danger">没有抄电表</span>
+				    </c:when>
+				    <c:otherwise>
+				        (${params.curelect}-${params.elect})*${params.electprice} = <span class="label label-danger">${params.usedelectprice}</span>
+				    </c:otherwise>
+				</c:choose>
+            </td>
         </tr>
           <tr>
             <th class="col-sm-2">网费(元)</th>
@@ -64,16 +91,25 @@
         </tr>
         <tr>
             <th class="col-sm-2">需要退费(押金-水费-电费-网费-卫生费-钥匙押金)</th>
-            <td><span class="label label-success">${params.pressmoney}</span>-<span class="label label-danger">${params.usedwaterprice}</span>
-            -<span class="label label-danger">${params.usedelectprice}</span>-<span class="label label-danger">${params.internet}</span>
-            -<span class="label label-danger">${params.trash}</span>-<span class="label label-danger">${params.sumkeyprice}</span>
-             = <h3><span class="label label-warning">${params.paymoney} 元</span></h3></td>
+            <td>
+            	 <c:choose>
+				    <c:when test="${!empty danger}">
+				       <h3><span class="label label-danger">没有抄水电表</span></h3>
+				    </c:when>
+				    <c:otherwise>
+	            <span class="label label-success">${params.pressmoney}</span>-<span class="label label-danger">${params.usedwaterprice}</span>
+	            -<span class="label label-danger">${params.usedelectprice}</span>-<span class="label label-danger">${params.internet}</span>
+	            -<span class="label label-danger">${params.trash}</span>-<span class="label label-danger">${params.sumkeyprice}</span>
+	             = <h3>${params.msg}<span class="label label-warning">${params.paymoney} 元</span></h3>
+              		</c:otherwise>
+				</c:choose>
+             </td>
         </tr>
 		</table>
  	<input type="hidden" id="houseid" name="houseid" value="${params.houseid}"/>
  	<input type="hidden" id="roomno" name="roomno" value="${params.roomno}"/>
  	<input type="hidden" id="paymoney" name="paymoney" value="${params.paymoney}"/>
-		<button class="btn btn-primary" data-toggle="confirmation" data-placement="top" data-popout="true">确认退房</button>
+		<button class="btn btn-primary" data-toggle="confirmation" data-placement="top" data-popout="true" <c:if test="${!empty danger}">disabled</c:if> >确认退房</button>
 		<a class="btn btn-default" href="${ctx}/room_checkout" role="button">返回</a>
 	</form>
 </div>

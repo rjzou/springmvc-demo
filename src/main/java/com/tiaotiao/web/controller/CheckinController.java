@@ -61,8 +61,8 @@ public class CheckinController extends BaseController {
 		String username = params.get("inputUsername");
 		String iphone = params.get("inputIphone");
 		String userid = params.get("inputUserid");
-		int houseid = Integer.valueOf(params.get("hiddenHouseid"));
-		int roomno = Integer.valueOf(params.get("hiddenRoomno"));
+		int houseid = Integer.valueOf(params.get("houseid"));
+		int roomno = Integer.valueOf(params.get("roomno"));
 		int monthmoney = Integer.valueOf(params.get("inputMonthMoney"));
 		int pressmoney = Integer.valueOf(params.get("inputPressMoney"));
 		int water = Integer.valueOf(params.get("inputWater"));
@@ -102,16 +102,45 @@ public class CheckinController extends BaseController {
 		return "room_tocheckin";
 	}
 	
+	@RequestMapping(value = "/room_checkin_calc", method = RequestMethod.POST)
+	public String roomCheckinCalc(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
+		int monthmoney = Integer.valueOf(params.get("inputMonthMoney"));
+		int pressmoney = Integer.valueOf(params.get("inputPressMoney"));
+		int internet = Integer.valueOf(params.get("inputInternet"));
+		int trash = Integer.valueOf(params.get("inputTrash"));
+		int keycount = Integer.valueOf(params.get("inputKeycount"));
+		int keyprice = Integer.valueOf(params.get("inputKeyprice"));
+		int sumprice = 0;
+		try {
+			sumprice = monthmoney + pressmoney + internet +trash +(keycount * keyprice);
+			model.addAttribute("info", sumprice);
+		} catch (Exception e) {
+			model.addAttribute("message", "计算失败,错误信息:"+e.getMessage());
+		}
+		params.put("sumprice", String.valueOf(sumprice));
+		model.put("params", params);
+		return "room_tocheckin";
+	}
+	
 	@RequestMapping(value = "/room_tocheckin", method = RequestMethod.GET)
 	public String toCheckin(@RequestParam Map<String, String> params,ModelMap model) throws Exception {
-		params.put("hiddenHouseid", params.get("houseid"));
-		params.put("hiddenRoomno", params.get("roomno"));
-//		Room room = roomService.selectRoomById(houseid, roomno);
-//		model.put("monthmoney", room.getMonthmoney());
-//		model.put("pressmoney", room.getPressmoney());
-//		model.put("description", room.getDescription());
-//		List<House> houses = houseService.selectAllHouse();
-//		model.put("houses", houses);
+		int houseid = Integer.valueOf(params.get("houseid"));
+		int roomno = Integer.valueOf(params.get("roomno"));
+		params.put("houseid", params.get("houseid"));
+		params.put("roomno", params.get("roomno"));
+		Room room = roomService.selectRoomById(houseid, roomno);
+		params.put("monthmoney", String.valueOf(room.getMonthmoney()));
+		params.put("pressmoney", String.valueOf(room.getPressmoney()));
+		params.put("inputMonthMoney", String.valueOf(room.getMonthmoney()));
+		params.put("inputPressMoney", String.valueOf(room.getPressmoney()));
+		params.put("inputInternet", "40");//参考网费
+		params.put("internet", "40");//参考网费
+		params.put("inputTrash", "10");
+		params.put("trash", "10");//参考卫生费
+		params.put("inputKeycount", "2");
+		params.put("keycount", "2");//参考钥匙串数量 默认
+		params.put("inputKeyprice", "10");
+		params.put("keyprice", "10");//参考钥匙串价格
 		model.put("params", params);
 		return "room_tocheckin";
 	}

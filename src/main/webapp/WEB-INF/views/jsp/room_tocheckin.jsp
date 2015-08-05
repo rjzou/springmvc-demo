@@ -20,8 +20,8 @@
 	      <button type="submit" class="btn btn-primary">保存</button>
 		  <a class="btn btn-default" href="${ctx}/room_checkin" role="button">返回</a>
 	  </div>
-      <input type="hidden" id="hiddenHouseid" name="hiddenHouseid" value="${params.hiddenHouseid}"/>
-      <input type="hidden" id="hiddenRoomno" name="hiddenRoomno" value="${params.hiddenRoomno}"/>
+      <input type="hidden" id="hiddenHouseid" name="houseid" value="${params.houseid}"/>
+      <input type="hidden" id="hiddenRoomno" name="roomno" value="${params.roomno}"/>
 
 		<div class="form-group">
 			<label class="control-label" for="inputUsername">客户姓名</label>
@@ -39,14 +39,14 @@
 				placeholder="输入身份证">
 		</div>
 		<div class="form-group">
-			<label class="control-label" for="inputMonthMoney">月租</label>
+			<label class="control-label" for="inputMonthMoney">实收月租(参考月租 ${params.monthmoney} 元)</label>
 			<input type="number" class="form-control" id="inputMonthMoney" name="inputMonthMoney"  value="${params.inputMonthMoney}"
-				placeholder="输入参考月租" required>
+				placeholder="输入实收月租" required>
 		</div>
 		<div class="form-group">
-			<label class="control-label" for="inputPressMoney">押金</label>
+			<label class="control-label" for="inputPressMoney">实收押金(参考押金 ${params.pressmoney} 元)</label>
 			<input type="number" class="form-control" id="inputPressMoney" name="inputPressMoney"  value="${params.inputPressMoney}"
-				placeholder="输入参考押金" required>
+				placeholder="输入实收押金" required>
 		</div>
 		<div class="form-group">
 			<label class="control-label" for="inputWater">水读数</label>
@@ -58,25 +58,59 @@
 			<input type="number" class="form-control" id="inputElect" name="inputElect" value="${params.inputElect}"
 				placeholder="输入电读数" required>
 		</div>
-		
 		<div class="form-group">
-			<label class="control-label" for="inputIp">ip</label>
-			<input type="text" class="form-control" id="inputIp" name="inputIp"   value="${params.inputIp}"
-				placeholder="输入ip">
-		</div>
-		<div class="form-group">
-			<label class="control-label" for="inputInternet">网费</label>
-			<input type="number" class="form-control" id="inputInternet" name="inputInternet"  value="${params.inputInternet}"
-				placeholder="输入网费" required>
-		</div>
-		<div class="form-group">
-			<label class="control-label" for="inputTrash">卫生费</label>
+			<label class="control-label" for="inputTrash">实收卫生费(参考卫生费 ${params.trash} 元)</label>
 			<input type="number" class="form-control" id="inputTrash" name="inputTrash"  value="${params.inputTrash}"
 				placeholder="输入卫生费" required>
 		</div>
+		<div class="form-group">
+			<label class="control-label" for="inputInternet">实收网费(参考网费 ${params.internet} 元)</label>
+			<input type="number" class="form-control" id="inputInternet" name="inputInternet"  value="${params.inputInternet}"
+				placeholder="输入网费">
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="inputKeycount">钥匙(参考钥匙串 ${params.keycount} 个)</label>
+			<input type="number" class="form-control" id="inputKeycount" name="inputKeycount"  value="${params.inputKeycount}"
+				placeholder="输入钥匙数量">
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="inputKeyprice">钥匙串价格(参考钥匙串价格 ${params.keyprice} 元)</label>
+			<input type="number" class="form-control" id="inputKeyprice" name="inputKeyprice"  value="${params.inputKeyprice}"
+				placeholder="输入钥匙价格">
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="inputIp">IP</label>
+			<input type="text" class="form-control" id="inputIp" name="inputIp"   value="${params.inputIp}"
+				placeholder="输入ip">
+		</div>
+		 <c:if test="${!empty info}">  
+            <h3><div class="alert alert-info" role="alert"> 应收  ${info}元</div><h3>
+      	</c:if> 
+      
+		<button type="button" class="btn btn-success" onclick="calc(this);">计算应收</button>
 		<button type="submit" class="btn btn-primary">保存</button>
 		<a class="btn btn-default" href="${ctx}/room_checkin" role="button">返回</a>
 	</form>
 </div>
+<script type="text/javascript">
+function calc(o){
+	/*
+	var monthmoney = $("#inputMonthMoney").val();
+	var pressmoney = $("#inputPressMoney").val();
+	var trash = $("#inputTrash").val();
+	var internet = $("#inputInternet").val();
+	var keycount = $("#inputKeycount").val();
+	var keyprice = $("#inputKeyprice").val();
+	var summoney = parseFloat(monthmoney) + parseFloat(pressmoney) + parseFloat(trash) + parseFloat(internet)+ (parseFloat(keycount) * parseFloat(keyprice));
+	var txt = "<h3><div class=\"alert alert-info\" role=\"alert\">应收 "+summoney+"元</div><h3>";
+	$(o).before(txt);
+	*/
+	
+	$('form:first').attr('action','${ctx}/room_checkin_calc');
+	$('form:first').attr('method','post');
+	$('form:first').submit();
+	
+}
+</script>
 </body>
 </html>

@@ -25,6 +25,8 @@ import com.tiaotiao.web.service.HouseService;
 import com.tiaotiao.web.service.RoomService;
 import com.tiaotiao.web.service.RoomtypeService;
 import com.tiaotiao.web.service.WaterelectService;
+
+import sun.applet.resources.MsgAppletViewer;
  
 @Controller
 public class CheckoutController extends BaseController {
@@ -142,7 +144,7 @@ public class CheckoutController extends BaseController {
 		params.put("sumkeyprice", String.valueOf(sumkeyprice));
 		WaterElect we = waterelectService.selectWaterelectById(houseid, roomno);
 		if (we == null) {
-			model.addAttribute("message", "还没有抄水电表，不可以退房,10秒钟自动返回");
+			model.addAttribute("danger", "还没有抄水电表，不可以退房,10秒钟自动返回");
 		}else{
 			int usedWater = we.getWater() - Integer.valueOf(checkin.get("water").toString());
 			int usedElect = we.getElect() - Integer.valueOf(checkin.get("elect").toString());
@@ -154,9 +156,14 @@ public class CheckoutController extends BaseController {
 			params.put("electprice", String.valueOf(we.getElectprice()));
 			params.put("usedwaterprice", String.valueOf(usedWaterPrice));
 			params.put("usedelectprice", String.valueOf(usedElectPrice));
-			double paymoney = Integer.valueOf(checkin.get("monthmoney").toString()) - 
+			double paymoney = Integer.valueOf(checkin.get("pressmoney").toString()) - 
 					usedWaterPrice -usedElectPrice - Integer.valueOf(checkin.get("internet").toString()) - 
 					Integer.valueOf(checkin.get("trash").toString())-sumkeyprice;
+			String msg ="需要收取 ";
+			if (paymoney > 0) {
+				msg = "需要退还 ";
+			}
+			params.put("msg", msg);
 			params.put("paymoney", String.valueOf(paymoney));
 		}
 		model.put("params", params);

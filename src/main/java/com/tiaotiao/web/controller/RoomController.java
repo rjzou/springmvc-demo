@@ -82,8 +82,8 @@ public class RoomController extends BaseController {
 	
 	@RequestMapping(value = "/room_toedit", method = RequestMethod.GET)
 	public String toRoomEdit(@RequestParam Map<String, String> params,ModelMap model) throws Exception {
-		String houseid = params.get("houseid");
-		String roomno = params.get("roomno");
+		int houseid = Integer.valueOf(params.get("houseid"));
+		int roomno = Integer.valueOf(params.get("roomno"));
 		//System.out.println(houseid);
 		Room room = roomService.selectRoomById(houseid, roomno);
 		params.put("monthmoney", String.valueOf(room.getMonthmoney()));
