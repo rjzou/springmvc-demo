@@ -68,8 +68,8 @@
           </ul>
           <ul class="nav nav-sidebar">
             <li><a href="${ctx}/room_checkout">现在退房</a></li>
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
+            <li><a href="${ctx}/room_waterelect">抄水电表</a></li>
+            <li><a href="${ctx}/room_elect">抄电表</a></li>
             <li><a href="">Another nav item</a></li>
             <li><a href="">More navigation</a></li>
           </ul>

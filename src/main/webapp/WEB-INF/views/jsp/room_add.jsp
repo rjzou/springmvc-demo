@@ -47,6 +47,20 @@
 			<input type="number" class="form-control" id="inputPressMoney" name="inputPressMoney" value="${params.inputPressMoney}"
 				placeholder="输入参考押金" required>
 		</div>
+		<div class="radio">
+	      <label>
+	        <input type="radio" name="optionsRoomtypes" id="optionsRadios1" value="danjian" checked required>
+	        单间
+	      </label>
+	      <label>
+	        <input type="radio" name="optionsRoomtypes" id="optionsRadios2" value="yifangyiting" required>
+	        一房一厅
+	      </label>
+	      <label>
+	        <input type="radio" name="optionsRoomtypes" id="optionsRadios2" value="liangfangyiting" required>
+	        两房一厅
+	      </label>
+	    </div>
 		<div class="form-group">
 			<label class="control-label" for="inputDescription">备注</label>
 			<input type="text" class="form-control" id="inputDescription" name="inputDescription" value="${params.inputDescription}"

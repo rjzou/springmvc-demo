@@ -10,19 +10,23 @@
 </head>
 <body>
 <div class="row">
-  <form class="navbar-form navbar-left" role="search" action="${ctx}/room_checkin_search" method="post">
+  <form class="navbar-form navbar-left" role="search" action="${ctx}/room_checkin" method="post">
    <div class="form-group">
   <select class="selectpicker" name="selectHouse" multiple>
 	  	<c:forEach var="house" items="${houses}">  
-	  	<option value="${house.id}"> 
+	  	<option value="${house.id}"  <c:if test="${fn:contains(params.houseid, house.id) == true }">selected="selected"</c:if> > 
 			${house.housename}  
 			</option> 
 		</c:forEach>
   </select>
+   <input type="hidden" id="houseid" name="houseid" value="${params.houseid}"/>
   <script type="text/javascript">
-  function test(){
-	 alert($("select[name='selectHouse']").val());
-	 return false;
+  function to_search(){
+	 var v_select_houses = $(".selectpicker[name='selectHouse']").val();
+	 var v_select_room_type = $(".selectpicker[name='selectRoomtype']").val();
+	 $("#houseid").val(v_select_houses);
+	 $("#roomtypeid").val(v_select_room_type);
+	 return true;
   }
   </script>
   </div>
@@ -30,17 +34,18 @@
   <div class="form-group">
   <select class="selectpicker" name="selectRoomtype" multiple>
 	  	<c:forEach var="type" items="${types}">  
-	  	<option value="${type.typecode}"> 
+	  	<option value="${type.typecode}" <c:if test="${fn:contains(params.roomtypeid, type.typecode) == true }">selected="selected"</c:if>> 
 			${type.typename}  
 			</option> 
 		</c:forEach>
   </select>
+   <input type="hidden" id="roomtypeid" name="roomtypeid" />
   </div>
   <div class="form-group">
   
     <input type="text" class="form-control" placeholder="输入房间号">
   </div>
-  <button type="submit" class="btn btn-default" onclick="return test();">查询</button>
+  <button type="submit" class="btn btn-default" onclick="return to_search();">查询</button>
   <p class="text-left">
   <span class="label label-danger">还有空房21间</span>
   </p>

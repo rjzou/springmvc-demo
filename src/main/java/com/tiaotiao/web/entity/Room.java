@@ -5,6 +5,7 @@ public class Room {
 	private int roomno;
 	private int monthmoney;
 	private int pressmoney;
+	private String typecode;
 	private String description;
 	private long created;
 	private long updated;
@@ -32,6 +33,13 @@ public class Room {
 	}
 	public void setPressmoney(int pressmoney) {
 		this.pressmoney = pressmoney;
+	}
+	
+	public String getTypecode() {
+		return typecode;
+	}
+	public void setTypecode(String typecode) {
+		this.typecode = typecode;
 	}
 	public String getDescription() {
 		return description;

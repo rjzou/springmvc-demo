@@ -40,23 +40,20 @@ public class CheckinController extends BaseController {
 	@RequestMapping(value = "/room_checkin", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = roomService.selectAllEmptyRoom(null, page); 
+		Page<Map<String, Object>> list = checkinService.selectAllEmptyRoom(params, page); 
 		model.put("p", cpage);
 		model.put("list", list);
-		model.put("params", params);
 		List<RoomType> types = roomtypeService.selectAllRoomType();
 		model.put("types", types);
 		List<House> houses = houseService.selectAllHouse();
 		model.put("houses", houses);
+		model.put("params", params);
 		return "room_checkin";
 	}
 	
-	@RequestMapping(value = "/room_checkin_search", method = RequestMethod.POST)
-	public String roomCheckinSearch(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
-		String house = params.get("selectHouse");
-		List<House> houses = houseService.selectAllHouse();
-		model.put("houses", houses);
-		return "room_add";
+	@RequestMapping(value = "/room_checkin", method = RequestMethod.POST)
+	public String roomCheckinSearch(ModelMap model , @RequestParam Map<String, String> params,  @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+		return this.printIndex(model, params, cpage);
 	}	
  
 	@RequestMapping(value = "/room_checkin_add", method = RequestMethod.POST)
@@ -118,37 +115,37 @@ public class CheckinController extends BaseController {
 		model.put("params", params);
 		return "room_tocheckin";
 	}
-	@RequestMapping(value = "/room_edita", method = RequestMethod.POST)
-	public String roomEdit(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
-		int hiddenHouseid = Integer.valueOf(params.get("hiddenHouseid"));
-		int hiddenRoomno = Integer.valueOf(params.get("hiddenRoomno"));
-		int houseid = Integer.valueOf(params.get("selectHouse"));
-		int roomno = Integer.valueOf(params.get("inputRoom"));
-		int monthmoney = Integer.valueOf(params.get("inputMonthMoney"));
-		int pressmoney = Integer.valueOf(params.get("inputPressMoney"));
-		String description = params.get("inputDescription");
-		Room room = new Room();
-		room.setHouseid(houseid);
-		room.setRoomno(roomno);
-		room.setMonthmoney(monthmoney);
-		room.setPressmoney(pressmoney);
-		room.setDescription(description);
-		room.setUpdated(System.currentTimeMillis());
-		try {
-			int n = roomService.updateRoom(room,hiddenHouseid,hiddenRoomno);
-			if (n > 0) {
-				model.addAttribute("message", "保存成功");
-			}else{
-				model.addAttribute("message", "保存失败");
-			}
-		} catch (Exception e) {
-			if (e.getMessage().toLowerCase().indexOf("primary") > 0) {
-				model.addAttribute("message", "保存失败,已经存在的房间号,请重新输入");
-			}else{
-				model.addAttribute("message", "保存失败,错误信息:"+e.getMessage());
-			}
-		}
-		model.put("params", params);
-		return "room_add";
-	}
+//	@RequestMapping(value = "/room_edita", method = RequestMethod.POST)
+//	public String roomEdit(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
+//		int hiddenHouseid = Integer.valueOf(params.get("hiddenHouseid"));
+//		int hiddenRoomno = Integer.valueOf(params.get("hiddenRoomno"));
+//		int houseid = Integer.valueOf(params.get("selectHouse"));
+//		int roomno = Integer.valueOf(params.get("inputRoom"));
+//		int monthmoney = Integer.valueOf(params.get("inputMonthMoney"));
+//		int pressmoney = Integer.valueOf(params.get("inputPressMoney"));
+//		String description = params.get("inputDescription");
+//		Room room = new Room();
+//		room.setHouseid(houseid);
+//		room.setRoomno(roomno);
+//		room.setMonthmoney(monthmoney);
+//		room.setPressmoney(pressmoney);
+//		room.setDescription(description);
+//		room.setUpdated(System.currentTimeMillis());
+//		try {
+//			int n = roomService.updateRoom(room,hiddenHouseid,hiddenRoomno);
+//			if (n > 0) {
+//				model.addAttribute("message", "保存成功");
+//			}else{
+//				model.addAttribute("message", "保存失败");
+//			}
+//		} catch (Exception e) {
+//			if (e.getMessage().toLowerCase().indexOf("primary") > 0) {
+//				model.addAttribute("message", "保存失败,已经存在的房间号,请重新输入");
+//			}else{
+//				model.addAttribute("message", "保存失败,错误信息:"+e.getMessage());
+//			}
+//		}
+//		model.put("params", params);
+//		return "room_add";
+//	}
 }

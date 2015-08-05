@@ -2,4 +2,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix ="pagebar" uri="/WEB-INF/pagebar.tld" %>
 <%@ taglib prefix="sitemesh" uri="http://www.opensymphony.com/sitemesh/decorator" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions"  prefix="fn" %> 
 <c:set var="ctx" value="${pageContext.request.contextPath}" />

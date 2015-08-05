@@ -239,7 +239,7 @@ public class Dao {
 		// count(Type)返回的是Long类型,无奈
 		Long retVal = 0L;
 		try {
-			sql = "select count(1) as count " + sql.substring(sql.indexOf("from"));
+			sql = "select count(1) as count  from (" + sql + ") as tmp";
 			Map<String, Object> first = findFirst(sql, params);
 			retVal = (first == null)? 0l :Long.valueOf(first.get("count").toString());
 			

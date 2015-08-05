@@ -52,12 +52,14 @@ public class RoomController extends BaseController {
 		int roomno = Integer.valueOf(params.get("inputRoom"));
 		int monthmoney = Integer.valueOf(params.get("inputMonthMoney"));
 		int pressmoney = Integer.valueOf(params.get("inputPressMoney"));
+		String typecode = params.get("optionsRoomtypes");
 		String description = params.get("inputDescription");
 		Room room = new Room();
 		room.setHouseid(houseid);
 		room.setRoomno(roomno);
 		room.setMonthmoney(monthmoney);
 		room.setPressmoney(pressmoney);
+		room.setTypecode(typecode);
 		room.setDescription(description);
 		room.setCreated(System.currentTimeMillis());
 		try {
@@ -79,16 +81,18 @@ public class RoomController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/room_toedit", method = RequestMethod.GET)
-	public String toRoomEdit(String houseid,String roomno,ModelMap model) throws Exception {
-		System.out.println(houseid);
-		model.put("houseid", houseid);
-		model.put("roomno", roomno);
+	public String toRoomEdit(@RequestParam Map<String, String> params,ModelMap model) throws Exception {
+		String houseid = params.get("houseid");
+		String roomno = params.get("roomno");
+		//System.out.println(houseid);
 		Room room = roomService.selectRoomById(houseid, roomno);
-		model.put("monthmoney", room.getMonthmoney());
-		model.put("pressmoney", room.getPressmoney());
-		model.put("description", room.getDescription());
+		params.put("monthmoney", String.valueOf(room.getMonthmoney()));
+		params.put("pressmoney", String.valueOf(room.getPressmoney()));
+		params.put("typecode", room.getTypecode());
+		params.put("description", room.getDescription());
 		List<House> houses = houseService.selectAllHouse();
 		model.put("houses", houses);
+		model.put("params", params);
 		return "room_edit";
 	}
 	@RequestMapping(value = "/room_edit", method = RequestMethod.POST)

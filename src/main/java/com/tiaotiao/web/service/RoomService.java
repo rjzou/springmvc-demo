@@ -32,8 +32,8 @@ public class RoomService {
 	 * @throws Exception
 	 */
 	public int insertRoom(Room room) throws Exception{
-		Object[] params = { room.getHouseid(), room.getRoomno(), room.getMonthmoney(),room.getPressmoney(), room.getDescription(), room.getCreated()};
-		String sql = "insert into t_room(houseid,roomno,monthmoney,pressmoney,description,created) values(?,?,?,?,?,?) ";
+		Object[] params = { room.getHouseid(), room.getRoomno(), room.getMonthmoney(),room.getPressmoney(),room.getTypecode(), room.getDescription(), room.getCreated()};
+		String sql = "insert into t_room(houseid,roomno,monthmoney,pressmoney,typecode,description,created) values(?,?,?,?,?,?,?) ";
 		int n = dao.update(sql, params);
 		return n;
 	}
@@ -68,11 +68,41 @@ public class RoomService {
 	 * @throws Exception
 	 */
 	public Page<Map<String, Object>> selectAllEmptyRoom(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+		String houseid = params.get("houseid");
+		String roomtypeid = params.get("roomtypeid");
 		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.description,r.created from t_room as r,t_house h "
 				+ " where r.houseid = h.id and (r.houseid,r.roomno) not in (select houseid,roomno from t_checkin)  ";
+				
+				if (houseid != null && houseid.trim().length() > 0 ) {
+					sql = sql + " and r.houseid in ("+houseid+")";
+				}
+				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
+					sql = sql + " and r.typecode in ('"+roomtypeid+"')";
+				}
 		return dao.find(sql, null, pageRequest);
 	}
 	
+	/**
+	 * 查找在住房
+	 * @param params
+	 * @param pageRequest
+	 * @return
+	 * @throws Exception
+	 */
+	public Page<Map<String, Object>> selectAllNotEmptyRoom(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+		String houseid = params.get("houseid");
+		String roomtypeid = params.get("roomtypeid");
+		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.description,r.created from t_room as r,t_house h "
+				+ " where r.houseid = h.id and (r.houseid,r.roomno) in (select houseid,roomno from t_checkin)  ";
+				
+				if (houseid != null && houseid.trim().length() > 0 ) {
+					sql = sql + " and r.houseid in ("+houseid+")";
+				}
+				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
+					sql = sql + " and r.typecode in ('"+roomtypeid+"')";
+				}
+		return dao.find(sql, null, pageRequest);
+	}
 	/**
 	 * 
 	 * @param house_id
@@ -82,7 +112,7 @@ public class RoomService {
 	 */
 	public Room selectRoomById(String houseid,String roomno) throws Exception{
 		Object[] params = { houseid,roomno};
-		String sql = "select houseid,roomno,monthmoney,pressmoney,description,created from t_room where houseid = ? and roomno = ? ";
+		String sql = "select houseid,roomno,monthmoney,pressmoney,typecode,description,created from t_room where houseid = ? and roomno = ? ";
 		return dao.findFirst(Room.class,sql, params);
 	}
 	
