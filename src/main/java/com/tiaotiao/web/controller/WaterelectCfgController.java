@@ -42,7 +42,7 @@ public class WaterelectCfgController extends BaseController {
 	@Resource
 	private WaterelectService waterelectService;
 	
-	@RequestMapping(value = "/room_waterelect_cfg", method = RequestMethod.GET)
+	@RequestMapping(value = "/waterelect_cfg", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
 		Page<Map<String, Object>> list = checkoutService.selectAllNotWaterElectRoom(params, page); 
@@ -51,10 +51,10 @@ public class WaterelectCfgController extends BaseController {
 		model.put("list", list);
 		model.put("params", params);
 		model.put("houses", houses);
-		return "room_waterelect_cfg";
+		return "waterelect_cfg";
 	}
 	
-	@RequestMapping(value = "/room_towaterelect_cfg", method = RequestMethod.GET)
+	@RequestMapping(value = "/waterelect_tocfg", method = RequestMethod.GET)
 	public String toRoomAdd(ModelMap model,@RequestParam Map<String, String> params) throws Exception {
 		int houseid = Integer.valueOf(params.get("houseid"));
 		int roomno = Integer.valueOf(params.get("roomno"));
@@ -73,10 +73,10 @@ public class WaterelectCfgController extends BaseController {
 		params.put("elect", String.valueOf(checkin.get("elect")));
 		
 		model.put("params", params);
-		return "room_towaterelect_cfg";
+		return "waterelect_tocfg";
 	}	
  
-	@RequestMapping(value = "/room_waterelect_cfg_save", method = RequestMethod.POST)
+	@RequestMapping(value = "/waterelect_cfg_save", method = RequestMethod.POST)
 	public String roomAdd(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
 		int houseid = Integer.valueOf(params.get("houseid"));
 		int roomno = Integer.valueOf(params.get("roomno"));
@@ -128,7 +128,7 @@ public class WaterelectCfgController extends BaseController {
 			model.addAttribute("message", "保存失败,10秒钟自动返回,错误信息:"+e.getMessage());
 		}
 		model.put("params", params);
-		return "room_towaterelect_cfg";
+		return "waterelect_tocfg";
 	}
 	
 }

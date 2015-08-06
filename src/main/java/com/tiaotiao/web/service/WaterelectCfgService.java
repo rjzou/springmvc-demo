@@ -1,7 +1,11 @@
 package com.tiaotiao.web.service;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.tiaotiao.web.entity.WaterElectCfg;
@@ -49,11 +53,24 @@ public class WaterelectCfgService {
 	 * @return
 	 * @throws Exception
 	 */
-	public WaterElectCfg selectWaterelectCfgById(int year,int month) throws Exception{
+	public WaterElectCfg getWaterelectCfgById(int year,int month) throws Exception{
 		Object[] params = { year,month};
 		String sql = "select waterprice,electprice,created,updated from t_waterelect_cfg where year = ? and month = ? ";
 		return dao.findFirst(WaterElectCfg.class,sql, params);
 	}
 	
-	
+	public Page<Map<String, Object>> getAllWaterelectCfgByParams(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+		String houseid = params.get("houseid");
+		String roomtypeid = params.get("roomtypeid");
+		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.description,r.created from t_room as r,t_house h "
+				+ " where r.houseid = h.id and (r.houseid,r.roomno) not in (select houseid,roomno from t_checkin)  ";
+				
+				if (houseid != null && houseid.trim().length() > 0 ) {
+					sql = sql + " and r.houseid in ("+houseid+")";
+				}
+				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
+					sql = sql + " and r.typecode in ('"+roomtypeid+"')";
+				}
+		return dao.find(sql, null, pageRequest);
+	}
 }
