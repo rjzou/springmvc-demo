@@ -59,18 +59,25 @@ public class WaterelectCfgService {
 		return dao.findFirst(WaterElectCfg.class,sql, params);
 	}
 	
-	public Page<Map<String, Object>> getAllWaterelectCfgByParams(Map<String, String> params, final PageRequest pageRequest) throws Exception{
-		String houseid = params.get("houseid");
-		String roomtypeid = params.get("roomtypeid");
-		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.description,r.created from t_room as r,t_house h "
-				+ " where r.houseid = h.id and (r.houseid,r.roomno) not in (select houseid,roomno from t_checkin)  ";
+	/**
+	 *  查询水电表价格数据
+	 * @param params
+	 * @param pageRequest
+	 * @return
+	 * @throws Exception
+	 */
+	public Page<Map<String, Object>> getWaterelectCfgListByParams(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+		String year = params.get("year");
+		String month = params.get("month");
+		String sql = "select wec.year,wec.month,wec.waterprice,wec.electprice,wec.created,wec.updated from t_waterelect_cfg as wec where 1=1 ";
 				
-				if (houseid != null && houseid.trim().length() > 0 ) {
-					sql = sql + " and r.houseid in ("+houseid+")";
+				if (year != null && year.trim().length() > 0 ) {
+					sql = sql + " and wec.year in ("+year+")";
 				}
-				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
-					sql = sql + " and r.typecode in ('"+roomtypeid+"')";
+				if (month != null && month.trim().length() > 0 ) {
+					sql = sql + " and wec.month in ('"+month+"')";
 				}
+				sql = sql + " order by wec.year,wec.month ";
 		return dao.find(sql, null, pageRequest);
 	}
 }

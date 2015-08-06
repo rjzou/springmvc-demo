@@ -76,7 +76,7 @@
           <ul class="nav nav-sidebar">
           	<li><a href="${ctx}/house">楼房配置</a></li>
             <li><a href="${ctx}/room">房间配置</a></li>
-            <li><a href="${ctx}/waterelect_cfg">水电价配置</a></li>
+            <li><a href="${ctx}/waterelectcfg">水电价配置</a></li>
             <li><a href="">配置</a></li>
           </ul>
         </div>

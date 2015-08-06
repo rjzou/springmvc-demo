@@ -64,7 +64,7 @@ public class CheckoutController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/room_checkout", method = RequestMethod.POST)
-	public String roomCheckoutSearch(ModelMap model , @RequestParam Map<String, String> params,  @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+	public String search(ModelMap model , @RequestParam Map<String, String> params,  @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
 		return this.printIndex(model, params, cpage);
 	}	
  
