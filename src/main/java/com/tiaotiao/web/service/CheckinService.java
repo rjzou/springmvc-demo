@@ -33,23 +33,30 @@ public class CheckinService {
 	 * @throws Exception
 	 */
 	public int insertCheckin(Checkin checkin) throws Exception{
-		Object[] params = { checkin.getHouseid(), checkin.getRoomno(),checkin.getUsername(),checkin.getIphone(),checkin.getUserid(), checkin.getMonthmoney(),checkin.getPressmoney(),checkin.getWater(),checkin.getElect(),checkin.getInternet(),checkin.getIp(), checkin.getTrash(), checkin.getCreated()};
-		String sql = "insert into t_checkin(houseid,roomno,username,iphone,userid,monthmoney,pressmoney,water,elect,internet,ip,trash,created) values(?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+		Object[] params = { checkin.getHouseid(), checkin.getRoomno(),checkin.getCustomname(),checkin.getIphone(),checkin.getCardid(), 
+				checkin.getMonthmoney(),checkin.getPressmoney(),checkin.getWater(),checkin.getElect(),checkin.getInternet(),checkin.getIp(), 
+				checkin.getTrash(),checkin.getKeycount(),checkin.getKeyprice(),checkin.getYear(),checkin.getMonth(),checkin.getDay(), checkin.getCreated()};
+		String sql = "insert into t_checkin(houseid,roomno,customname,iphone,cardid,monthmoney,pressmoney,water,elect,internet,ip,trash,"
+				+ "keycount,keyprice,year,month,day,created) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 		int n = dao.update(sql, params);
 		return n;
 	}
-//	/**
-//	 * 
-//	 * @param room
-//	 * @return
-//	 * @throws Exception
-//	 */
-//	public int updateRoom(Room room,int sourceHouseid,int sourceRoomno) throws Exception{
-//		Object[] params = { room.getHouseid(), room.getRoomno(), room.getMonthmoney(),room.getPressmoney(), room.getDescription(), room.getUpdated(),sourceHouseid, sourceRoomno};
-//		String sql = "update t_room set houseid = ?,roomno = ?,monthmoney = ?,pressmoney = ?,description = ?,updated =? where houseid=? and roomno =? ";
-//		int n = dao.update(sql, params);
-//		return n;
-//	}
+	/**
+	 * 
+	 * @param checkin
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateCheckin(Checkin checkin) throws Exception{
+		Object[] params = { checkin.getCustomname(), checkin.getIphone(),checkin.getCardid(), checkin.getMonthmoney(),checkin.getPressmoney(), 
+				checkin.getWater(),checkin.getElect(),checkin.getInternet(),checkin.getIp(),checkin.getTrash(),checkin.getKeycount(),checkin.getKeyprice(),
+				checkin.getYear(),checkin.getMonth(),checkin.getDay(),checkin.getUpdated(),checkin.getHouseid(),checkin.getRoomno()};
+		String sql = "update t_checkin set customname = ?,iphone = ?,cardid = ?,monthmoney = ?,pressmoney = ?,water = ?,elect = ?,internet = ?,ip = ?,"
+				+ "trash = ?,keycount = ?,keyprice = ?,year = ?,month = ?,day = ?,updated =? where houseid=? and roomno =? ";
+		int n = dao.update(sql, params);
+		return n;
+	}
+	
 	public int deleteCheckin(int houseid,int roomno) throws Exception{
 		Object[] params = { houseid, roomno};
 		String sql = "delete from  t_checkin where houseid=? and roomno =? ";
@@ -57,6 +64,18 @@ public class CheckinService {
 		return n;
 	}
 	
+	/**
+	 * 
+	 * @param house_id
+	 * @param room_no
+	 * @return
+	 * @throws Exception
+	 */
+	public Checkin getCheckinById(int houseid,int roomno) throws Exception{
+		Object[] params = { houseid,roomno};
+		String sql = "select houseid,roomno,customname,iphone,cardid,monthmoney,pressmoney,water,elect,internet,ip,trash,keycount,keyprice,year,month,day,created from t_checkin where houseid = ? and roomno = ? ";
+		return dao.findFirst(Checkin.class,sql, params);
+	}
 //	/**
 //	 * 
 //	 * @param params
@@ -76,9 +95,9 @@ public class CheckinService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<String,Object> getCheckinById(int houseid,int roomno) throws Exception{
+	public Map<String,Object> getCheckinMapById(int houseid,int roomno) throws Exception{
 		Object[] params = { houseid,roomno};
-		String sql = "select h.housename,c.houseid,c.roomno,c.username,c.iphone,c.userid,c.monthmoney,c.pressmoney,c.water,c.elect,c.internet,c.trash,c.keycount,c.keyprice,c.year,c.month,c.day,c.created from t_checkin c,t_house as h where c.houseid = h.id and c.houseid = ? and c.roomno = ? ";
+		String sql = "select h.housename,c.houseid,c.roomno,c.customname,c.iphone,c.cardid,c.monthmoney,c.pressmoney,c.water,c.elect,c.internet,c.trash,c.keycount,c.keyprice,c.year,c.month,c.day,c.created from t_checkin c,t_house as h where c.houseid = h.id and c.houseid = ? and c.roomno = ? ";
 		return dao.findFirst(sql, params);
 	}
 	

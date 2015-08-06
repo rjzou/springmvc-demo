@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50541
 File Encoding         : 65001
 
-Date: 2015-08-05 17:57:19
+Date: 2015-08-06 17:47:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,9 +22,9 @@ DROP TABLE IF EXISTS `t_checkin`;
 CREATE TABLE `t_checkin` (
   `houseid` int(8) NOT NULL,
   `roomno` int(8) NOT NULL,
-  `username` varchar(32) NOT NULL,
+  `customname` varchar(32) NOT NULL,
   `iphone` varchar(16) NOT NULL,
-  `userid` varchar(32) NOT NULL,
+  `cardid` varchar(32) NOT NULL,
   `monthmoney` int(8) DEFAULT '0',
   `pressmoney` int(8) DEFAULT '0',
   `water` int(8) DEFAULT '0',
@@ -45,8 +45,11 @@ CREATE TABLE `t_checkin` (
 -- ----------------------------
 -- Records of t_checkin
 -- ----------------------------
-INSERT INTO `t_checkin` VALUES ('2', '102', '邹瑞金2', '17722677561', '362203198611176812', '220', '100', '123', '101', '40', '192.168.10.131', '10', '2', '10', '2015', '8', '5', '1438679785978', null);
-INSERT INTO `t_checkin` VALUES ('2', '103', '邹瑞金3', '17722677562', '362203198611176813', '300', '200', '10', '50', '40', '192.168.10.132', '10', '2', '10', '2015', '8', '5', '1438680745097', null);
+INSERT INTO `t_checkin` VALUES ('2', '100', '张三', '17722677569', '362203198611176818', '100', '50', '120', '236', '40', '', '10', '2', '10', null, null, null, '1438829145409', null);
+INSERT INTO `t_checkin` VALUES ('2', '102', '李四', '17722677569', '362203198611176819', '200', '100', '10', '20', '40', '', '10', '2', '10', null, null, null, '1438829342888', null);
+INSERT INTO `t_checkin` VALUES ('2', '103', '王五', '17722677564', '362203198611176811', '220', '200', '215', '630', '40', '', '10', '2', '10', null, null, null, '1438830240154', null);
+INSERT INTO `t_checkin` VALUES ('2', '104', '马伟', '17722677559', '362203198611176801', '180', '120', '20', '17', '40', '', '10', '2', '10', '0', '0', '0', '1438830589700', '0');
+INSERT INTO `t_checkin` VALUES ('2', '131', '马文', '17722677501', '362203198611176812', '201', '150', '23001', '55639', '40', '', '10', '2', '10', '2015', '7', '6', '1438843096827', '1438843695538');
 
 -- ----------------------------
 -- Table structure for t_checkout
@@ -75,7 +78,7 @@ CREATE TABLE `t_checkout` (
   `created` bigint(32) NOT NULL,
   `updated` bigint(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_checkout
@@ -84,26 +87,8 @@ INSERT INTO `t_checkout` VALUES ('1', '2', '100', '邹瑞金', '17722677560', '3
 INSERT INTO `t_checkout` VALUES ('2', '2', '102', '邹瑞金2', '17722677561', '362203198611176812', '220', '100', '123', '101', '40', '192.168.10.131', '10', '0', null, null, '0', '0', '0', '1438679785978', null);
 INSERT INTO `t_checkout` VALUES ('3', '2', '103', '邹瑞金3', '17722677562', '362203198611176813', '300', '200', '10', '50', '40', '192.168.10.132', '10', '0', null, null, '0', '0', '0', '1438680745097', null);
 INSERT INTO `t_checkout` VALUES ('4', '2', '100', '邹瑞金', '17722677560', '362203198611176811', '200', '100', '1024', '563', '40', 'null', '10', '-323', '2', '10', '2015', '7', '5', '1438768069009', null);
-
--- ----------------------------
--- Table structure for t_elect2
--- ----------------------------
-DROP TABLE IF EXISTS `t_elect2`;
-CREATE TABLE `t_elect2` (
-  `houseid` int(8) NOT NULL,
-  `roomno` int(8) NOT NULL,
-  `elect` int(8) DEFAULT NULL,
-  `year` int(8) DEFAULT NULL,
-  `month` int(8) DEFAULT NULL,
-  `day` int(8) DEFAULT NULL,
-  `created` bigint(32) NOT NULL,
-  `updated` bigint(32) DEFAULT NULL,
-  PRIMARY KEY (`houseid`,`roomno`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of t_elect2
--- ----------------------------
+INSERT INTO `t_checkout` VALUES ('5', '2', '102', 'null', '17722677561', 'null', '220', '100', '123', '101', '40', 'null', '10', '-15', '2', '10', '2015', '7', '6', '1438825621336', null);
+INSERT INTO `t_checkout` VALUES ('6', '2', '103', 'null', '17722677562', 'null', '300', '200', '10', '50', '40', 'null', '10', '94', '2', '10', '2015', '7', '6', '1438826749122', null);
 
 -- ----------------------------
 -- Table structure for t_house
@@ -218,7 +203,7 @@ CREATE TABLE `t_waterelect` (
   `houseid` int(8) NOT NULL,
   `roomno` int(8) NOT NULL,
   `water` int(8) NOT NULL,
-  `waterprice` decimal(8,2) DEFAULT NULL,
+  `waterprice` decimal(8,2) NOT NULL,
   `elect` int(8) NOT NULL,
   `electprice` decimal(8,2) NOT NULL,
   `year` int(8) NOT NULL,
@@ -233,22 +218,47 @@ CREATE TABLE `t_waterelect` (
 -- Records of t_waterelect
 -- ----------------------------
 INSERT INTO `t_waterelect` VALUES ('2', '100', '1109', '4.50', '610', '1.50', '2015', '7', '5', '1438757277392', '2');
+INSERT INTO `t_waterelect` VALUES ('2', '102', '130', '4.50', '110', '1.50', '2015', '7', '6', '1438822812308', null);
+INSERT INTO `t_waterelect` VALUES ('2', '103', '13', '4.50', '65', '1.50', '2015', '7', '6', '1438826400066', null);
 
 -- ----------------------------
 -- Table structure for t_waterelectout
 -- ----------------------------
 DROP TABLE IF EXISTS `t_waterelectout`;
 CREATE TABLE `t_waterelectout` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
   `houseid` int(8) NOT NULL,
   `roomno` int(8) NOT NULL,
   `water` int(8) DEFAULT NULL,
+  `waterprice` decimal(8,2) NOT NULL,
+  `elect` int(8) NOT NULL,
+  `electprice` decimal(8,2) NOT NULL,
   `year` int(8) DEFAULT NULL,
   `month` int(8) DEFAULT NULL,
   `day` int(8) DEFAULT NULL,
   `created` bigint(32) NOT NULL,
-  `updated` bigint(32) DEFAULT NULL
+  `updated` bigint(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_waterelectout
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_waterelect_cfg
+-- ----------------------------
+DROP TABLE IF EXISTS `t_waterelect_cfg`;
+CREATE TABLE `t_waterelect_cfg` (
+  `year` int(8) NOT NULL,
+  `month` int(8) NOT NULL,
+  `waterprice` decimal(8,2) NOT NULL,
+  `electprice` decimal(8,2) DEFAULT NULL,
+  `created` bigint(32) NOT NULL,
+  `updated` bigint(32) DEFAULT NULL,
+  PRIMARY KEY (`year`,`month`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_waterelect_cfg
 -- ----------------------------

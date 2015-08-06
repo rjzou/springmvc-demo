@@ -73,7 +73,7 @@ public class CheckoutController extends BaseController {
 		int houseid = Integer.valueOf(params.get("houseid"));
 		int roomno = Integer.valueOf(params.get("roomno"));
 		double paymoney = Double.valueOf(params.get("paymoney"));
-		Map<String,Object> checkin_map = checkinService.getCheckinById(houseid, roomno);
+		Map<String,Object> checkin_map = checkinService.getCheckinMapById(houseid, roomno);
 		Checkout checkout = new Checkout();
 		checkout.setHouseid(houseid);
 		checkout.setRoomno(roomno);
@@ -122,13 +122,13 @@ public class CheckoutController extends BaseController {
 	public String toCheckout(@RequestParam Map<String, String> params,ModelMap model) throws Exception {
 		int houseid = Integer.valueOf(params.get("houseid"));
 		int roomno = Integer.valueOf(params.get("roomno"));
-		Map<String,Object> checkin = checkinService.getCheckinById(houseid,roomno);
+		Map<String,Object> checkin = checkinService.getCheckinMapById(houseid,roomno);
 		params.put("houseid", String.valueOf(checkin.get("houseid")));
 		params.put("roomno", String.valueOf(checkin.get("roomno")));
 		params.put("housename", String.valueOf(checkin.get("housename")));
-		params.put("username", String.valueOf(checkin.get("username")));
+		params.put("customname", String.valueOf(checkin.get("customname")));
 		params.put("iphone", String.valueOf(checkin.get("iphone")));
-		params.put("userid", String.valueOf(checkin.get("userid")));
+		params.put("cardid", String.valueOf(checkin.get("cardid")));
 		params.put("monthmoney", String.valueOf(checkin.get("monthmoney")));
 		params.put("pressmoney", String.valueOf(checkin.get("pressmoney")));
 		params.put("year", String.valueOf(checkin.get("year")));

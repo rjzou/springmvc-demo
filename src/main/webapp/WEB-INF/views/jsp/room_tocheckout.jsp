@@ -45,7 +45,7 @@
         </tr>
   		  <tr>
             <th class="col-sm-2">入住姓名</th>
-            <td>${params.username}</td>
+            <td>${params.customname}</td>
         </tr>
   		<tr>
             <th class="col-sm-2">押金(元)</th>
@@ -114,11 +114,11 @@
 	</form>
 </div>
 <script type="text/javascript">
-$('[data-toggle="confirmation"]').confirmation({
+$($('[data-toggle="confirmation"]').confirmation({
 	title:"确定要退房吗?",
 	onConfirm: function(event) { return true; },
 	onCancel: function(event) { return false; }
-})
+}));
 </script>
 </body>
 </html>

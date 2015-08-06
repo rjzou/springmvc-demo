@@ -86,14 +86,27 @@ public class CheckoutService {
 	public Page<Map<String, Object>> selectAllNotEmptyRoom(Map<String, String> params, final PageRequest pageRequest) throws Exception{
 		String houseid = params.get("houseid");
 		String roomtypeid = params.get("roomtypeid");
-		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.description,r.created from t_room as r,t_house h "
-				+ " where r.houseid = h.id and (r.houseid,r.roomno) in (select houseid,roomno from t_checkin)  ";
-				
+		String sql = " SELECT "+
+				" 	h.housename, "+
+				" 	r.houseid, "+
+				" 	r.roomno, "+
+				" 	c.monthmoney, "+
+				" 	c.pressmoney, "+
+				" 	r.description, "+
+				" 	r.created "+
+				" FROM "+
+				" 	t_room AS r, "+
+				" 	t_house AS h, "+
+				" 	t_checkin AS c "+
+				" WHERE "+
+				" 	r.houseid = h.id "+
+				" AND r.houseid = c.houseid "+
+				" AND r.roomno = c.roomno ";
 				if (houseid != null && houseid.trim().length() > 0 ) {
-					sql = sql + " and r.houseid in ("+houseid+")";
+					sql = sql + " AND r.houseid in ("+houseid+")";
 				}
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
-					sql = sql + " and r.typecode in ('"+roomtypeid+"')";
+					sql = sql + " AND r.typecode in ('"+roomtypeid+"')";
 				}
 		return dao.find(sql, null, pageRequest);
 	}
@@ -112,7 +125,7 @@ public class CheckoutService {
 				" 	h.housename, "+
 				" 	r.houseid, "+
 				" 	r.roomno, "+
-				" 	c.username, "+
+				" 	c.customname, "+
 				" 	c.year, "+
 				" 	c.month, "+
 				" 	c.day, "+

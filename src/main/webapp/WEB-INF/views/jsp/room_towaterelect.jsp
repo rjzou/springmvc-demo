@@ -37,7 +37,7 @@
         </tr>
   		  <tr>
             <th class="col-sm-2">入住姓名</th>
-            <td>${params.username}</td>
+            <td>${params.customname}</td>
         </tr>
   		<tr>
             <th class="col-sm-2">上次水度数</th>

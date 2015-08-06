@@ -47,7 +47,7 @@
 						<td>${status.count }</td>
 						<td>${item.housename }</td>
 						<td>${item.roomno }</td>
-						<td>${item.username }</td>
+						<td>${item.customname }</td>
 						<td>${item.year }-${item.month }-${item.day }</td>
 						<td>${item.water }</td>
 						<td>${item.elect }</td>

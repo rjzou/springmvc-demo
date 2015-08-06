@@ -58,8 +58,8 @@
 					<th>*</th>
 					<th>栋</th>
 					<th>房间号</th>
-					<th>参考月租</th>
-					<th>参考押金</th>
+					<th>实收月租</th>
+					<th>实收押金</th>
 					<th>操作</th>
 					<th>备注</th>
 				</tr>
@@ -70,8 +70,8 @@
 						<td>${status.count }</td>
 						<td>${item.housename }</td>
 						<td>${item.roomno }</td>
-						<td>${item.monthmoney }</td>
-						<td>${item.pressmoney }</td>
+						<td>${item.monthmoney } 元</td>
+						<td>${item.pressmoney } 元</td>
 						<td>
 							<a class="btn btn-primary btn-sm" href="${ctx}/room_tocheckout?houseid=${item.houseid }&roomno=${item.roomno }" role="button">退房</a>
 						</td>

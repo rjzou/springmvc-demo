@@ -1,5 +1,6 @@
 package com.tiaotiao.web.controller;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -58,51 +59,79 @@ public class CheckinController extends BaseController {
  
 	@RequestMapping(value = "/room_checkin_add", method = RequestMethod.POST)
 	public String roomCheckinAdd(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
-		String username = params.get("inputUsername");
+		String customname = params.get("inputCustomname");
 		String iphone = params.get("inputIphone");
-		String userid = params.get("inputUserid");
+		String cardid = params.get("inputCardid");
 		int houseid = Integer.valueOf(params.get("houseid"));
 		int roomno = Integer.valueOf(params.get("roomno"));
+		
 		int monthmoney = Integer.valueOf(params.get("inputMonthMoney"));
 		int pressmoney = Integer.valueOf(params.get("inputPressMoney"));
 		int water = Integer.valueOf(params.get("inputWater"));
 		int elect = Integer.valueOf(params.get("inputElect"));
 		String ip = params.get("inputIp");
 		int internet = Integer.valueOf(params.get("inputInternet"));
+		if (internet > 0 ) {
+			params.put("needinternet", "1");
+		}
 		int trash = Integer.valueOf(params.get("inputTrash"));
-		Checkin checkin = new Checkin();
-		checkin.setHouseid(houseid);
-		checkin.setRoomno(roomno);
-		checkin.setUsername(username);
-		checkin.setIphone(iphone);
-		checkin.setUserid(userid);
-		checkin.setMonthmoney(monthmoney);
-		checkin.setPressmoney(pressmoney);
-		checkin.setWater(water);
-		checkin.setElect(elect);
-		checkin.setIp(ip);
-		checkin.setInternet(internet);
-		checkin.setTrash(trash);
-		checkin.setCreated(System.currentTimeMillis());
-		try {
-			int n = checkinService.insertCheckin(checkin);
-			if (n > 0) {
-				model.addAttribute("message", "入住成功");
-			}else{
-				model.addAttribute("message", "保存失败");
-			}
-		} catch (Exception e) {
-			if (e.getMessage().toLowerCase().indexOf("primary") > 0) {
-				model.addAttribute("message", "保存失败,已经存在的房间号,请重新输入");
-			}else{
-				model.addAttribute("message", "保存失败,错误信息:"+e.getMessage());
-			}
+		int keycount = Integer.valueOf(params.get("inputKeycount"));
+		int keyprice = Integer.valueOf(params.get("inputKeyprice"));
+		String method = String.valueOf(params.get("method"));
+		Room room = roomService.selectRoomById(houseid, roomno);
+		params.put("monthmoney", String.valueOf(room.getMonthmoney()));
+		params.put("pressmoney", String.valueOf(room.getPressmoney()));
+//		params.put("inputMonthMoney", String.valueOf(room.getMonthmoney()));
+//		params.put("inputPressMoney", String.valueOf(room.getPressmoney()));
+//		params.put("inputInternet", "40");//参考网费
+		params.put("internet", "40");//参考网费
+//		params.put("inputTrash", "10");
+		params.put("trash", "10");//参考卫生费
+//		params.put("inputKeycount", "2");
+		params.put("keycount", "2");//参考钥匙串数量 默认
+//		params.put("inputKeyprice", "10");
+		params.put("keyprice", "10");//参考钥匙串价格
+		
+		if (method != null && "calc".equals(method)) {
+			return roomCheckinCalc(params,model);
+		}
+		else if (method != null && "save".equals(method)){
+			Checkin checkin = new Checkin();
+			checkin.setHouseid(houseid);
+			checkin.setRoomno(roomno);
+			checkin.setCustomname(customname);
+			checkin.setIphone(iphone);
+			checkin.setCardid(cardid);
+			checkin.setMonthmoney(monthmoney);
+			checkin.setPressmoney(pressmoney);
+			checkin.setWater(water);
+			checkin.setElect(elect);
+			checkin.setIp(ip);
+			checkin.setInternet(internet);
+			checkin.setTrash(trash);
+			checkin.setKeycount(keycount);
+			checkin.setKeyprice(keyprice);
+			Calendar cal = Calendar.getInstance();
+	        int year = cal.get(Calendar.YEAR);
+	        int month=cal.get(Calendar.MONTH);//获取月份
+	        int day=cal.get(Calendar.DATE);//获取日
+	        checkin.setYear(year);
+	        checkin.setMonth(month);
+	        checkin.setDay(day);
+			checkin.setCreated(System.currentTimeMillis());
+			checkin.setUpdated(System.currentTimeMillis());
+			return roomCheckinSave(checkin,params,model);
 		}
 		model.put("params", params);
 		return "room_tocheckin";
 	}
-	
-	@RequestMapping(value = "/room_checkin_calc", method = RequestMethod.POST)
+	/**
+	 * 
+	 * @param params
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	public String roomCheckinCalc(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
 		int monthmoney = Integer.valueOf(params.get("inputMonthMoney"));
 		int pressmoney = Integer.valueOf(params.get("inputPressMoney"));
@@ -113,11 +142,48 @@ public class CheckinController extends BaseController {
 		int sumprice = 0;
 		try {
 			sumprice = monthmoney + pressmoney + internet +trash +(keycount * keyprice);
-			model.addAttribute("info", sumprice);
+			model.addAttribute("info", "应收  "+sumprice+"元,10秒钟将自动入住");
 		} catch (Exception e) {
 			model.addAttribute("message", "计算失败,错误信息:"+e.getMessage());
 		}
 		params.put("sumprice", String.valueOf(sumprice));
+		params.put("calctxt", "重新计算应收");
+		model.put("params", params);
+		return "room_tocheckin";
+	}
+	/**
+	 * 
+	 * @param checkin
+	 * @param params
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	public String roomCheckinSave(Checkin checkin,@RequestParam Map<String, String> params, ModelMap model) throws Exception {
+		int houseid = Integer.valueOf(params.get("houseid"));
+		int roomno = Integer.valueOf(params.get("roomno"));
+		
+		try {
+			Checkin entity = checkinService.getCheckinById(houseid, roomno);
+			int n =0;
+			if (entity != null) {
+				n = checkinService.updateCheckin(checkin);
+			}else{
+				n = checkinService.insertCheckin(checkin);
+			}
+			
+			if (n > 0) {
+				model.addAttribute("message", "入住成功,10秒钟自动返回");
+			}else{
+				model.addAttribute("message", "入住失败,10秒钟自动返回");
+			}
+		} catch (Exception e) {
+			if (e.getMessage().toLowerCase().indexOf("primary") > 0) {
+				model.addAttribute("message", "入住失败,已经存在的房间号,请重新输入");
+			}else{
+				model.addAttribute("message", "入住失败,错误信息:"+e.getMessage());
+			}
+		}
 		model.put("params", params);
 		return "room_tocheckin";
 	}
@@ -128,11 +194,13 @@ public class CheckinController extends BaseController {
 		int roomno = Integer.valueOf(params.get("roomno"));
 		params.put("houseid", params.get("houseid"));
 		params.put("roomno", params.get("roomno"));
+		params.put("method", "calc");
 		Room room = roomService.selectRoomById(houseid, roomno);
 		params.put("monthmoney", String.valueOf(room.getMonthmoney()));
 		params.put("pressmoney", String.valueOf(room.getPressmoney()));
 		params.put("inputMonthMoney", String.valueOf(room.getMonthmoney()));
 		params.put("inputPressMoney", String.valueOf(room.getPressmoney()));
+		params.put("needinternet", "1");
 		params.put("inputInternet", "40");//参考网费
 		params.put("internet", "40");//参考网费
 		params.put("inputTrash", "10");
@@ -141,6 +209,8 @@ public class CheckinController extends BaseController {
 		params.put("keycount", "2");//参考钥匙串数量 默认
 		params.put("inputKeyprice", "10");
 		params.put("keyprice", "10");//参考钥匙串价格
+		//params.put("calctxt", "计算应收");
+		
 		model.put("params", params);
 		return "room_tocheckin";
 	}
