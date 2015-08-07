@@ -35,7 +35,7 @@ public class GetRoomMoneyController extends BaseController {
 	private RoomtypeService roomtypeService;
 	
 	@Resource
-	private CheckinService checkinService;
+	private CheckinService checkinService; 
 	
 	@Resource
 	private CheckoutService checkoutService;

@@ -53,7 +53,7 @@
 </div><!-- /.row -->
 	<div class="table-responsive">
 		<table class="table table-striped">
-			<thead>
+			<thead> 
 				<tr>
 					<th>*</th>
 					<th>栋</th>

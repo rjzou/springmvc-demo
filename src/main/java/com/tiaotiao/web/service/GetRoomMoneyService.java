@@ -84,7 +84,7 @@ public class GetRoomMoneyService {
 	 * @throws Exception
 	 */
 	public Page<Map<String, Object>> selectAllNotEmptyRoom(Map<String, String> params, final PageRequest pageRequest) throws Exception{
-		String houseid = params.get("houseid");
+		String houseid = params.get("houseid"); 
 		String roomtypeid = params.get("roomtypeid");
 		String sql = " SELECT "+
 				" 	h.housename, "+
