@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50541
 File Encoding         : 65001
 
-Date: 2015-08-06 17:47:56
+Date: 2015-08-07 17:26:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -110,6 +110,31 @@ INSERT INTO `t_house` VALUES ('2', '1栋', '', '0', '1438669854854');
 INSERT INTO `t_house` VALUES ('3', '2栋', '', '0', '1438669863920');
 INSERT INTO `t_house` VALUES ('4', '3栋', '', '0', '1438669870767');
 INSERT INTO `t_house` VALUES ('5', '5栋', 'a', '1438659314656', '1438669878771');
+
+-- ----------------------------
+-- Table structure for t_net_cfg
+-- ----------------------------
+DROP TABLE IF EXISTS `t_net_cfg`;
+CREATE TABLE `t_net_cfg` (
+  `houseid` int(8) NOT NULL,
+  `roomno` int(8) NOT NULL,
+  `ip` varchar(16) DEFAULT NULL,
+  `usr` varchar(16) DEFAULT NULL,
+  `pwd` varchar(16) DEFAULT NULL,
+  `netprice` int(8) NOT NULL,
+  `year` int(8) NOT NULL,
+  `month` int(8) NOT NULL,
+  `day` int(8) NOT NULL,
+  `created` bigint(32) NOT NULL,
+  `updated` bigint(32) DEFAULT NULL,
+  PRIMARY KEY (`houseid`,`roomno`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_net_cfg
+-- ----------------------------
+INSERT INTO `t_net_cfg` VALUES ('2', '100', null, '', '', '40', '2015', '8', '7', '1438931028001', null);
+INSERT INTO `t_net_cfg` VALUES ('2', '102', null, 'usr2', 'pwd2', '40', '2015', '8', '7', '1438931130382', null);
 
 -- ----------------------------
 -- Table structure for t_room
@@ -220,6 +245,7 @@ CREATE TABLE `t_waterelect` (
 INSERT INTO `t_waterelect` VALUES ('2', '100', '1109', '4.50', '610', '1.50', '2015', '7', '5', '1438757277392', '2');
 INSERT INTO `t_waterelect` VALUES ('2', '102', '130', '4.50', '110', '1.50', '2015', '7', '6', '1438822812308', null);
 INSERT INTO `t_waterelect` VALUES ('2', '103', '13', '4.50', '65', '1.50', '2015', '7', '6', '1438826400066', null);
+INSERT INTO `t_waterelect` VALUES ('2', '104', '25', '4.50', '27', '1.50', '2015', '8', '7', '1438914952810', null);
 
 -- ----------------------------
 -- Table structure for t_waterelectout
@@ -262,3 +288,28 @@ CREATE TABLE `t_waterelect_cfg` (
 -- ----------------------------
 -- Records of t_waterelect_cfg
 -- ----------------------------
+INSERT INTO `t_waterelect_cfg` VALUES ('2014', '12', '4.50', '1.50', '0', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2015', '1', '4.50', '1.60', '1438910815936', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2015', '2', '4.50', '1.50', '1438910815936', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2015', '3', '4.50', '1.50', '1438910815936', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2015', '4', '4.50', '1.50', '1438910815936', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2015', '5', '4.50', '1.50', '1438910815936', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2015', '6', '4.50', '1.50', '1438910815936', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2015', '7', '4.50', '1.50', '1438910815936', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2015', '8', '4.50', '1.50', '1438910815936', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2015', '9', '4.50', '1.50', '1438910815936', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2015', '10', '4.50', '1.50', '1438910815936', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2015', '11', '4.50', '1.50', '1438910815936', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2015', '12', '4.50', '1.50', '1438910815936', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2016', '1', '4.50', '1.50', '1438910833006', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2016', '2', '4.50', '1.50', '1438910833006', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2016', '3', '4.50', '1.50', '1438910833006', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2016', '4', '4.50', '1.50', '1438910833006', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2016', '5', '4.50', '1.50', '1438910833006', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2016', '6', '4.50', '1.50', '1438910833006', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2016', '7', '4.50', '1.50', '1438910833006', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2016', '8', '4.50', '1.50', '1438910833006', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2016', '9', '4.50', '1.50', '1438910833006', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2016', '10', '4.50', '1.50', '1438910833006', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2016', '11', '4.50', '1.50', '1438910833006', '0');
+INSERT INTO `t_waterelect_cfg` VALUES ('2016', '12', '4.50', '1.50', '1438910833006', '0');

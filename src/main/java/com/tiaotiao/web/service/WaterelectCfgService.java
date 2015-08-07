@@ -55,7 +55,7 @@ public class WaterelectCfgService {
 	 */
 	public WaterElectCfg getWaterelectCfgById(int year,int month) throws Exception{
 		Object[] params = { year,month};
-		String sql = "select waterprice,electprice,created,updated from t_waterelect_cfg where year = ? and month = ? ";
+		String sql = "select year,month,waterprice,electprice,created,updated from t_waterelect_cfg where year = ? and month = ? ";
 		return dao.findFirst(WaterElectCfg.class,sql, params);
 	}
 	

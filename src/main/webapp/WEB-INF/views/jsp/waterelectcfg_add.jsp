@@ -20,8 +20,8 @@
 			<label class="control-label" for="selectYear">待生成年份</label>
 			<div class="input-group">
 			<select class="selectpicker" id="selectYear" name="selectYear" required>
-				<option>2015</option>
-      			<option>2016</option>
+				<option value="2015" <c:if test="${fn:contains(params.year, '2015') == true}">selected="selected"</c:if>>2015</option>
+      			<option value="2016" <c:if test="${fn:contains(params.year, '2016') == true}">selected="selected"</c:if>>2016</option>
 			</select>
 			</div>
 		</div>

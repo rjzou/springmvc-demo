@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.tiaotiao.web.entity.WaterElect;
 import com.tiaotiao.web.entity.WaterElectCfg;
 import com.tiaotiao.web.service.CheckinService;
 import com.tiaotiao.web.service.CheckoutService;
@@ -110,28 +109,20 @@ public class WaterelectCfgController extends BaseController {
 	 */
 	@RequestMapping(value = "/waterelectcfg_toedit", method = RequestMethod.GET)
 	public String waterelectCfgToEdit(ModelMap model,@RequestParam Map<String, String> params) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
-		int roomno = Integer.valueOf(params.get("roomno"));
+		int year = Integer.valueOf(params.get("year"));
+		int month = Integer.valueOf(params.get("month"));
 		
-		Map<String,Object> checkin = checkinService.getCheckinMapById(houseid,roomno);
-		params.put("houseid", String.valueOf(checkin.get("houseid")));
-		params.put("roomno", String.valueOf(checkin.get("roomno")));
-		params.put("housename", String.valueOf(checkin.get("housename")));
-		params.put("customname", String.valueOf(checkin.get("customname")));
-		params.put("iphone", String.valueOf(checkin.get("iphone")));
-		params.put("cardid", String.valueOf(checkin.get("cardid")));
-		params.put("year", String.valueOf(checkin.get("year")));
-		params.put("month", String.valueOf(checkin.get("month")));
-		params.put("day", String.valueOf(checkin.get("day")));
-		params.put("water", String.valueOf(checkin.get("water")));
-		params.put("elect", String.valueOf(checkin.get("elect")));
-		
+		WaterElectCfg wec = waterelectCfgService.getWaterelectCfgById(year, month);
+		params.put("waterprice", String.valueOf(wec.getWaterprice()));
+		params.put("electprice", String.valueOf(wec.getElectprice()));
+		params.put("inputWaterPrice", String.valueOf(wec.getWaterprice()));
+		params.put("inputElectPrice", String.valueOf(wec.getElectprice()));
 		model.put("params", params);
-		return "waterelect_tocfg";
+		return "waterelectcfg_edit";
 	}	
  
 	@RequestMapping(value = "/waterelectcfg_add", method = RequestMethod.POST)
-	public String waterelectCfgSave(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
+	public String waterelectCfgAdd(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
 		int year = Integer.valueOf(params.get("selectYear"));
 		double waterprice = Double.valueOf(params.get("inputWaterPrice"));
 		double electprice = Double.valueOf(params.get("inputElectPrice"));
@@ -161,8 +152,40 @@ public class WaterelectCfgController extends BaseController {
 		} catch (Exception e) {
 			model.addAttribute("message", "保存失败,10秒钟自动返回,错误信息:"+e.getMessage());
 		}
+		params.put("year", params.get("selectYear"));
 		model.put("params", params);
 		return "waterelectcfg_add";
 	}
-	
+	@RequestMapping(value = "/waterelectcfg_edit", method = RequestMethod.POST)
+	public String waterelectCfgEdit(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
+		int year = Integer.valueOf(params.get("year"));
+		int month = Integer.valueOf(params.get("month"));
+		double waterprice = Double.valueOf(params.get("inputWaterPrice"));
+		double electprice = Double.valueOf(params.get("inputElectPrice"));
+		try {
+			WaterElectCfg wec = new WaterElectCfg();
+			wec.setYear(year);
+			wec.setWaterprice(waterprice);
+			wec.setElectprice(electprice);
+			wec.setCreated(System.currentTimeMillis());
+			wec.setMonth(month);
+			WaterElectCfg entity = waterelectCfgService.getWaterelectCfgById(year, month);
+			int n = 0;
+			if (entity != null) {
+				n = waterelectCfgService.updateWaterElectCfg(wec);
+			} else {
+				n = waterelectCfgService.insertWaterElectCfg(wec);
+			}
+			if (n > 0) {
+				model.addAttribute("message", "修改水电表数据成功,10秒钟自动返回");
+			} else {
+				model.addAttribute("message", "修改水电表数据失败,10秒钟自动返回");
+			}
+		
+		} catch (Exception e) {
+			model.addAttribute("message", "修改失败,10秒钟自动返回,错误信息:" + e.getMessage());
+		}
+		model.put("params", params);
+		return "waterelectcfg_edit";
+	}
 }

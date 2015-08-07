@@ -67,10 +67,10 @@
             <li><a href="#">Export</a></li>
           </ul>
           <ul class="nav nav-sidebar">
+            <li><a href="${ctx}/get_room_money">收房租</a></li>
             <li><a href="${ctx}/room_checkout">现在退房</a></li>
             <li><a href="${ctx}/room_waterelect">抄水电表</a></li>
-            <li><a href="${ctx}/room_elect">抄电表</a></li>
-            <li><a href="">Another nav item</a></li>
+            <li><a href="${ctx}/netcfg">网络配置</a></li>
             <li><a href="">More navigation</a></li>
           </ul>
           <ul class="nav nav-sidebar">

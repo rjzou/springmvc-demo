@@ -9,6 +9,10 @@
 	<script src="${ctx}/resources/js/bootstrap-select.js"></script>
 </head>
 <body>
+<ul class="nav nav-pills">
+  <li role="presentation" class="active"><a href="${ctx}/netcfg">开通网络</a></li>
+  <li role="presentation"><a href="${ctx}/netcfg_close">关闭网络</a></li>
+</ul>
 <div class="row">
   <form class="navbar-form navbar-left" role="search" method="post">
   <div class="form-group">
@@ -26,7 +30,6 @@
   }
   </script>
   <button type="submit" class="btn btn-default" onclick="return to_search();">查询</button>
-  <a class="btn btn-primary" href="${ctx}/waterelectcfg_toadd" role="button">生成水电价格</a>
 </form>
 </div><!-- /.row -->
 	<div class="table-responsive">
@@ -34,10 +37,10 @@
 			<thead>
 				<tr>
 					<th>*</th>
-					<th>年</th>
-					<th>月</th>
-					<th>水价</th>
-					<th>电价</th>
+					<th>栋</th>
+					<th>房间号</th>
+					<th>客户名称</th>
+					<th>网费</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -45,12 +48,12 @@
 				<c:forEach items="${list.content}" var="item" varStatus="status">
 					<tr>
 						<td>${status.count }</td>
-						<td>${item.year }</td>
-						<td>${item.month }</td>
-						<td>${item.waterprice }元</td>
-						<td>${item.electprice }元</td>
+						<td>${item.housename }</td>
+						<td>${item.roomno }</td>
+						<td>${item.customname }</td>
+						<td>${item.netprice }元</td>
 						<td>
-							<a class="btn btn-info btn-sm" href="${ctx}/waterelectcfg_toedit?year=${item.year }&month=${item.month }" role="button">修改价格</a>
+							<a class="btn btn-info btn-sm" href="${ctx}/netcfg_toopen?houseid=${item.houseid }&roomno=${item.roomno }" role="button">开通</a>
 						</td>
 					</tr>
 				</c:forEach>

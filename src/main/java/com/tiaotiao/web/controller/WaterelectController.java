@@ -1,7 +1,5 @@
 package com.tiaotiao.web.controller;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,13 +14,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tiaotiao.web.entity.House;
-import com.tiaotiao.web.entity.Room;
 import com.tiaotiao.web.entity.WaterElect;
+import com.tiaotiao.web.entity.WaterElectCfg;
 import com.tiaotiao.web.service.CheckinService;
 import com.tiaotiao.web.service.CheckoutService;
 import com.tiaotiao.web.service.HouseService;
 import com.tiaotiao.web.service.RoomService;
+import com.tiaotiao.web.service.WaterelectCfgService;
 import com.tiaotiao.web.service.WaterelectService;
+import com.tiaotiao.web.utils.DateUtil;
  
 @Controller
 public class WaterelectController extends BaseController {
@@ -42,6 +42,9 @@ public class WaterelectController extends BaseController {
 	@Resource
 	private WaterelectService waterelectService;
 	
+	@Resource
+	private WaterelectCfgService waterelectCfgService;
+
 	@RequestMapping(value = "/room_waterelect", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
@@ -82,17 +85,20 @@ public class WaterelectController extends BaseController {
 		int roomno = Integer.valueOf(params.get("roomno"));
 		int inputWater = Integer.valueOf(params.get("inputWater"));
 		int inputElect = Integer.valueOf(params.get("inputElect"));
+		int year = DateUtil.getThisYear();
+		int month = DateUtil.getThisMonth();// 获取月份
+		int day = DateUtil.getThisDay();// 获取日
+		WaterElectCfg wec = waterelectCfgService.getWaterelectCfgById(year, month);
+		double waterprice = wec.getWaterprice();
+		double electprice = wec.getElectprice();
 		WaterElect we = new WaterElect();
 		we.setHouseid(houseid);
 		we.setRoomno(roomno);
 		we.setWater(inputWater);
-		we.setWaterprice(4.5);
+		we.setWaterprice(waterprice);
 		we.setElect(inputElect);
-		we.setElectprice(1.5);
-		Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month=cal.get(Calendar.MONTH);//获取月份
-        int day=cal.get(Calendar.DATE);//获取日
+		we.setElectprice(electprice);
+
 		we.setYear(year);
 		we.setMonth(month);
 		we.setDay(day);
