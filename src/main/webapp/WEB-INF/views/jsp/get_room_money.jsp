@@ -58,10 +58,10 @@
 					<th>*</th>
 					<th>栋</th>
 					<th>房间号</th>
-					
 					<th>实收月租</th>
 					<th>实收押金</th>
 					<th>上月收费日期</th>
+					<th>本月应收日期</th>
 					<th>上月实收费用</th>
 					<th>操作</th>
 				</tr>
@@ -73,6 +73,7 @@
 						<td>${item.housename }</td>
 						<td>${item.roomno }</td>
 						<td>${item.monthmoney }</td>
+						<td>${item.pressmoney }</td>
 						<td>${item.pressmoney }</td>
 						<td>${item.pressmoney }</td>
 						<td>${item.pressmoney }</td>

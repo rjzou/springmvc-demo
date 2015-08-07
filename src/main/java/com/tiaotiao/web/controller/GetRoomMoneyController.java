@@ -17,6 +17,7 @@ import com.tiaotiao.web.entity.House;
 import com.tiaotiao.web.entity.RoomType;
 import com.tiaotiao.web.service.CheckinService;
 import com.tiaotiao.web.service.CheckoutService;
+import com.tiaotiao.web.service.GetRoomMoneyService;
 import com.tiaotiao.web.service.HouseService;
 import com.tiaotiao.web.service.RoomService;
 import com.tiaotiao.web.service.RoomtypeService;
@@ -39,10 +40,13 @@ public class GetRoomMoneyController extends BaseController {
 	@Resource
 	private CheckoutService checkoutService;
 	
+	@Resource
+	private GetRoomMoneyService getRoomMoneyService;
+	
 	@RequestMapping(value = "/get_room_money", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = checkoutService.selectAllNotEmptyRoom(params, page); 
+		Page<Map<String, Object>> list = getRoomMoneyService.selectAllNotEmptyRoom(params, page); 
 		model.put("p", cpage);
 		model.put("list", list);
 		List<RoomType> types = roomtypeService.selectAllRoomType();
