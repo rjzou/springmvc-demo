@@ -59,6 +59,7 @@
 					<th>房间号</th>
 					<th>客户名称</th>
 					<th>入住日期</th>
+					<th>实收日期</th>
 					<th>实收月租</th>
 					<th>实收押金</th>
 					<th>实收费用</th>
@@ -71,13 +72,14 @@
 						<td>${status.count }</td>
 						<td>${item.housename }</td>
 						<td>${item.roomno }</td>
-						<td>${item.roomno }</td>
-						<td>${item.roomno }</td>
+						<td>${item.customname }</td>
+						<td>${item.in_day }</td>
+						<td>${item.s_day }</td>
 						<td>${item.monthmoney } 元</td>
 						<td>${item.pressmoney } 元</td>
-						<td>${item.pressmoney } 元</td>
+						<td>${item.roommoney } 元</td>
 						<td>
-							<a class="btn btn-primary btn-sm" href="${ctx}/room_tocheckout?houseid=${item.houseid }&roomno=${item.roomno }" role="button">查看详细</a>
+							<a class="btn btn-primary btn-sm" href="${ctx}/room_checkin_query_page?houseid=${item.houseid }&roomno=${item.roomno }&year=${item.d_year }&month=${item.d_month }" role="button">查看详细</a>
 						</td>
 					</tr>
 				</c:forEach>

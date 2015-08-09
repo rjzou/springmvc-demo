@@ -155,39 +155,95 @@ public class CheckinService {
 	}
 	
 	/**
-	 * 入住查询
+	 * 入住查询功能
 	 * 
 	 * @param params
 	 * @param pageRequest
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> getAllRoomfulByParams(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+	public Page<Map<String, Object>> queryAllRoomfulByParams(Map<String, String> params, final PageRequest pageRequest) throws Exception{
 		String houseid = params.get("houseid");
 		String roomtypeid = params.get("roomtypeid");
 		String sql = " SELECT "+
-				" 	h.housename, "+
-				" 	r.houseid, "+
-				" 	r.roomno, "+
-				" 	c.monthmoney, "+
-				" 	c.pressmoney, "+
-				" 	r.description, "+
-				" 	r.created "+
+				"     h.housename, "+
+				"     r.houseid, "+
+				"     r.roomno, "+
+				"     c.customname,"+
+				"     c.monthmoney, "+
+				"     c.pressmoney, "+
+				"     CONCAT_WS('-',c.year,c.month,c.day) as in_day, "+
+				"     CONCAT_WS('-',rm.year,rm.month,rm.day) as s_day, "+
+				"     rm.roommoney, "+ 
+				"     rm.year as d_year, "+ 
+				"     rm.month as d_month"+
 				" FROM "+
-				" 	t_room AS r, "+
-				" 	t_house AS h, "+
-				" 	t_checkin AS c "+
+				"     t_room AS r, "+
+				"     t_house AS h, "+
+				"     t_checkin AS c, " +
+				"     t_room_money AS rm "+
 				" WHERE "+
-				" 	r.houseid = h.id "+
+				"     r.houseid = h.id "+
 				" AND r.houseid = c.houseid "+
-				" AND r.roomno = c.roomno ";
+				" AND r.roomno = c.roomno "+ 
+				" AND r.houseid = rm.houseid "+
+				" AND r.roomno = rm.roomno ";
 				if (houseid != null && houseid.trim().length() > 0 ) {
-					sql = sql + " AND r.houseid in ("+houseid+")";
+					sql = sql + " AND c.houseid in ("+houseid+")";
 				}
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
-					sql = sql + " AND r.typecode in ('"+roomtypeid+"')";
+					sql = sql + " AND c.typecode in ('"+roomtypeid+"')";
 				}
+				sql = sql + " order by rm.created desc ";
 		return dao.find(sql, null, pageRequest);
+	}
+	
+	public Map<String,Object> getCheckinQueryPageMapById(int houseid,int roomno,int year,int month) throws Exception{
+		Object[] params = { houseid,roomno};
+//		int year = DateUtil.getThisYear();
+//		int month = DateUtil.getThisMonth() -1 ;
+		String sql = " SELECT "+
+                "     h.housename, "+
+                "     r.houseid, "+
+                "     r.roomno, "+
+                "     c.customname,"+
+                "     c.monthmoney, "+
+                "     c.pressmoney, "+
+                "     CONCAT_WS('-',c.year,c.month,c.day) as in_day, "+
+                "     CONCAT_WS('-',rm.year,rm.month,rm.day) as s_day, "+
+                "     rm.roommoney, "+ 
+                "     rm.year as d_year, "+ 
+                "     rm.month as d_month, " + 
+                "     c.internet,"+ 
+                "     c.ip,"+ 
+                "     c.trash, " + 
+                "     c.keycount, "+ 
+                "     c.keyprice,"+ 
+                "     we.water, "+ 
+                "     we.waterprice, "+ 
+                "     we.elect, "+ 
+                "     we.electprice"+
+                " FROM "+
+                "     t_room AS r, "+
+                "     t_house AS h, "+
+                "     t_checkin AS c, "
+                + "   t_waterelect AS we,"+
+                "     t_room_money AS rm "+
+                " WHERE "+
+                "     r.houseid = h.id "+
+                " AND r.houseid = c.houseid "+
+                " AND r.roomno = c.roomno "+ 
+                " AND c.houseid = we.houseid "+ 
+                " AND c.roomno = we.roomno " + 
+                " AND we.year = rm.year "+ 
+                " AND we.month = rm.month "+
+                " AND r.houseid = rm.houseid "+
+                " AND r.roomno = rm.roomno " + 
+					" AND we.year = " + year
+					+ " AND we.month = "+ month
+					+ " AND c.houseid = ? "+
+					" AND c.roomno = ? ";
+		return dao.findFirst(sql, params);
 	}
 	
 }
