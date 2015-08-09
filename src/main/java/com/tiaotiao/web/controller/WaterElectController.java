@@ -20,12 +20,12 @@ import com.tiaotiao.web.service.CheckinService;
 import com.tiaotiao.web.service.CheckoutService;
 import com.tiaotiao.web.service.HouseService;
 import com.tiaotiao.web.service.RoomService;
-import com.tiaotiao.web.service.WaterelectCfgService;
-import com.tiaotiao.web.service.WaterelectService;
+import com.tiaotiao.web.service.WaterElectCfgService;
+import com.tiaotiao.web.service.WaterElectService;
 import com.tiaotiao.web.utils.DateUtil;
  
 @Controller
-public class WaterelectController extends BaseController {
+public class WaterElectController extends BaseController {
  
 	@Resource
 	private RoomService roomService;
@@ -40,10 +40,10 @@ public class WaterelectController extends BaseController {
 	private CheckinService checkinService;
 	
 	@Resource
-	private WaterelectService waterelectService;
+	private WaterElectService waterelectService;
 	
 	@Resource
-	private WaterelectCfgService waterelectCfgService;
+	private WaterElectCfgService waterelectCfgService;
 
 	@RequestMapping(value = "/room_waterelect", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
@@ -69,9 +69,9 @@ public class WaterelectController extends BaseController {
 		params.put("customname", String.valueOf(checkin.get("customname")));
 		params.put("iphone", String.valueOf(checkin.get("iphone")));
 		params.put("cardid", String.valueOf(checkin.get("cardid")));
-		params.put("year", String.valueOf(checkin.get("year")));
-		params.put("month", String.valueOf(checkin.get("month")));
-		params.put("day", String.valueOf(checkin.get("day")));
+//		params.put("year", String.valueOf(checkin.get("year")));
+//		params.put("month", String.valueOf(checkin.get("month")));
+		params.put("pre_s_day", String.valueOf(checkin.get("pre_s_day")));
 		params.put("water", String.valueOf(checkin.get("water")));
 		params.put("elect", String.valueOf(checkin.get("elect")));
 		
@@ -108,16 +108,16 @@ public class WaterelectController extends BaseController {
 			params.put("houseid", String.valueOf(checkin.get("houseid")));
 			params.put("roomno", String.valueOf(checkin.get("roomno")));
 			params.put("housename", String.valueOf(checkin.get("housename")));
-			params.put("username", String.valueOf(checkin.get("username")));
+			params.put("customname", String.valueOf(checkin.get("customname")));
 			params.put("iphone", String.valueOf(checkin.get("iphone")));
-			params.put("userid", String.valueOf(checkin.get("userid")));
-			params.put("year", String.valueOf(checkin.get("year")));
-			params.put("month", String.valueOf(checkin.get("month")));
-			params.put("day", String.valueOf(checkin.get("day")));
+			params.put("cardid", String.valueOf(checkin.get("cardid")));
+//			params.put("year", String.valueOf(checkin.get("year")));
+//			params.put("month", String.valueOf(checkin.get("month")));
+			params.put("pre_s_day", String.valueOf(checkin.get("pre_s_day")));
 			params.put("water", String.valueOf(checkin.get("water")));
 			params.put("elect", String.valueOf(checkin.get("elect")));
 			
-			WaterElect entity = waterelectService.selectWaterelectById(houseid, roomno);
+			WaterElect entity = waterelectService.getWaterElectById(houseid, roomno,year,month);
 			int n = 0;
 			if (entity != null) {
 				n = waterelectService.updateWaterElect(we);

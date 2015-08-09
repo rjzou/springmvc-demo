@@ -14,6 +14,7 @@ import com.tiaotiao.web.entity.Checkin;
 import com.tiaotiao.web.entity.Room;
 import com.tiaotiao.web.entity.User;
 import com.tiaotiao.web.utils.Dao;
+import com.tiaotiao.web.utils.DateUtil;
 
 
 /**
@@ -34,10 +35,10 @@ public class CheckinService {
 	 */
 	public int insertCheckin(Checkin checkin) throws Exception{
 		Object[] params = { checkin.getHouseid(), checkin.getRoomno(),checkin.getCustomname(),checkin.getIphone(),checkin.getCardid(), 
-				checkin.getMonthmoney(),checkin.getPressmoney(),checkin.getWater(),checkin.getElect(),checkin.getInternet(),checkin.getIp(), 
+				checkin.getMonthmoney(),checkin.getPressmoney(),checkin.getInternet(),checkin.getIp(), 
 				checkin.getTrash(),checkin.getKeycount(),checkin.getKeyprice(),checkin.getYear(),checkin.getMonth(),checkin.getDay(), checkin.getCreated()};
-		String sql = "insert into t_checkin(houseid,roomno,customname,iphone,cardid,monthmoney,pressmoney,water,elect,internet,ip,trash,"
-				+ "keycount,keyprice,year,month,day,created) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+		String sql = "insert into t_checkin(houseid,roomno,customname,iphone,cardid,monthmoney,pressmoney,internet,ip,trash,"
+				+ "keycount,keyprice,year,month,day,created) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 		int n = dao.update(sql, params);
 		return n;
 	}
@@ -49,9 +50,9 @@ public class CheckinService {
 	 */
 	public int updateCheckin(Checkin checkin) throws Exception{
 		Object[] params = { checkin.getCustomname(), checkin.getIphone(),checkin.getCardid(), checkin.getMonthmoney(),checkin.getPressmoney(), 
-				checkin.getWater(),checkin.getElect(),checkin.getInternet(),checkin.getIp(),checkin.getTrash(),checkin.getKeycount(),checkin.getKeyprice(),
+				checkin.getInternet(),checkin.getIp(),checkin.getTrash(),checkin.getKeycount(),checkin.getKeyprice(),
 				checkin.getYear(),checkin.getMonth(),checkin.getDay(),checkin.getUpdated(),checkin.getHouseid(),checkin.getRoomno()};
-		String sql = "update t_checkin set customname = ?,iphone = ?,cardid = ?,monthmoney = ?,pressmoney = ?,water = ?,elect = ?,internet = ?,ip = ?,"
+		String sql = "update t_checkin set customname = ?,iphone = ?,cardid = ?,monthmoney = ?,pressmoney = ?,internet = ?,ip = ?,"
 				+ "trash = ?,keycount = ?,keyprice = ?,year = ?,month = ?,day = ?,updated =? where houseid=? and roomno =? ";
 		int n = dao.update(sql, params);
 		return n;
@@ -97,7 +98,37 @@ public class CheckinService {
 	 */
 	public Map<String,Object> getCheckinMapById(int houseid,int roomno) throws Exception{
 		Object[] params = { houseid,roomno};
-		String sql = "select h.housename,c.houseid,c.roomno,c.customname,c.iphone,c.cardid,c.monthmoney,c.pressmoney,c.water,c.elect,c.internet,c.trash,c.keycount,c.keyprice,c.year,c.month,c.day,c.created from t_checkin c,t_house as h where c.houseid = h.id and c.houseid = ? and c.roomno = ? ";
+		int year = DateUtil.getThisYear();
+		int month = DateUtil.getThisMonth() -1 ;
+		String sql = " SELECT "+
+					"     h.housename, "+
+					"     c.houseid, "+
+					"     c.roomno, "+
+					"     c.customname, "+
+					"     c.iphone, "+
+					"     c.cardid, "+
+					"     c.monthmoney, "+
+					"     c.pressmoney, "+
+					"     c.internet, "+
+					"     c.trash, "+
+					"     c.keycount, "+
+					"     c.keyprice, "+
+					"     CONCAT_WS('-',c.year,c.month,c.day) as pre_s_day, " + 
+					"     we.water, "+ 
+					"     we.elect, "+
+					"     c.created "+
+					" FROM "+
+					"     t_checkin as c, "+
+					"     t_house as h, "+
+					"     t_waterelect as we "+
+					" WHERE "+
+					"     c.houseid = h.id "+
+					" AND c.houseid = we.houseid "+
+					" AND c.roomno = we.roomno " + 
+					" AND we.year = " + year
+					+ " AND we.month = "+ month
+					+ " AND c.houseid = ? "+
+					" AND c.roomno = ? ";
 		return dao.findFirst(sql, params);
 	}
 	
@@ -119,6 +150,42 @@ public class CheckinService {
 				}
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
 					sql = sql + " and r.typecode in ('"+roomtypeid+"')";
+				}
+		return dao.find(sql, null, pageRequest);
+	}
+	
+	/**
+	 * 入住查询
+	 * 
+	 * @param params
+	 * @param pageRequest
+	 * @return
+	 * @throws Exception
+	 */
+	public Page<Map<String, Object>> getAllRoomfulByParams(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+		String houseid = params.get("houseid");
+		String roomtypeid = params.get("roomtypeid");
+		String sql = " SELECT "+
+				" 	h.housename, "+
+				" 	r.houseid, "+
+				" 	r.roomno, "+
+				" 	c.monthmoney, "+
+				" 	c.pressmoney, "+
+				" 	r.description, "+
+				" 	r.created "+
+				" FROM "+
+				" 	t_room AS r, "+
+				" 	t_house AS h, "+
+				" 	t_checkin AS c "+
+				" WHERE "+
+				" 	r.houseid = h.id "+
+				" AND r.houseid = c.houseid "+
+				" AND r.roomno = c.roomno ";
+				if (houseid != null && houseid.trim().length() > 0 ) {
+					sql = sql + " AND r.houseid in ("+houseid+")";
+				}
+				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
+					sql = sql + " AND r.typecode in ('"+roomtypeid+"')";
 				}
 		return dao.find(sql, null, pageRequest);
 	}

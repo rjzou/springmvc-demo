@@ -20,8 +20,8 @@ import com.tiaotiao.web.service.CheckoutService;
 import com.tiaotiao.web.service.HouseService;
 import com.tiaotiao.web.service.NetCfgService;
 import com.tiaotiao.web.service.RoomService;
-import com.tiaotiao.web.service.WaterelectCfgService;
-import com.tiaotiao.web.service.WaterelectService;
+import com.tiaotiao.web.service.WaterElectCfgService;
+import com.tiaotiao.web.service.WaterElectService;
 import com.tiaotiao.web.utils.DateUtil;
  
 @Controller
@@ -40,10 +40,10 @@ public class NetCfgController extends BaseController {
 	private CheckinService checkinService;
 	
 	@Resource
-	private WaterelectService waterelectService;
+	private WaterElectService waterelectService;
 	
 	@Resource
-	private WaterelectCfgService waterelectCfgService;
+	private WaterElectCfgService waterelectCfgService;
 	
 	@Resource
 	private NetCfgService  netCfgService;

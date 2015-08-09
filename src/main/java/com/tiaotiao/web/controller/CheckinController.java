@@ -17,11 +17,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.tiaotiao.web.entity.Checkin;
 import com.tiaotiao.web.entity.House;
 import com.tiaotiao.web.entity.Room;
+import com.tiaotiao.web.entity.RoomMoney;
 import com.tiaotiao.web.entity.RoomType;
+import com.tiaotiao.web.entity.WaterElect;
+import com.tiaotiao.web.entity.WaterElectCfg;
 import com.tiaotiao.web.service.CheckinService;
+import com.tiaotiao.web.service.CheckoutService;
 import com.tiaotiao.web.service.HouseService;
+import com.tiaotiao.web.service.RoomMoneyService;
 import com.tiaotiao.web.service.RoomService;
-import com.tiaotiao.web.service.RoomtypeService;
+import com.tiaotiao.web.service.RoomTypeService;
+import com.tiaotiao.web.service.WaterElectCfgService;
+import com.tiaotiao.web.service.WaterElectService;
+import com.tiaotiao.web.utils.DateUtil;
  
 @Controller
 public class CheckinController extends BaseController {
@@ -33,10 +41,22 @@ public class CheckinController extends BaseController {
 	private HouseService houseService;
 	
 	@Resource
-	private RoomtypeService roomtypeService;
+	private RoomTypeService roomtypeService;
 	
 	@Resource
 	private CheckinService checkinService;
+	
+	@Resource
+	private CheckoutService checkoutService;
+	
+	@Resource
+	private WaterElectService waterElectService;
+	
+	@Resource
+	private WaterElectCfgService waterElectCfgService;
+	
+	@Resource
+	private RoomMoneyService roomMoneyService;
 	
 	@RequestMapping(value = "/room_checkin", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
@@ -111,17 +131,46 @@ public class CheckinController extends BaseController {
 			checkin.setTrash(trash);
 			checkin.setKeycount(keycount);
 			checkin.setKeyprice(keyprice);
-			Calendar cal = Calendar.getInstance();
-	        int year = cal.get(Calendar.YEAR);
-	        int month=cal.get(Calendar.MONTH);//获取月份
-	        int day=cal.get(Calendar.DATE);//获取日
+	        int year = DateUtil.getThisYear();
+	        int month = DateUtil.getThisMonth();//获取月份
+	        int day = DateUtil.getThisDay(); //获取日
 	        checkin.setYear(year);
 	        checkin.setMonth(month);
 	        checkin.setDay(day);
 			checkin.setCreated(System.currentTimeMillis());
 			checkin.setUpdated(System.currentTimeMillis());
-			return roomCheckinSave(checkin,params,model);
+			
+			WaterElectCfg wec = waterElectCfgService.getWaterelectCfgById(year, month);
+			double waterprice = wec.getWaterprice();
+			double electprice = wec.getElectprice();
+			
+			WaterElect we = new WaterElect();
+			we.setHouseid(houseid);
+			we.setRoomno(roomno);
+			we.setWater(water);
+			we.setWaterprice(waterprice);
+			we.setElect(elect);
+			we.setElectprice(electprice);
+			we.setYear(year);
+			we.setMonth(month);
+			we.setDay(day);
+			we.setCreated(System.currentTimeMillis());
+			we.setUpdated(System.currentTimeMillis());
+			
+			int	sumprice = monthmoney + pressmoney + internet +trash +(keycount * keyprice);
+				
+			RoomMoney rm = new RoomMoney();
+			rm.setHouseid(houseid);
+			rm.setRoomno(roomno);
+			rm.setRoommoney(sumprice);
+			rm.setYear(year);
+			rm.setMonth(month);
+			rm.setDay(day);
+			rm.setCreated(System.currentTimeMillis());
+			rm.setUpdated(System.currentTimeMillis());
+			return roomCheckinSave(checkin,we,rm,params,model);
 		}
+		
 		model.put("params", params);
 		return "room_tocheckin";
 	}
@@ -159,21 +208,26 @@ public class CheckinController extends BaseController {
 	 * @return
 	 * @throws Exception
 	 */
-	public String roomCheckinSave(Checkin checkin,@RequestParam Map<String, String> params, ModelMap model) throws Exception {
+	public String roomCheckinSave(Checkin checkin,WaterElect we,RoomMoney rm,@RequestParam Map<String, String> params, ModelMap model) throws Exception {
 		int houseid = Integer.valueOf(params.get("houseid"));
 		int roomno = Integer.valueOf(params.get("roomno"));
 		
 		try {
 			Checkin entity = checkinService.getCheckinById(houseid, roomno);
-			int n =0;
+			int n = 0, m = 0 , o = 0;
 			if (entity != null) {
 				n = checkinService.updateCheckin(checkin);
+				m = waterElectService.updateWaterElect(we);
+				o = roomMoneyService.updateRoomMoney(rm);
+				
 			}else{
 				n = checkinService.insertCheckin(checkin);
+				m = waterElectService.insertWaterElect(we);
+				o = roomMoneyService.insertRoomMoney(rm);
 			}
 			
-			if (n > 0) {
-				model.addAttribute("message", "入住成功,10秒钟自动返回");
+			if (n > 0 && m > 0 && o > 0) {
+				model.addAttribute("message", "入住成功,应收 "+ rm.getRoommoney() +"元,10秒钟自动返回");
 			}else{
 				model.addAttribute("message", "入住失败,10秒钟自动返回");
 			}
@@ -214,37 +268,17 @@ public class CheckinController extends BaseController {
 		model.put("params", params);
 		return "room_tocheckin";
 	}
-//	@RequestMapping(value = "/room_edita", method = RequestMethod.POST)
-//	public String roomEdit(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
-//		int hiddenHouseid = Integer.valueOf(params.get("hiddenHouseid"));
-//		int hiddenRoomno = Integer.valueOf(params.get("hiddenRoomno"));
-//		int houseid = Integer.valueOf(params.get("selectHouse"));
-//		int roomno = Integer.valueOf(params.get("inputRoom"));
-//		int monthmoney = Integer.valueOf(params.get("inputMonthMoney"));
-//		int pressmoney = Integer.valueOf(params.get("inputPressMoney"));
-//		String description = params.get("inputDescription");
-//		Room room = new Room();
-//		room.setHouseid(houseid);
-//		room.setRoomno(roomno);
-//		room.setMonthmoney(monthmoney);
-//		room.setPressmoney(pressmoney);
-//		room.setDescription(description);
-//		room.setUpdated(System.currentTimeMillis());
-//		try {
-//			int n = roomService.updateRoom(room,hiddenHouseid,hiddenRoomno);
-//			if (n > 0) {
-//				model.addAttribute("message", "保存成功");
-//			}else{
-//				model.addAttribute("message", "保存失败");
-//			}
-//		} catch (Exception e) {
-//			if (e.getMessage().toLowerCase().indexOf("primary") > 0) {
-//				model.addAttribute("message", "保存失败,已经存在的房间号,请重新输入");
-//			}else{
-//				model.addAttribute("message", "保存失败,错误信息:"+e.getMessage());
-//			}
-//		}
-//		model.put("params", params);
-//		return "room_add";
-//	}
+	@RequestMapping(value = "/room_checkin_query", method = RequestMethod.GET)
+	public String roomCheckinQuery(ModelMap model ,@RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
+		Page<Map<String, Object>> list = checkinService.getAllRoomfulByParams(params, page); 
+		model.put("p", cpage);
+		model.put("list", list);
+		List<RoomType> types = roomtypeService.selectAllRoomType();
+		model.put("types", types);
+		List<House> houses = houseService.selectAllHouse();
+		model.put("houses", houses);
+		model.put("params", params);
+		return "room_checkin_query";
+	}
 }

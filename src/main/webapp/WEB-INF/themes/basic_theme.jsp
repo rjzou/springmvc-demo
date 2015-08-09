@@ -62,12 +62,12 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li class="active"><a href="${ctx}/room_checkin">开始入住 <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Reports</a></li>
+            <li><a href="${ctx}/room_checkin_query">入住查询</a></li>
             <li><a href="#">Analytics</a></li>
             <li><a href="#">Export</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="${ctx}/get_room_money">收房租</a></li>
+            <li><a href="${ctx}/room_money">收房租</a></li>
             <li><a href="${ctx}/room_checkout">现在退房</a></li>
             <li><a href="${ctx}/room_waterelect">抄水电表</a></li>
             <li><a href="${ctx}/netcfg">网络配置</a></li>

@@ -15,7 +15,7 @@ import com.tiaotiao.web.utils.Dao;
  * @author zouruijin
  */
 @Service
-public class WaterelectService {
+public class WaterElectService {
 	@Resource
 	private Dao dao;
 	/**
@@ -37,8 +37,8 @@ public class WaterelectService {
 	 * @throws Exception
 	 */
 	public int updateWaterElect(WaterElect we) throws Exception{
-		Object[] params = { we.getWater(),we.getElect(), we.getYear(), we.getMonth(),we.getDay(),we.getHouseid(),we.getHouseid(), we.getRoomno()};
-		String sql = "update t_waterelect set water = ?,elect = ?,year = ?,month = ?,day = ?,updated =? where houseid=? and roomno =? ";
+		Object[] params = { we.getWater(),we.getElect(),we.getUpdated(),we.getHouseid(), we.getRoomno()};
+		String sql = "update t_waterelect set water = ?,elect = ?,updated =? where houseid=? and roomno =? ";
 		int n = dao.update(sql, params);
 		return n;
 	}
@@ -47,14 +47,29 @@ public class WaterelectService {
 	 * 取得水电表实体数据
 	 * @param house_id
 	 * @param room_no
+	 * @param year
+	 * @param month
 	 * @return
 	 * @throws Exception
 	 */
-	public WaterElect selectWaterelectById(int houseid,int roomno) throws Exception{
-		Object[] params = { houseid,roomno};
-		String sql = "select houseid,roomno,water,waterprice,elect,electprice,year,month,day,created,updated from t_waterelect where houseid = ? and roomno = ? ";
+	public WaterElect getWaterElectById(int houseid,int roomno,int year,int month) throws Exception{
+		Object[] params = { houseid,roomno,year,month};
+		String sql = "select houseid,roomno,water,waterprice,elect,electprice,year,month,day,created,updated from t_waterelect where houseid = ? and roomno = ? and year = ? and month = ? ";
 		return dao.findFirst(WaterElect.class,sql, params);
 	}
-	
+	/**
+	 * 取得某年月水电表实体数据
+	 * @param houseid
+	 * @param roomno
+	 * @param year
+	 * @param month
+	 * @return
+	 * @throws Exception
+	 */
+	public WaterElect selectWaterelectByIdAndYearMonth(int houseid,int roomno,int year,int month) throws Exception{
+		Object[] params = { houseid,roomno,year,month};
+		String sql = "select houseid,roomno,water,waterprice,elect,electprice,year,month,day,created,updated from t_waterelect where houseid = ? and roomno = ? and year = ? and month = ?";
+		return dao.findFirst(WaterElect.class,sql, params);
+	}
 	
 }

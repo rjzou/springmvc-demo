@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.tiaotiao.web.entity.Checkout;
 import com.tiaotiao.web.entity.Room;
 import com.tiaotiao.web.utils.Dao;
+import com.tiaotiao.web.utils.DateUtil;
 
 
 /**
@@ -25,6 +26,7 @@ public class CheckoutService {
 	
 	/**
 	 * 插入checkout 表数据
+	 * 
 	 * @param checkout
 	 * @return
 	 * @throws Exception
@@ -78,12 +80,13 @@ public class CheckoutService {
 	
 	/**
 	 * 查找在住房
+	 * 
 	 * @param params
 	 * @param pageRequest
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> selectAllNotEmptyRoom(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+	public Page<Map<String, Object>> getAllRoomfulByParams(Map<String, String> params, final PageRequest pageRequest) throws Exception{
 		String houseid = params.get("houseid");
 		String roomtypeid = params.get("roomtypeid");
 		String sql = " SELECT "+
@@ -113,6 +116,7 @@ public class CheckoutService {
 	
 	/**
 	 * 查找在住没有抄水电表房
+	 * 
 	 * @param params
 	 * @param pageRequest
 	 * @return
@@ -121,6 +125,8 @@ public class CheckoutService {
 	public Page<Map<String, Object>> selectAllNotWaterElectRoom(Map<String, String> params, final PageRequest pageRequest) throws Exception{
 		String houseid = params.get("houseid");
 		String roomtypeid = params.get("roomtypeid");
+		int year = DateUtil.getThisYear();
+		int month = DateUtil.getThisMonth();
 		String sql = " SELECT "+
 				" 	h.housename, "+
 				" 	r.houseid, "+
@@ -133,16 +139,18 @@ public class CheckoutService {
 				" 	c.elect, "+
 				" 	r.created "+
 				" FROM "+
-				" 	t_room AS r, "+
-				" 	t_house AS h, "+
-				" 	t_checkin AS c "+
+				" 	t_room as r, "+
+				" 	t_house as h, "+
+				" 	t_checkin as c "+
 				" WHERE "+
 				" 	r.houseid = h.id "+
 				" AND c.houseid = r.houseid "+
 				" AND c.roomno = r.roomno "+
 				" and (r.houseid,r.roomno) not in "+
-				" (select houseid,roomno from t_waterelect) ";
-				
+				" (select houseid,roomno from t_waterelect where 1=1";
+				sql = sql + " and year =  "+year;
+				sql = sql + " and month =  "+month;
+				sql = sql + ") ";
 				if (houseid != null && houseid.trim().length() > 0 ) {
 					sql = sql + " and r.houseid in ("+houseid+")";
 				}

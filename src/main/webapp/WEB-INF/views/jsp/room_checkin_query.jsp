@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="row">
-  <form class="navbar-form navbar-left" role="search" action="${ctx}/room_checkin" method="post">
+  <form class="navbar-form navbar-left" role="search" action="${ctx}/room_checkout" method="post">
    <div class="form-group">
   <select class="selectpicker" name="selectHouse" multiple>
 	  	<c:forEach var="house" items="${houses}">  
@@ -47,22 +47,21 @@
   </div>
   <button type="submit" class="btn btn-default" onclick="return to_search();">查询</button>
   <p class="text-left">
-  <span class="label label-danger">本月有21间需要收房租</span>
   </p>
 </form>
 </div><!-- /.row -->
 	<div class="table-responsive">
 		<table class="table table-striped">
-			<thead> 
+			<thead>
 				<tr>
 					<th>*</th>
 					<th>栋</th>
 					<th>房间号</th>
+					<th>客户名称</th>
+					<th>入住日期</th>
 					<th>实收月租</th>
 					<th>实收押金</th>
-					<th>上月收费日期</th>
-					<th>本月应收日期</th>
-					<th>上月实收费用</th>
+					<th>实收费用</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -72,13 +71,13 @@
 						<td>${status.count }</td>
 						<td>${item.housename }</td>
 						<td>${item.roomno }</td>
-						<td>${item.monthmoney }</td>
-						<td>${item.pressmoney }</td>
-						<td>${item.pressmoney }</td>
-						<td>${item.pressmoney }</td>
-						<td>${item.pressmoney }</td>
+						<td>${item.roomno }</td>
+						<td>${item.roomno }</td>
+						<td>${item.monthmoney } 元</td>
+						<td>${item.pressmoney } 元</td>
+						<td>${item.pressmoney } 元</td>
 						<td>
-							<a class="btn btn-primary btn-sm" href="${ctx}/room_tocheckin?houseid=${item.houseid }&roomno=${item.roomno }" role="button">收房租</a>
+							<a class="btn btn-primary btn-sm" href="${ctx}/room_tocheckout?houseid=${item.houseid }&roomno=${item.roomno }" role="button">查看详细</a>
 						</td>
 					</tr>
 				</c:forEach>
