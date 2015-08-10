@@ -39,7 +39,6 @@
 						<td>
 							<a class="btn btn-info btn-sm" href="${ctx}/house_toedit?id=${item.id }" role="button">编辑</a>
 							<a class="btn btn-warning btn-sm" href="${ctx}/house_todel?id=${item.id }" role="button" >删除</a>
-							<a class="btn btn-default btn-sm" href="${ctx}/house_todisabled?id=${item.id }" role="button" disabled>禁用</a>
 						</td>
 					</tr>
 				</c:forEach>

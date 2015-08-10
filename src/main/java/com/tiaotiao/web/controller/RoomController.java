@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.tiaotiao.web.entity.House;
 import com.tiaotiao.web.entity.Room;
 import com.tiaotiao.web.entity.RoomType;
+import com.tiaotiao.web.service.CheckinService;
+import com.tiaotiao.web.service.CheckoutService;
 import com.tiaotiao.web.service.HouseService;
 import com.tiaotiao.web.service.RoomService;
 import com.tiaotiao.web.service.RoomTypeService;
@@ -28,6 +30,12 @@ public class RoomController extends BaseController {
 	
 	@Resource
 	private HouseService houseService;
+	
+	@Resource
+	private CheckinService checkinService;
+	
+	@Resource
+	private CheckoutService checkoutService;
 	
 	@Resource
 	private RoomTypeService roomtypeService;
@@ -151,5 +159,45 @@ public class RoomController extends BaseController {
 		params.put("page_id", "room");
 		model.put("params", params);
 		return "room_edit";
+	}
+	
+	@RequestMapping(value = "/room_todel", method = RequestMethod.GET)
+	public String roomToDel(ModelMap model, @RequestParam Map<String, String> params) throws Exception {
+		int houseid = Integer.valueOf(params.get("houseid"));
+		int roomno = Integer.valueOf(params.get("roomno"));
+		Map<String,Object> map = roomService.getRoomMapById(houseid, roomno);
+		params.put("housename", map.get("housename").toString());
+		params.put("houseid", map.get("houseid").toString());
+		params.put("monthmoney", map.get("monthmoney").toString());
+		params.put("pressmoney", map.get("pressmoney").toString());
+		params.put("typename", map.get("typename").toString());
+		params.put("description", map.get("description").toString());
+		params.put("page_id", "house");
+		model.put("params", params);
+		return "room_del";
+	}
+	@RequestMapping(value = "/room_del", method = RequestMethod.POST)
+	public String roomDel(ModelMap model, @RequestParam Map<String, String> params) throws Exception {
+		int houseid = Integer.valueOf(params.get("houseid"));
+		int roomno = Integer.valueOf(params.get("roomno"));
+		Object checkin_count = checkinService.getCheckinCountByHouseidAndRoomno(houseid, roomno);
+		Object checkout_count = checkoutService.getCheckoutCountByHouseidAndRoomno(houseid, roomno);
+		Map<String,Object> map = roomService.getRoomMapById(houseid, roomno);
+		params.put("housename", map.get("housename").toString());
+		params.put("houseid", map.get("houseid").toString());
+		params.put("monthmoney", map.get("monthmoney").toString());
+		params.put("pressmoney", map.get("pressmoney").toString());
+		params.put("typename", map.get("typename").toString());
+		params.put("description", map.get("description").toString());
+		model.put("params", params);
+		if (Integer.valueOf(checkin_count.toString()) >0 || Integer.valueOf(checkout_count.toString()) > 0) {
+			model.addAttribute("message", "还存在业务数据关系，不能删除");
+			return "room_del";
+		}
+		int n = houseService.deleteHouse(houseid);
+		if (n > 0) {
+			model.addAttribute("message", "删除房间数据成功");
+		}
+		return "room";
 	}
 }

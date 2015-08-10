@@ -1,5 +1,6 @@
 package com.tiaotiao.web.service;
 
+import java.sql.SQLException;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -158,5 +159,33 @@ public class CheckoutService {
 					sql = sql + " and r.typecode in ('"+roomtypeid+"')";
 				}
 		return dao.find(sql, null, pageRequest);
+	}
+	/**
+	 * 取得一栋楼退房数量
+	 * @param houseid
+	 * @return
+	 * @throws SQLException
+	 */
+	public Object getCheckoutCountByHouseid(int houseid) throws SQLException{
+		Object[] params = { houseid};
+		String sql =" select count(1) as cnt from t_checkout as c "+
+					" where c.houseid = ? "; 
+		Object o= dao.findBy(sql,"cnt",params);
+		return o;
+	}
+	/**
+	 * 
+	 * @param houseid
+	 * @param roomno
+	 * @return
+	 * @throws SQLException
+	 */
+	public Object getCheckoutCountByHouseidAndRoomno(int houseid,int roomno) throws SQLException{
+		Object[] params = { houseid , roomno };
+		String sql =" select count(1) as cnt from t_checkout as c "+
+					" where c.houseid = ? "
+					+ " and c.roomno = ?"; 
+		Object o= dao.findBy(sql,"cnt",params);
+		return o;
 	}
 }

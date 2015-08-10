@@ -80,7 +80,7 @@
 				placeholder="输入钥匙数量">
 		</div>
 		<div class="form-group">
-			<label class="control-label" for="inputKeyprice">钥匙串价格(参考钥匙串价格 <span class="label label-success">${params.keyprice}</span> 元)</label>
+			<label class="control-label" for="inputKeyprice">钥匙串押金(参考钥匙串押金 <span class="label label-success">${params.keyprice}</span> 元)</label>
 			<input type="number" class="form-control" id="inputKeyprice" name="inputKeyprice"  value="${params.inputKeyprice}"
 				placeholder="输入钥匙价格">
 		</div>

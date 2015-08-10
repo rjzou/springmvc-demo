@@ -50,6 +50,20 @@ public class HouseService {
 		int n = dao.update(sql, params);
 		return n;
 	}
+	
+	/**
+	 * 通过id 删除house数据
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteHouse(int id) throws Exception{
+		Object[] params = { id };
+		String sql = "delete from t_house where id=? ";
+		int n = dao.update(sql, params);
+		return n;
+	}
+	
 	/**
 	 * 
 	 * @param params

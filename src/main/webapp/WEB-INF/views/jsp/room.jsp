@@ -72,8 +72,7 @@
 						<td>${item.description }</td>
 						<td>
 							<a class="btn btn-info btn-sm" href="${ctx}/room_toedit?houseid=${item.houseid }&roomno=${item.roomno }" role="button">编辑</a>
-							<a class="btn btn-warning btn-sm" href="${ctx}/room_toadd" role="button" class="disabled">删除</a>
-							<a class="btn btn-default btn-sm" href="${ctx}/room_toadd" role="button" class="disabled">禁用</a>
+							<a class="btn btn-warning btn-sm" href="${ctx}/room_todel?houseid=${item.houseid }&roomno=${item.roomno }" role="button" class="disabled">删除</a>
 						</td>
 					</tr>
 				</c:forEach>

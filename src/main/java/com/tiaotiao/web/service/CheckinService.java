@@ -212,7 +212,15 @@ public class CheckinService {
 				sql = sql + " order by rm.created desc ";
 		return dao.find(sql, sql_params, pageRequest);
 	}
-	
+	/**
+	 * 
+	 * @param houseid
+	 * @param roomno
+	 * @param year
+	 * @param month
+	 * @return
+	 * @throws Exception
+	 */
 	public Map<String,Object> getCheckinQueryPageMapById(int houseid,int roomno,int year,int month) throws Exception{
 		Object[] params = { houseid,roomno};
 		String sql = " SELECT "+
@@ -234,6 +242,39 @@ public class CheckinService {
 		return dao.findFirst(sql, params);
 	}
 	
+	public Page<Map<String, Object>> queryAllRoomMoneyMapByParams(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+		String houseid = params.get("houseid");
+		String roomno = params.get("roomno");
+//		int year = DateUtil.getThisYear();
+//		int month = DateUtil.getThisMonth();
+//		Object[] sql_params = {year,month};
+		
+		String sql = " SELECT "+
+						"         ci.houseid, "+
+						"         ci.roomno, "+
+						"         ci.monthmoney, "+
+						"         ci.pressmoney, "+
+						"         CONCAT_WS('-',rm.year,rm.month,rm.day) as s_date, "+
+						"         ci.trash, "+
+						"         ci.internet, "+
+						"         (ci.keycount * ci.keyprice) as sum_keyprice, "+
+						"         rm.roommoney "+
+						" FROM "+
+						"         t_checkin as ci, "+
+						"         t_room_money AS rm "+
+						" WHERE "+
+						"         ci.houseid = rm.houseid "+
+						" AND ci.roomno = rm.roomno ";
+						if (houseid != null && houseid.trim().length() > 0 ) {
+							sql = sql + " AND ci.houseid in ("+houseid+")";
+						}
+						if (roomno != null && roomno.trim().length() > 0 ) {
+							sql = sql + " AND ci.roomno in ("+roomno+")";
+						}
+						sql = sql + " order by rm.created asc ";
+		return dao.find(sql, null, pageRequest);
+	}
+	
 	/**
 	 * 
 	 * @param houseid
@@ -251,6 +292,35 @@ public class CheckinService {
 					" and rm.year <= ? " + 
 					" and rm.month <= ?"; 
 		Object o= dao.findBy(sql,"times",params);
+		return o;
+	}
+	/**
+	 * 取得一栋楼入住数量
+	 * @param houseid
+	 * @return
+	 * @throws SQLException
+	 */
+	public Object getCheckinCountByHouseid(int houseid) throws SQLException{
+		Object[] params = { houseid};
+		String sql =" select count(1) as cnt from t_checkin as c "+
+					" where c.houseid = ? "; 
+		Object o= dao.findBy(sql,"cnt",params);
+		return o;
+	}
+	
+	/**
+	 * 
+	 * @param houseid
+	 * @param roomno
+	 * @return
+	 * @throws SQLException
+	 */
+	public Object getCheckinCountByHouseidAndRoomno(int houseid,int roomno) throws SQLException{
+		Object[] params = { houseid,roomno};
+		String sql =" select count(1) as cnt from t_checkin as c "+
+					" where c.houseid = ? " + 
+					" and c.roomno = ?"; 
+		Object o= dao.findBy(sql,"cnt",params);
 		return o;
 	}
 	

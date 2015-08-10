@@ -291,12 +291,17 @@ public class CheckinController extends BaseController {
 	}	
 	
 	@RequestMapping(value = "/room_checkin_query_page", method = RequestMethod.GET)
-	public String roomCheckinQueryPage(@RequestParam Map<String, String> params,ModelMap model) throws Exception {
+	public String roomCheckinQueryPage(@RequestParam Map<String, String> params,ModelMap model, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
 		int houseid = Integer.valueOf(params.get("houseid"));
 		int roomno = Integer.valueOf(params.get("roomno"));
 		int year = Integer.valueOf(params.get("year"));
 		int month = Integer.valueOf(params.get("month"));
 		Map<String,Object> query = checkinService.getCheckinQueryPageMapById(houseid, roomno, year, month);
+		
+		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
+		Page<Map<String, Object>> list = checkinService.queryAllRoomMoneyMapByParams(params, page); 
+		model.put("p", cpage);
+		model.put("list", list);
 		
 //		Object times = checkinService.getRoomMoneyTimes(houseid, roomno, year, month);
 		

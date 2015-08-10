@@ -51,6 +51,43 @@
             <td><span class="label label-success">${params.in_date}</span> - 现在</td>
         </tr>
 		</table>
+		
+		<div class="panel panel-default">
+		  <!-- Default panel contents -->
+		  <div class="panel-heading">收费记录</div>
+		
+		  <!-- Table -->
+		  <table class="table">
+		  <thead>
+		  <tr>
+		  	<th class="col-sm-1">实收日期</th>
+		  	<th class="col-sm-1">实收月租</th>
+		  	<th class="col-sm-1">实收押金</th>
+		  	<th class="col-sm-1">实收水费</th>
+		  	<th class="col-sm-1">实收电费</th>
+		  	<th class="col-sm-1">实收网费</th>
+		  	<th class="col-sm-1">实收卫生费</th>
+		  	<th class="col-sm-1">实收钥匙串押金</th>
+		  	<th class="col-sm-1">实收总费用</th>
+		  </tr>
+		  </thead>
+			<tbody>
+		  <c:forEach items="${list.content}" var="item" varStatus="status">
+		    <tr>
+	            <td><span class="label label-success">${item.s_date }</span></td>
+	            <td><span class="label label-success">${item.monthmoney }</span></td>
+	            <td><span class="label label-success">${item.pressmoney}</span></td>
+	            <td><span class="label label-success"></span></td>
+	            <td><span class="label label-success"></span></td>
+	            <td><span class="label label-success">${item.internet}</span></td>
+	            <td><span class="label label-success">${item.trash}</span></td>
+	            <td><span class="label label-success">${item.sum_keyprice}</span></td>
+	            <td><span class="label label-success">${item.roommoney}</span></td>
+        	</tr>
+        	</c:forEach>
+        	</tbody>
+		  </table>
+		</div>
  	<input type="hidden" id="houseid" name="houseid" value="${params.houseid}"/>
  	<input type="hidden" id="roomno" name="roomno" value="${params.roomno}"/>
  	<input type="hidden" id="paymoney" name="paymoney" value="${params.paymoney}"/>

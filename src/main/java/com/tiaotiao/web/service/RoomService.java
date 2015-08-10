@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.tiaotiao.web.entity.House;
 import com.tiaotiao.web.entity.Room;
 import com.tiaotiao.web.entity.User;
 import com.tiaotiao.web.utils.Dao;
@@ -144,5 +145,23 @@ public class RoomService {
 		String sql = "select houseid,roomno,monthmoney,pressmoney,typecode,description,created from t_room where houseid = ? and roomno = ? ";
 		return dao.findFirst(Room.class,sql, params);
 	}
+	/**
+	 * 
+	 * @param houseid
+	 * @param roomno
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String,Object> getRoomMapById(int houseid,int roomno) throws Exception{
+		Object[] params = { houseid,roomno};
+		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.typecode,rt.typename,r.description,r.created from t_room as r,t_house as h,t_room_type as rt "
+				+ " where r.houseid = h.id and r.typecode = rt.typecode and  houseid = ? and roomno = ? ";
+		return dao.findFirst(sql, params);
+	}
+	
+//	public House selectRoomById(String id) throws Exception{
+//		String sql = "select housename,description,created,updated from t_house where id = ? ";
+//		return dao.findFirst(House.class,sql, id);
+//	}
 	
 }
