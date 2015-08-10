@@ -143,44 +143,97 @@ public class RoomMoneyService {
 		return dao.find(sql, null, pageRequest);
 	}
 	
-	/**
-	 * 查找在住没有抄水电表房
-	 * @param params
-	 * @param pageRequest
-	 * @return
-	 * @throws Exception
-	 */
-//	public Page<Map<String, Object>> selectAllNotWaterElectRooma(Map<String, String> params, final PageRequest pageRequest) throws Exception{
-//		String houseid = params.get("houseid");
-//		String roomtypeid = params.get("roomtypeid");
-//		String sql = " SELECT "+
-//				" 	h.housename, "+
-//				" 	r.houseid, "+
-//				" 	r.roomno, "+
-//				" 	c.customname, "+
-//				" 	c.year, "+
-//				" 	c.month, "+
-//				" 	c.day, "+
-//				" 	c.water, "+
-//				" 	c.elect, "+
-//				" 	r.created "+
-//				" FROM "+
-//				" 	t_room AS r, "+
-//				" 	t_house AS h, "+
-//				" 	t_checkin AS c "+
-//				" WHERE "+
-//				" 	r.houseid = h.id "+
-//				" AND c.houseid = r.houseid "+
-//				" AND c.roomno = r.roomno "+
-//				" and (r.houseid,r.roomno) not in "+
-//				" (select houseid,roomno from t_waterelect) ";
-//				
-//				if (houseid != null && houseid.trim().length() > 0 ) {
-//					sql = sql + " and r.houseid in ("+houseid+")";
-//				}
-//				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
-//					sql = sql + " and r.typecode in ('"+roomtypeid+"')";
-//				}
-//		return dao.find(sql, null, pageRequest);
-//	}
+	public Page<Map<String, Object>> queryAllRoomMoneyByParams(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+		String houseid = params.get("houseid");
+		String roomtypeid = params.get("roomtypeid");
+		String roomno = params.get("roomno");
+		String sql = " SELECT "+
+				"     h.housename, " +
+				"     r.houseid, " +
+				"     r.roomno, " + 
+				"	  rt.typename," +
+				"     c.customname," +
+				"     c.monthmoney, " +
+				"     c.pressmoney, " +
+				"     CONCAT_WS('-',c.year,c.month,c.day) as in_day, " +
+				"     CONCAT_WS('-',rm.year,rm.month,rm.day) as s_date, " +
+				"     rm.roommoney, " + 
+				"     rm.year as d_year, " + 
+				"     rm.month as d_month" +
+				" FROM "+
+				"     t_room AS r, "+
+				"     t_house AS h," + 
+				"     t_room_type AS rt, " +
+				"     t_checkin AS c, " +
+				"     t_room_money AS rm " +
+				" WHERE " +
+				"     r.houseid = h.id " +
+				" AND r.houseid = c.houseid " +
+				" AND r.roomno = c.roomno " + 
+				" AND r.typecode = rt.typecode " + 
+				" AND r.houseid = rm.houseid " +
+				" AND r.roomno = rm.roomno ";
+				if (houseid != null && houseid.trim().length() > 0 ) {
+					sql = sql + " AND c.houseid in ("+houseid+")";
+				}
+				if (roomno != null && roomno.trim().length() > 0 ) {
+					sql = sql + " AND c.roomno in ("+roomno+")";
+				}
+				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
+					sql = sql + " AND rt.typecode in ('"+roomtypeid+"')";
+				}
+				sql = sql + " order by rm.created desc ";
+		return dao.find(sql, null, pageRequest);
+	}
+	
+	public Map<String,Object> getRoomMoneyQueryPageMapById(int houseid,int roomno,int year,int month) throws Exception{
+		Object[] params = { houseid,roomno,year,month};
+//		int year = DateUtil.getThisYear();
+//		int month = DateUtil.getThisMonth() -1 ;
+		String sql = " SELECT "+
+                "     h.housename, "+
+                "     r.houseid, "+
+                "     r.roomno, "+
+                "     c.customname,"+
+                "     c.monthmoney, "+
+                "     c.pressmoney, "+
+                "     CONCAT_WS('-',c.year,c.month,c.day) as in_day, " + 
+                "     rm.year as s_year,"+ 
+                "     rm.month as s_month,"  + 
+                "     rm.day as s_day ,"+
+                "     CONCAT_WS('-',rm.year,rm.month,rm.day) as s_date, "+
+                "     rm.roommoney, "+ 
+                "     rm.year as d_year, "+ 
+                "     rm.month as d_month, " + 
+                "     c.internet,"+ 
+                "     c.ip,"+ 
+                "     c.trash, " + 
+                "     c.keycount, "+ 
+                "     c.keyprice,"+ 
+                "     we.water, "+ 
+                "     we.waterprice, "+ 
+                "     we.elect, "+ 
+                "     we.electprice"+
+                " FROM "+
+                "     t_room AS r, "+
+                "     t_house AS h, "+
+                "     t_checkin AS c, "
+                + "   t_waterelect AS we,"+
+                "     t_room_money AS rm "+
+                " WHERE "+
+                "     r.houseid = h.id "+
+                " AND r.houseid = c.houseid "+
+                " AND r.roomno = c.roomno "+ 
+                " AND c.houseid = we.houseid "+ 
+                " AND c.roomno = we.roomno " + 
+                " AND we.year = rm.year "+ 
+                " AND we.month = rm.month "+
+                " AND r.houseid = rm.houseid "+
+                " AND r.roomno = rm.roomno " + 
+				" AND c.houseid = ? "+
+				" AND c.roomno = ? "+
+				" AND we.year = ? "+ 
+				" AND we.month = ? " ;
+		return dao.findFirst(sql, params);
+	}
 }

@@ -70,7 +70,18 @@ public class HouseService {
 	 * @throws Exception
 	 */
 	public Page<Map<String, Object>> selectAllHouse(Map<String, String> params, final PageRequest pageRequest) throws Exception{
-		String sql = "select id,housename,description,created,updated from t_house ";
+		String housename = params.get("housename");
+		String sql = " SELECT "+
+				" 	h.id, "+
+				" 	h.housename, "+
+				" 	h.description, "+
+				" 	h.created, "+
+				" 	h.updated "+
+				" FROM "+
+				" 	t_house as h  where 1=1 ";
+		if (housename != null && housename.trim().length() > 0 ) {
+			sql = sql + " and h.housename  like '%"+housename+"%'";
+		}
 		return dao.find(sql, null, pageRequest);
 	}
 	/**

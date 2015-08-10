@@ -68,6 +68,7 @@ public class CheckinController extends BaseController {
 		model.put("types", types);
 		List<House> houses = houseService.selectAllHouse();
 		model.put("houses", houses);
+		params.put("page_id", "room_checkin");
 		model.put("params", params);
 		return "room_checkin";
 	}
@@ -170,7 +171,7 @@ public class CheckinController extends BaseController {
 			rm.setUpdated(System.currentTimeMillis());
 			return roomCheckinSave(checkin,we,rm,params,model);
 		}
-		
+		params.put("page_id", "room_checkin");
 		model.put("params", params);
 		return "room_tocheckin";
 	}
@@ -197,6 +198,7 @@ public class CheckinController extends BaseController {
 		}
 		params.put("sumprice", String.valueOf(sumprice));
 		params.put("calctxt", "重新计算应收");
+		params.put("page_id", "room_checkin");
 		model.put("params", params);
 		return "room_tocheckin";
 	}
@@ -238,6 +240,7 @@ public class CheckinController extends BaseController {
 				model.addAttribute("message", "入住失败,错误信息:"+e.getMessage());
 			}
 		}
+		params.put("page_id", "room_checkin");
 		model.put("params", params);
 		return "room_tocheckin";
 	}
@@ -264,7 +267,7 @@ public class CheckinController extends BaseController {
 		params.put("inputKeyprice", "10");
 		params.put("keyprice", "10");//参考钥匙串价格
 		//params.put("calctxt", "计算应收");
-		
+		params.put("page_id", "room_checkin");
 		model.put("params", params);
 		return "room_tocheckin";
 	}
@@ -278,9 +281,14 @@ public class CheckinController extends BaseController {
 		model.put("types", types);
 		List<House> houses = houseService.selectAllHouse();
 		model.put("houses", houses);
+		params.put("page_id", "room_checkin_query");
 		model.put("params", params);
 		return "room_checkin_query";
 	}
+	@RequestMapping(value = "/room_checkin_query", method = RequestMethod.POST)
+	public String roomCheckinQuerySearch(ModelMap model , @RequestParam Map<String, String> params,  @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+		return this.roomCheckinQuery(model, params, cpage);
+	}	
 	
 	@RequestMapping(value = "/room_checkin_query_page", method = RequestMethod.GET)
 	public String roomCheckinQueryPage(@RequestParam Map<String, String> params,ModelMap model) throws Exception {
@@ -289,40 +297,47 @@ public class CheckinController extends BaseController {
 		int year = Integer.valueOf(params.get("year"));
 		int month = Integer.valueOf(params.get("month"));
 		Map<String,Object> query = checkinService.getCheckinQueryPageMapById(houseid, roomno, year, month);
-		WaterElect prewe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,year,month -1);
+		
+//		Object times = checkinService.getRoomMoneyTimes(houseid, roomno, year, month);
+		
 		params.put("houseid", query.get("houseid").toString());
 		params.put("housename", query.get("housename").toString());
 		params.put("roomno", query.get("roomno").toString());
 		params.put("customname", query.get("customname").toString());
-		params.put("monthmoney", query.get("monthmoney").toString());
-		params.put("pressmoney", query.get("pressmoney").toString());
-		params.put("in_day", query.get("in_day").toString());
-		params.put("s_day", query.get("s_day").toString());
-		params.put("roommoney", query.get("roommoney").toString());
-		params.put("d_year", query.get("d_year").toString());
-		params.put("d_month", query.get("d_month").toString());
-		params.put("pre_water", String.valueOf(prewe.getWater()));
-		params.put("water", query.get("water").toString());
-		params.put("waterprice", query.get("waterprice").toString());
-		params.put("elect", query.get("elect").toString());
-		params.put("pre_elect", String.valueOf(prewe.getElect()));
-		params.put("electprice", query.get("electprice").toString());
-		params.put("internet", query.get("internet").toString());
-		params.put("ip", query.get("ip").toString());
-		params.put("trash", query.get("trash").toString());
-		params.put("keycount", query.get("keycount").toString());
-		params.put("keyprice", query.get("keyprice").toString());
+//		params.put("monthmoney", query.get("monthmoney").toString());
+//		params.put("pressmoney", query.get("pressmoney").toString());
+		params.put("in_date", query.get("in_date").toString());
+//		params.put("s_date", query.get("s_date").toString());
+//		params.put("s_date", query.get("s_date").toString());
+//		params.put("s_date", query.get("s_date").toString());
+//		params.put("roommoney", query.get("roommoney").toString());
+//		params.put("d_year", query.get("d_year").toString());
+//		params.put("d_month", query.get("d_month").toString());
+//		params.put("water", query.get("water").toString());
+//		params.put("waterprice", query.get("waterprice").toString());
+//		params.put("elect", query.get("elect").toString());
+//		if (Integer.valueOf(times.toString()) > 1) {
+//			WaterElect prewe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,year,month -1);
+//			params.put("pre_water", String.valueOf(prewe.getWater()));
+//			params.put("pre_elect", String.valueOf(prewe.getElect()));
+//			int usedWater = Integer.valueOf(query.get("water").toString()) - prewe.getWater();
+//			int usedElect = Integer.valueOf(query.get("elect").toString()) - prewe.getElect() ;
+//			double usedWaterPrice = usedWater * Double.valueOf(query.get("waterprice").toString());
+//			double usedElectPrice = usedElect * Double.valueOf(query.get("electprice").toString());
+//			params.put("usedwaterprice", String.valueOf(usedWaterPrice));
+//			params.put("usedelectprice", String.valueOf(usedElectPrice));
+//		}
 		
-		int sumkeyprice = Integer.valueOf(query.get("keycount").toString())*Integer.valueOf(query.get("keyprice").toString());
-		params.put("sumkeyprice", String.valueOf(sumkeyprice));
-		
-		int usedWater = Integer.valueOf(query.get("water").toString()) - prewe.getWater();
-		int usedElect = Integer.valueOf(query.get("elect").toString()) - prewe.getElect() ;
-		double usedWaterPrice = usedWater * Double.valueOf(query.get("waterprice").toString());
-		double usedElectPrice = usedElect * Double.valueOf(query.get("electprice").toString());
-		params.put("usedwaterprice", String.valueOf(usedWaterPrice));
-		params.put("usedelectprice", String.valueOf(usedElectPrice));
-		
+//		params.put("electprice", query.get("electprice").toString());
+//		params.put("internet", query.get("internet").toString());
+//		params.put("ip", query.get("ip").toString());
+//		params.put("trash", query.get("trash").toString());
+//		params.put("keycount", query.get("keycount").toString());
+//		params.put("keyprice", query.get("keyprice").toString());
+////		params.put("times", times.toString());
+//		int sumkeyprice = Integer.valueOf(query.get("keycount").toString())*Integer.valueOf(query.get("keyprice").toString());
+//		params.put("sumkeyprice", String.valueOf(sumkeyprice));
+		params.put("page_id", "room_checkin_query");
 		model.put("params", params);
 		return "room_checkin_query_page";
 	}

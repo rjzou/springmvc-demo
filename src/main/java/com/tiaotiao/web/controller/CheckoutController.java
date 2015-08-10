@@ -60,6 +60,7 @@ public class CheckoutController extends BaseController {
 		model.put("types", types);
 		List<House> houses = houseService.selectAllHouse();
 		model.put("houses", houses);
+		params.put("page_id", "room_checkout");
 		model.put("params", params);
 		return "room_checkout";
 	}
@@ -115,6 +116,7 @@ public class CheckoutController extends BaseController {
 		} catch (Exception e) {
 				model.addAttribute("message", "保存失败,10秒钟自动返回,错误信息:"+e.getMessage());
 		}
+		params.put("page_id", "room_checkout");
 		model.put("params", params);
 		return "room_tocheckout";
 	}
@@ -169,6 +171,7 @@ public class CheckoutController extends BaseController {
 			params.put("msg", msg);
 			params.put("paymoney", String.valueOf(paymoney));
 		}
+		params.put("page_id", "room_checkout");
 		model.put("params", params);
 		return "room_tocheckout";
 	}

@@ -16,8 +16,8 @@
 	  <c:if test="${!empty message}">  
             <div class="alert alert-success" role="alert">${message}</div>
       </c:if> 
-      <input type="hidden" id="hiddenHouseid" name="hiddenHouseid" value="${houseid}"/>
-      <input type="hidden" id="hiddenRoomno" name="hiddenRoomno" value="${roomno}"/>
+      <input type="hidden" id="houseid" name="houseid" value="${params.houseid}"/>
+      <input type="hidden" id="roomno" name="roomno" value="${params.roomno}"/>
 		<div class="form-group">
 		<label class="control-label" for="selectHouse">楼房</label>
 		<div class="input-group">
@@ -64,7 +64,7 @@
 	    </div>
 		<div class="form-group">
 			<label class="control-label" for="inputDescription">备注</label>
-			<input type="text" class="form-control" id="inputDescription" name="inputDescription"  value="${description}"
+			<input type="text" class="form-control" id="inputDescription" name="inputDescription"  value="${params.description}"
 				placeholder="备注">
 		</div>
 		<button type="submit" class="btn btn-primary">保存</button>

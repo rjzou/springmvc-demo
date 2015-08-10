@@ -10,11 +10,11 @@
 </head>
 <body>
 <div class="row">
-  <form class="navbar-form navbar-left" role="search">
+  <form class="navbar-form navbar-left" role="search" method="post">
   
   <div class="form-group">
   
-    <input type="text" class="form-control" placeholder="Search">
+    <input type="text" class="form-control"  id="housename" name="housename" placeholder="请输入楼房名称"  value="${params.housename}">
   </div>
   <button type="submit" class="btn btn-default">查询</button>
   <a class="btn btn-primary" href="${ctx}/house_toadd" role="button">新建楼房</a>
@@ -25,7 +25,7 @@
 			<thead>
 				<tr>
 					<th>楼房编号</th>
-					<th>楼房名字</th>
+					<th>楼房名称</th>
 					<th>备注</th>
 					<th>操作</th>
 				</tr>
@@ -38,8 +38,8 @@
 						<td>${item.description }</td>
 						<td>
 							<a class="btn btn-info btn-sm" href="${ctx}/house_toedit?id=${item.id }" role="button">编辑</a>
-							<a class="btn btn-warning btn-sm" href="${ctx}/house_toadd" role="button">删除</a>
-							<a class="btn btn-default btn-sm" href="${ctx}/house_toadd" role="button">禁用</a>
+							<a class="btn btn-warning btn-sm" href="${ctx}/house_todel?id=${item.id }" role="button" >删除</a>
+							<a class="btn btn-default btn-sm" href="${ctx}/house_todisabled?id=${item.id }" role="button" disabled>禁用</a>
 						</td>
 					</tr>
 				</c:forEach>

@@ -11,7 +11,7 @@
 </head>
 <body>
 <div class="row">
-	<form role="form" method="post" action="${ctx}/room_checkout_add">
+	<form role="form" method="post" action="#">
 	  <c:if test="${!empty message}">  
             <div class="alert alert-success" role="alert">${message}</div>
             <script type="text/javascript">
@@ -31,10 +31,13 @@
             </script>
       </c:if>  
       <div class="form-group">
-      	<button type="submit" class="btn btn-primary" data-toggle="confirmation"  data-placement="bottom" data-popout="true" <c:if test="${!empty danger}">disabled</c:if> >确认退房</button>
-		<a class="btn btn-default" href="${ctx}/room_checkout" role="button">返回</a>
+		<a class="btn btn-default" href="${ctx}/room_money_query" role="button">返回</a>
 	  </div>
       <table class="table table-bordered">
+      <tr>
+            <th class="col-sm-2">收租周期</th>
+            <td>第${params.times}次</td>
+        </tr>
         <tr>
             <th class="col-sm-2">楼房</th>
             <td>${params.housename}</td>
@@ -47,10 +50,17 @@
             <th class="col-sm-2">入住姓名</th>
             <td>${params.customname}</td>
         </tr>
+        <tr>
+            <th class="col-sm-2">月租(元)</th>
+            <td><span class="label label-success">${params.monthmoney}</span></td>
+        </tr>
+         <c:if test="${params.times == 1}">  
   		<tr>
             <th class="col-sm-2">押金(元)</th>
             <td><span class="label label-success">${params.pressmoney}</span></td>
         </tr>
+         </c:if>  
+         <c:if test="${params.times > 1}">  
          <tr>
             <th class="col-sm-2">用水费(元)</th>
             <td>
@@ -59,7 +69,7 @@
 				       <span class="label label-danger">没有抄水表</span>
 				    </c:when>
 				    <c:otherwise>
-				        (${params.curwater}-${params.water})*${params.waterprice} = <span class="label label-danger">${params.usedwaterprice}</span>
+				        (${params.water}-${params.pre_water})*${params.waterprice} = <span class="label label-success">${params.usedwaterprice}</span>
 				    </c:otherwise>
 				</c:choose>
             </td>
@@ -72,35 +82,56 @@
 				       <span class="label label-danger">没有抄电表</span>
 				    </c:when>
 				    <c:otherwise>
-				        (${params.curelect}-${params.elect})*${params.electprice} = <span class="label label-danger">${params.usedelectprice}</span>
+				        (${params.elect}-${params.pre_elect})*${params.electprice} = <span class="label label-success">${params.usedelectprice}</span>
 				    </c:otherwise>
 				</c:choose>
             </td>
         </tr>
+         </c:if>  
           <tr>
             <th class="col-sm-2">网费(元)</th>
-            <td><span class="label label-danger">${params.internet}</span></td>
+            <td><span class="label label-success">${params.internet}</span></td>
         </tr>
          <tr>
             <th class="col-sm-2">卫生费(元)</th>
-            <td><span class="label label-danger">${params.trash}</span></td>
+            <td><span class="label label-success">${params.trash}</span></td>
         </tr>
+         <c:if test="${params.times == 1}">  
          <tr>
             <th class="col-sm-2">钥匙押金(元)</th>
-            <td>${params.keycount} 个 * ${params.keyprice} 元/个 = <span class="label label-danger">${params.sumkeyprice}</span></td>
+            <td>${params.keycount} 个 * ${params.keyprice} 元/个 = <span class="label label-success">${params.sumkeyprice}</span></td>
         </tr>
+         </c:if>  
         <tr>
-            <th class="col-sm-2">需要退费(押金-水费-电费-网费-卫生费-钥匙押金)</th>
+            <th class="col-sm-2">总收费用(房租
+             <c:if test="${params.times == 1}">  
+            +押金
+             </c:if>  
+            +水费+电费+网费+卫生费
+             <c:if test="${params.times == 1}">  
+            +钥匙押金
+             </c:if>  
+            )</th>
             <td>
             	 <c:choose>
 				    <c:when test="${!empty danger}">
 				       <h3><span class="label label-danger">没有抄水电表</span></h3>
 				    </c:when>
 				    <c:otherwise>
-	            <span class="label label-success">${params.pressmoney}</span>-<span class="label label-danger">${params.usedwaterprice}</span>
-	            -<span class="label label-danger">${params.usedelectprice}</span>-<span class="label label-danger">${params.internet}</span>
-	            -<span class="label label-danger">${params.trash}</span>-<span class="label label-danger">${params.sumkeyprice}</span>
-	             = <h3>${params.msg}<span class="label label-warning">${params.paymoney} 元</span></h3>
+	            <span class="label label-success">${params.monthmoney}</span>
+	            <c:if test="${params.times == 1}">  
+	            +<span class="label label-success">${params.pressmoney}</span>
+	            </c:if>  
+	            <c:if test="${params.times > 1}">  
+	            +<span class="label label-success">${params.usedwaterprice}</span>
+	            +<span class="label label-success">${params.usedelectprice}</span>
+	            </c:if>  
+	            +<span class="label label-success">${params.internet}</span>
+	            +<span class="label label-success">${params.trash}</span>
+	            <c:if test="${params.times == 1}">  
+	            +<span class="label label-success">${params.sumkeyprice}</span>
+	             </c:if>  
+	             = <h3>${params.msg}<span class="label label-warning">${params.roommoney} 元</span></h3>
               		</c:otherwise>
 				</c:choose>
              </td>
@@ -109,16 +140,8 @@
  	<input type="hidden" id="houseid" name="houseid" value="${params.houseid}"/>
  	<input type="hidden" id="roomno" name="roomno" value="${params.roomno}"/>
  	<input type="hidden" id="paymoney" name="paymoney" value="${params.paymoney}"/>
-		<button type="submit" class="btn btn-primary" data-toggle="confirmation" data-placement="top" data-popout="true" <c:if test="${!empty danger}">disabled</c:if> >确认退房</button>
-		<a class="btn btn-default" href="${ctx}/room_checkout" role="button">返回</a>
+		<a class="btn btn-default" href="${ctx}/room_money_query" role="button">返回</a>
 	</form>
 </div>
-<script type="text/javascript">
-$($('[data-toggle="confirmation"]').confirmation({
-	title:"确定要退房吗?",
-	onConfirm: function(event) { return true; },
-	onCancel: function(event) { return false; }
-}));
-</script>
 </body>
 </html>

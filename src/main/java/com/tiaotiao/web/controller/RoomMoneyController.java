@@ -45,7 +45,7 @@ public class RoomMoneyController extends BaseController {
 	private CheckoutService checkoutService;
 	
 	@Resource
-	private WaterElectService waterelectService;
+	private WaterElectService waterElectService;
 	
 	@Resource
 	private RoomMoneyService roomMoneyService;
@@ -60,6 +60,7 @@ public class RoomMoneyController extends BaseController {
 		model.put("types", types);
 		List<House> houses = houseService.selectAllHouse();
 		model.put("houses", houses);
+		params.put("page_id", "room_money");
 		model.put("params", params);
 		return "room_money";
 	}
@@ -89,8 +90,8 @@ public class RoomMoneyController extends BaseController {
 //		params.put("sumkeyprice", String.valueOf(sumkeyprice));
 		int cur_year = DateUtil.getThisYear();
 		int cur_month = DateUtil.getThisMonth();
-		WaterElect prewe = waterelectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month -1);
-		WaterElect curwe = waterelectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month);
+		WaterElect prewe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month -1);
+		WaterElect curwe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month);
 		if (curwe == null) {
 			model.addAttribute("danger", "本月该房间还没有抄水电表，请先抄水电表,10秒钟自动返回");
 		}else{
@@ -111,6 +112,7 @@ public class RoomMoneyController extends BaseController {
 //			params.put("msg", msg);
 			params.put("roommoney", String.valueOf(roommoney));
 		}
+		params.put("page_id", "room_money");
 		model.put("params", params);
 		return "room_to_money";
 	}
@@ -167,8 +169,8 @@ public class RoomMoneyController extends BaseController {
 		params.put("roommoney", String.valueOf(roommoney));
 		int cur_year = DateUtil.getThisYear();
 		int cur_month = DateUtil.getThisMonth();
-		WaterElect prewe = waterelectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month -1);
-		WaterElect curwe = waterelectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month);
+		WaterElect prewe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month -1);
+		WaterElect curwe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month);
 		int usedWater = curwe.getWater() - prewe.getWater();
 		int usedElect = curwe.getElect() - prewe.getElect();
 		double usedWaterPrice = usedWater * curwe.getWaterprice();
@@ -179,10 +181,79 @@ public class RoomMoneyController extends BaseController {
 		params.put("electprice", String.valueOf(curwe.getElectprice()));
 		params.put("usedwaterprice", String.valueOf(usedWaterPrice));
 		params.put("usedelectprice", String.valueOf(usedElectPrice));
-		
+		params.put("page_id", "room_money");
 		model.put("params", params);
 		return "room_to_money";
 	}
 		
+	@RequestMapping(value = "/room_money_query", method = RequestMethod.GET)
+	public String roomMoneyQuery(ModelMap model ,@RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
+		Page<Map<String, Object>> list = roomMoneyService.queryAllRoomMoneyByParams(params, page); 
+		model.put("p", cpage);
+		model.put("list", list);
+		List<RoomType> types = roomtypeService.selectAllRoomType();
+		model.put("types", types);
+		List<House> houses = houseService.selectAllHouse();
+		model.put("houses", houses);
+		model.put("params", params);
+		params.put("page_id", "room_money_query");
+		return "room_money_query";
+	}
+	@RequestMapping(value = "/room_money_query", method = RequestMethod.POST)
+	public String roomMoneyQuerySearch(ModelMap model , @RequestParam Map<String, String> params,  @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+		return this.roomMoneyQuery(model, params, cpage);
+	}	
 	
+	@RequestMapping(value = "/room_money_query_page", method = RequestMethod.GET)
+	public String roomMoneyQueryPage(@RequestParam Map<String, String> params,ModelMap model) throws Exception {
+		int houseid = Integer.valueOf(params.get("houseid"));
+		int roomno = Integer.valueOf(params.get("roomno"));
+		int year = Integer.valueOf(params.get("year"));
+		int month = Integer.valueOf(params.get("month"));
+		Map<String,Object> query = roomMoneyService.getRoomMoneyQueryPageMapById(houseid, roomno, year, month);
+		
+		Object times = checkinService.getRoomMoneyTimes(houseid, roomno, year, month);
+		
+		params.put("houseid", query.get("houseid").toString());
+		params.put("housename", query.get("housename").toString());
+		params.put("roomno", query.get("roomno").toString());
+		params.put("customname", query.get("customname").toString());
+		params.put("monthmoney", query.get("monthmoney").toString());
+		params.put("pressmoney", query.get("pressmoney").toString());
+		params.put("in_day", query.get("in_day").toString());
+		params.put("s_date", query.get("s_date").toString());
+		params.put("s_date", query.get("s_date").toString());
+		params.put("s_date", query.get("s_date").toString());
+		params.put("roommoney", query.get("roommoney").toString());
+		params.put("d_year", query.get("d_year").toString());
+		params.put("d_month", query.get("d_month").toString());
+		params.put("water", query.get("water").toString());
+		params.put("waterprice", query.get("waterprice").toString());
+		params.put("elect", query.get("elect").toString());
+		if (Integer.valueOf(times.toString()) > 1) {
+			WaterElect prewe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,year,month -1);
+			params.put("pre_water", String.valueOf(prewe.getWater()));
+			params.put("pre_elect", String.valueOf(prewe.getElect()));
+			int usedWater = Integer.valueOf(query.get("water").toString()) - prewe.getWater();
+			int usedElect = Integer.valueOf(query.get("elect").toString()) - prewe.getElect() ;
+			double usedWaterPrice = usedWater * Double.valueOf(query.get("waterprice").toString());
+			double usedElectPrice = usedElect * Double.valueOf(query.get("electprice").toString());
+			params.put("usedwaterprice", String.valueOf(usedWaterPrice));
+			params.put("usedelectprice", String.valueOf(usedElectPrice));
+		}
+		
+		params.put("electprice", query.get("electprice").toString());
+		params.put("internet", query.get("internet").toString());
+		params.put("ip", query.get("ip").toString());
+		params.put("trash", query.get("trash").toString());
+		params.put("keycount", query.get("keycount").toString());
+		params.put("keyprice", query.get("keyprice").toString());
+		params.put("times", times.toString());
+		int sumkeyprice = Integer.valueOf(query.get("keycount").toString())*Integer.valueOf(query.get("keyprice").toString());
+		params.put("sumkeyprice", String.valueOf(sumkeyprice));
+		params.put("page_id", "room_money_query");
+		model.put("params", params);
+		return "room_money_query_page";
+	}
 }

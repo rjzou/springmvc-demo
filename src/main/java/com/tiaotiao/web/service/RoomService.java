@@ -44,20 +44,49 @@ public class RoomService {
 	 * @throws Exception
 	 */
 	public int updateRoom(Room room,int sourceHouseid,int sourceRoomno) throws Exception{
-		Object[] params = { room.getHouseid(), room.getRoomno(), room.getMonthmoney(),room.getPressmoney(), room.getDescription(), room.getUpdated(),sourceHouseid, sourceRoomno};
-		String sql = "update t_room set houseid = ?,roomno = ?,monthmoney = ?,pressmoney = ?,description = ?,updated =? where houseid=? and roomno =? ";
+		Object[] params = { room.getHouseid(), room.getRoomno(), room.getMonthmoney(),room.getPressmoney(),room.getTypecode(), room.getDescription(), room.getUpdated(),sourceHouseid, sourceRoomno};
+		String sql = "update t_room set houseid = ?,roomno = ?,monthmoney = ?,pressmoney = ?,typecode = ? ,description = ?,updated =? where houseid=? and roomno =? ";
 		int n = dao.update(sql, params);
 		return n;
 	}
 	/**
-	 * 
+	 * 得到所有房间数据
 	 * @param params
 	 * @param pageRequest
 	 * @return
 	 * @throws Exception
 	 */
 	public Page<Map<String, Object>> selectAllRoom(Map<String, String> params, final PageRequest pageRequest) throws Exception{
-		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.description,r.created from t_room as r,t_house h where r.houseid = h.id ";
+		String houseid = params.get("houseid");
+		String roomno = params.get("roomno");
+		String roomtypeid = params.get("roomtypeid");
+//		Object[] params = { houseid,roomno};
+		String sql = " SELECT "+
+				" 	h.housename, "+
+				" 	r.houseid, "+
+				" 	r.roomno, "+
+				" 	r.monthmoney, "+
+				" 	r.pressmoney, "+
+				" 	r.description, "+
+				" 	r.created, "+ 
+				"   rt.typename, "+ 
+				"   r.typecode "+
+				" FROM "+
+				" 	t_room as r, "+
+				" 	t_house as h, "+
+				"   t_room_type as rt "+
+				" WHERE "+
+				" 	r.houseid = h.id "+
+				" and r.typecode = rt.typecode ";
+				if (houseid != null && houseid.trim().length() > 0 ) {
+					sql = sql + " AND r.houseid in ("+houseid+")";
+				}
+				if (roomno != null && roomno.trim().length() > 0 ) {
+					sql = sql + " AND r.roomno in ("+roomno+")";
+				}
+				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
+					sql = sql + " AND r.typecode in ('"+roomtypeid+"')";
+				}
 		return dao.find(sql, null, pageRequest);
 	}
 	/**

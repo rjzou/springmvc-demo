@@ -62,6 +62,7 @@ public class NetCfgController extends BaseController {
 		Page<Map<String, Object>> list = netCfgService.getEmptyNetListByParams(params, page); 
 		model.put("p", cpage);
 		model.put("list", list);
+		params.put("page_id", "netcfg");
 		model.put("params", params);
 		return "netcfg";
 	}
@@ -78,6 +79,7 @@ public class NetCfgController extends BaseController {
 		Page<Map<String, Object>> list = netCfgService.getHasNetListByParams(params, page); 
 		model.put("p", cpage);
 		model.put("list", list);
+		params.put("page_id", "netcfg");
 		model.put("params", params);
 		return "netcfg_close";
 	}	
@@ -114,7 +116,7 @@ public class NetCfgController extends BaseController {
 		int sum_price = (p_year * 12 +p_month )*40;
 		params.put("sumday", String.valueOf(sum_day));
 		params.put("sumprice", String.valueOf(sum_price));
-		
+		params.put("page_id", "netcfg");
 		model.put("params", params);
 		return "netcfg_toclose";
 	}	
@@ -136,6 +138,7 @@ public class NetCfgController extends BaseController {
 		params.put("roomno", String.valueOf(netCfgMap.get("roomno")));
 		params.put("customname", String.valueOf(netCfgMap.get("customname")));
 		params.put("netprice", String.valueOf(netCfgMap.get("netprice")));
+		params.put("page_id", "netcfg");
 		model.put("params", params);
 		return "netcfg_toopen";
 	}	
@@ -167,6 +170,7 @@ public class NetCfgController extends BaseController {
 			return netCfgSave(nc,params,model);
 		}
 //		params.put("year", params.get("selectYear"));
+		params.put("page_id", "netcfg");
 		model.put("params", params);
 		return "netcfg_toopen";
 	}
@@ -188,6 +192,7 @@ public class NetCfgController extends BaseController {
 		}
 		params.put("sumprice", String.valueOf(netprice));
 		params.put("calctxt", "重新计算应收");
+		params.put("page_id", "netcfg");
 		model.put("params", params);
 		return "netcfg_toopen";
 	}
@@ -217,6 +222,7 @@ public class NetCfgController extends BaseController {
 		} catch (Exception e) {
 			model.addAttribute("message", "开通网络失败,错误信息:"+e.getMessage());
 		}
+		params.put("page_id", "netcfg");
 		model.put("params", params);
 		return "netcfg_open";
 	}
@@ -247,6 +253,7 @@ public class NetCfgController extends BaseController {
 //			return netCfgSave(nc,params,model);
 //		}
 //		params.put("year", params.get("selectYear"));
+		params.put("page_id", "netcfg");
 		model.put("params", params);
 		return "netcfg_toopen";
 	}

@@ -1,5 +1,6 @@
 package com.tiaotiao.web.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -165,85 +166,92 @@ public class CheckinService {
 	public Page<Map<String, Object>> queryAllRoomfulByParams(Map<String, String> params, final PageRequest pageRequest) throws Exception{
 		String houseid = params.get("houseid");
 		String roomtypeid = params.get("roomtypeid");
+		String roomno = params.get("roomno");
+		int year = DateUtil.getThisYear();
+		int month = DateUtil.getThisMonth();
+		Object[] sql_params = {year,month};
+		
 		String sql = " SELECT "+
-				"     h.housename, "+
-				"     r.houseid, "+
-				"     r.roomno, "+
-				"     c.customname,"+
-				"     c.monthmoney, "+
-				"     c.pressmoney, "+
-				"     CONCAT_WS('-',c.year,c.month,c.day) as in_day, "+
-				"     CONCAT_WS('-',rm.year,rm.month,rm.day) as s_day, "+
-				"     rm.roommoney, "+ 
-				"     rm.year as d_year, "+ 
-				"     rm.month as d_month"+
+				"     h.housename, " +
+				"     r.houseid, " +
+				"     r.roomno, " + 
+				"	  rt.typename," +
+				"     c.customname," +
+				"     c.monthmoney, " +
+				"     c.pressmoney, " +
+				"     CONCAT_WS('-',c.year,c.month,c.day) as in_day, " +
+				"     CONCAT_WS('-',rm.year,rm.month,rm.day) as s_date, " +
+				"     rm.roommoney, " + 
+				"     rm.year as d_year, " + 
+				"     rm.month as d_month" +
 				" FROM "+
 				"     t_room AS r, "+
-				"     t_house AS h, "+
+				"     t_house AS h," + 
+				"     t_room_type AS rt, " +
 				"     t_checkin AS c, " +
-				"     t_room_money AS rm "+
-				" WHERE "+
-				"     r.houseid = h.id "+
-				" AND r.houseid = c.houseid "+
-				" AND r.roomno = c.roomno "+ 
-				" AND r.houseid = rm.houseid "+
-				" AND r.roomno = rm.roomno ";
+				"     t_room_money AS rm " +
+				" WHERE " +
+				"     r.houseid = h.id " +
+				" AND r.houseid = c.houseid " +
+				" AND r.roomno = c.roomno " + 
+				" AND r.typecode = rt.typecode " + 
+				" AND r.houseid = rm.houseid " +
+				" AND r.roomno = rm.roomno " + 
+				" AND rm.year = ? " + 
+			    " AND rm.month = ? ";
 				if (houseid != null && houseid.trim().length() > 0 ) {
 					sql = sql + " AND c.houseid in ("+houseid+")";
 				}
-				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
-					sql = sql + " AND c.typecode in ('"+roomtypeid+"')";
+				if (roomno != null && roomno.trim().length() > 0 ) {
+					sql = sql + " AND c.roomno in ("+roomno+")";
 				}
+				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
+					sql = sql + " AND rt.typecode in ('"+roomtypeid+"')";
+				}
+				
 				sql = sql + " order by rm.created desc ";
-		return dao.find(sql, null, pageRequest);
+		return dao.find(sql, sql_params, pageRequest);
 	}
 	
 	public Map<String,Object> getCheckinQueryPageMapById(int houseid,int roomno,int year,int month) throws Exception{
 		Object[] params = { houseid,roomno};
-//		int year = DateUtil.getThisYear();
-//		int month = DateUtil.getThisMonth() -1 ;
 		String sql = " SELECT "+
-                "     h.housename, "+
-                "     r.houseid, "+
-                "     r.roomno, "+
-                "     c.customname,"+
-                "     c.monthmoney, "+
-                "     c.pressmoney, "+
-                "     CONCAT_WS('-',c.year,c.month,c.day) as in_day, "+
-                "     CONCAT_WS('-',rm.year,rm.month,rm.day) as s_day, "+
-                "     rm.roommoney, "+ 
-                "     rm.year as d_year, "+ 
-                "     rm.month as d_month, " + 
-                "     c.internet,"+ 
-                "     c.ip,"+ 
-                "     c.trash, " + 
-                "     c.keycount, "+ 
-                "     c.keyprice,"+ 
-                "     we.water, "+ 
-                "     we.waterprice, "+ 
-                "     we.elect, "+ 
-                "     we.electprice"+
-                " FROM "+
-                "     t_room AS r, "+
-                "     t_house AS h, "+
-                "     t_checkin AS c, "
-                + "   t_waterelect AS we,"+
-                "     t_room_money AS rm "+
-                " WHERE "+
-                "     r.houseid = h.id "+
-                " AND r.houseid = c.houseid "+
-                " AND r.roomno = c.roomno "+ 
-                " AND c.houseid = we.houseid "+ 
-                " AND c.roomno = we.roomno " + 
-                " AND we.year = rm.year "+ 
-                " AND we.month = rm.month "+
-                " AND r.houseid = rm.houseid "+
-                " AND r.roomno = rm.roomno " + 
-					" AND we.year = " + year
-					+ " AND we.month = "+ month
-					+ " AND c.houseid = ? "+
-					" AND c.roomno = ? ";
+				" 	h.housename, "+
+				" 	r.houseid, "+
+				" 	r.roomno, "+
+				" 	c.customname, "+
+				" 	CONCAT_WS('-', c.year, c.month, c.day) AS in_date "+
+				" FROM "+
+				" 	t_room AS r, "+
+				" 	t_house AS h, "+
+				" 	t_checkin AS c "+
+				" WHERE "+
+				" 	r.houseid = h.id "+
+				" AND r.houseid = c.houseid "+
+				" AND r.roomno = c.roomno "+
+				" AND c.houseid = ? "+
+				" AND c.roomno = ? " ;
 		return dao.findFirst(sql, params);
+	}
+	
+	/**
+	 * 
+	 * @param houseid
+	 * @param roomno
+	 * @param year
+	 * @param month
+	 * @return
+	 * @throws SQLException
+	 */
+	public Object getRoomMoneyTimes(int houseid,int roomno,int year,int month) throws SQLException{
+		Object[] params = { houseid,roomno,year,month};
+		String sql =" select count(1) as times from t_room_money as rm "+
+					" where rm.houseid = ? " + 
+					" and rm.roomno = ? " + 
+					" and rm.year <= ? " + 
+					" and rm.month <= ?"; 
+		Object o= dao.findBy(sql,"times",params);
+		return o;
 	}
 	
 }

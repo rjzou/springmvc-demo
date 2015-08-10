@@ -25,7 +25,7 @@
 				placeholder="备注">
 		</div>
 		<button type="submit" class="btn btn-primary">保存</button>
-		<a class="btn btn-default" href="${ctx}/room" role="button">返回</a>
+		<a class="btn btn-default" href="${ctx}/house" role="button">返回</a>
 	</form>
 </div>
 </body>

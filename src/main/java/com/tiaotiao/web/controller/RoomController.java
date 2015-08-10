@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tiaotiao.web.entity.House;
 import com.tiaotiao.web.entity.Room;
+import com.tiaotiao.web.entity.RoomType;
 import com.tiaotiao.web.service.HouseService;
 import com.tiaotiao.web.service.RoomService;
+import com.tiaotiao.web.service.RoomTypeService;
  
 @Controller
 public class RoomController extends BaseController {
@@ -27,22 +29,33 @@ public class RoomController extends BaseController {
 	@Resource
 	private HouseService houseService;
 	
+	@Resource
+	private RoomTypeService roomtypeService;
+	
 	@RequestMapping(value = "/room", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = roomService.selectAllRoom(null, page); 
+		Page<Map<String, Object>> list = roomService.selectAllRoom(params, page); 
 		List<House> houses = houseService.selectAllHouse();
+		List<RoomType> types = roomtypeService.selectAllRoomType();
+		model.put("types", types);
 		model.put("p", cpage);
 		model.put("list", list);
-		model.put("params", params);
+		params.put("page_id", "room");
 		model.put("houses", houses);
+		model.put("params", params);
 		return "room";
 	}
-	
+	@RequestMapping(value = "/room", method = RequestMethod.POST)
+	public String roomSearch(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+		return this.printIndex(model, params, cpage);
+	}
 	@RequestMapping(value = "/room_toadd", method = RequestMethod.GET)
-	public String toRoomAdd(ModelMap model) throws Exception {
+	public String toRoomAdd(ModelMap model, @RequestParam Map<String, String> params) throws Exception {
 		List<House> houses = houseService.selectAllHouse();
+		params.put("page_id", "room");
 		model.put("houses", houses);
+		model.put("params", params);
 		return "room_add";
 	}	
  
@@ -76,6 +89,7 @@ public class RoomController extends BaseController {
 				model.addAttribute("message", "保存失败,错误信息:"+e.getMessage());
 			}
 		}
+		params.put("page_id", "room");
 		model.put("params", params);
 		return "room_add";
 	}
@@ -92,40 +106,50 @@ public class RoomController extends BaseController {
 		params.put("description", room.getDescription());
 		List<House> houses = houseService.selectAllHouse();
 		model.put("houses", houses);
+		params.put("page_id", "room");
 		model.put("params", params);
 		return "room_edit";
 	}
 	@RequestMapping(value = "/room_edit", method = RequestMethod.POST)
 	public String roomEdit(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
-		int hiddenHouseid = Integer.valueOf(params.get("hiddenHouseid"));
-		int hiddenRoomno = Integer.valueOf(params.get("hiddenRoomno"));
-		int houseid = Integer.valueOf(params.get("selectHouse"));
-		int roomno = Integer.valueOf(params.get("inputRoom"));
+		int houseid = Integer.valueOf(params.get("houseid"));
+		int roomno = Integer.valueOf(params.get("roomno"));
+		int input_houseid = Integer.valueOf(params.get("selectHouse"));
+		int input_roomno = Integer.valueOf(params.get("inputRoom"));
 		int monthmoney = Integer.valueOf(params.get("inputMonthMoney"));
 		int pressmoney = Integer.valueOf(params.get("inputPressMoney"));
+		String typecode = params.get("optionsRoomtypes");
 		String description = params.get("inputDescription");
+		
+		List<House> houses = houseService.selectAllHouse();
+		model.put("houses", houses);
+		
 		Room room = new Room();
-		room.setHouseid(houseid);
-		room.setRoomno(roomno);
+		room.setHouseid(input_houseid);
+		room.setRoomno(input_roomno);
 		room.setMonthmoney(monthmoney);
 		room.setPressmoney(pressmoney);
+		room.setTypecode(typecode);
 		room.setDescription(description);
 		room.setUpdated(System.currentTimeMillis());
 		try {
-			int n = roomService.updateRoom(room,hiddenHouseid,hiddenRoomno);
+			int n = roomService.updateRoom(room,houseid,roomno);
 			if (n > 0) {
-				model.addAttribute("message", "保存成功");
+				model.addAttribute("message", "房间信息修改成功");
 			}else{
-				model.addAttribute("message", "保存失败");
+				model.addAttribute("message", "房间信息修改失败");
 			}
 		} catch (Exception e) {
-			if (e.getMessage().toLowerCase().indexOf("primary") > 0) {
-				model.addAttribute("message", "保存失败,已经存在的房间号,请重新输入");
-			}else{
-				model.addAttribute("message", "保存失败,错误信息:"+e.getMessage());
-			}
+			model.addAttribute("message", "房间信息修改失败,错误信息:"+e.getMessage());
 		}
+		params.put("houseid", String.valueOf(input_houseid));
+		params.put("roomno", String.valueOf(input_roomno));
+		params.put("monthmoney", String.valueOf(monthmoney));
+		params.put("pressmoney", String.valueOf(pressmoney));
+		params.put("typecode", typecode);
+		params.put("description", description);
+		params.put("page_id", "room");
 		model.put("params", params);
-		return "room_add";
+		return "room_edit";
 	}
 }

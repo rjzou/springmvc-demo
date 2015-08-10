@@ -61,23 +61,23 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="${ctx}/room_checkin">开始入住 <span class="sr-only">(current)</span></a></li>
-            <li><a href="${ctx}/room_checkin_query">入住查询</a></li>
+            <li <c:if test="${params.page_id == 'room_checkin'}">class="active" </c:if>><a href="${ctx}/room_checkin">开始入住 <span class="sr-only">(current)</span></a></li>
+            <li <c:if test="${params.page_id == 'room_checkin_query'}">class="active" </c:if>><a href="${ctx}/room_checkin_query">入住查询</a></li>
             <li><a href="#">Analytics</a></li>
             <li><a href="#">Export</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="${ctx}/room_money">收房租</a></li>
-            <li><a href="${ctx}/room_checkout">现在退房</a></li>
-            <li><a href="${ctx}/room_waterelect">抄水电表</a></li>
-            <li><a href="${ctx}/netcfg">网络配置</a></li>
+            <li <c:if test="${params.page_id == 'room_money'}">class="active" </c:if>><a href="${ctx}/room_money">收房租</a></li>
+            <li <c:if test="${params.page_id == 'room_money_query'}">class="active" </c:if>><a href="${ctx}/room_money_query">收租查询</a></li>
+            <li <c:if test="${params.page_id == 'room_checkout'}">class="active" </c:if>><a href="${ctx}/room_checkout">现在退房</a></li>
+            <li <c:if test="${params.page_id == 'room_waterelect'}">class="active" </c:if>><a href="${ctx}/room_waterelect">抄水电表</a></li>
+            <li <c:if test="${params.page_id == 'netcfg'}">class="active" </c:if>><a href="${ctx}/netcfg">网络配置</a></li>
             <li><a href="">More navigation</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-          	<li><a href="${ctx}/house">楼房配置</a></li>
-            <li><a href="${ctx}/room">房间配置</a></li>
-            <li><a href="${ctx}/waterelectcfg">水电价配置</a></li>
-            <li><a href="">配置</a></li>
+          	<li <c:if test="${params.page_id == 'house'}">class="active" </c:if>><a href="${ctx}/house">楼房配置</a></li>
+            <li <c:if test="${params.page_id == 'room'}">class="active" </c:if>><a href="${ctx}/room">房间配置</a></li>
+            <li <c:if test="${params.page_id == 'waterelectcfg'}">class="active" </c:if>><a href="${ctx}/waterelectcfg">水电价配置</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

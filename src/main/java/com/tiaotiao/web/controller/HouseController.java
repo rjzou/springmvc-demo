@@ -26,15 +26,23 @@ public class HouseController extends BaseController {
 	@RequestMapping(value = "/house", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = houseService.selectAllHouse(null, page); 
+		Page<Map<String, Object>> list = houseService.selectAllHouse(params, page); 
 		model.put("p", cpage);
 		model.put("list", list);
+		model.put("params", params);
+		params.put("page_id", "house");
 		model.put("params", params);
 		return "house";
 	}
 	
+	@RequestMapping(value = "/house", method = RequestMethod.POST)
+	public String houseSearch(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+		return this.printIndex(model, params, cpage);
+	}
 	@RequestMapping(value = "/house_toadd", method = RequestMethod.GET)
-	public String toHouseAdd(ModelMap model) throws Exception {
+	public String toHouseAdd(ModelMap model , @RequestParam Map<String, String> params) throws Exception {
+		params.put("page_id", "house");
+		model.put("params", params);
 		return "house_add";
 	}
  
@@ -56,17 +64,42 @@ public class HouseController extends BaseController {
 		} catch (Exception e) {
 			model.addAttribute("message", "保存失败,错误信息:"+e.getMessage());
 		}
+		params.put("page_id", "house");
 		model.put("params", params);
 		return "house_add";
 	}
 	
 	@RequestMapping(value = "/house_toedit", method = RequestMethod.GET)
-	public String toHouseEdit(String id,ModelMap model) throws Exception {
+	public String toHouseEdit(String id,ModelMap model, @RequestParam Map<String, String> params) throws Exception {
 		model.put("id", id);
 		House house = houseService.selectHouseById(id);
 		model.put("housename", house.getHousename());
 		model.put("description", house.getDescription());
+		params.put("page_id", "house");
+		model.put("params", params);
 		return "house_edit";
+	}
+	
+	@RequestMapping(value = "/house_todel", method = RequestMethod.GET)
+	public String houseToDel(String id,ModelMap model, @RequestParam Map<String, String> params) throws Exception {
+		params.put("id", id);
+		House house = houseService.selectHouseById(id);
+		params.put("housename", house.getHousename());
+		params.put("description", house.getDescription());
+		params.put("page_id", "house");
+		model.put("params", params);
+		return "house_del";
+	}
+	@RequestMapping(value = "/house_del", method = RequestMethod.POST)
+	public String houseDel(String id,ModelMap model, @RequestParam Map<String, String> params) throws Exception {
+		params.put("id", id);
+		
+//		House house = houseService.selectHouseById(id);
+//		params.put("housename", house.getHousename());
+//		params.put("description", house.getDescription());
+//		params.put("page_id", "house");
+		model.put("params", params);
+		return "house";
 	}
 	@RequestMapping(value = "/house_edit", method = RequestMethod.POST)
 	public String houseEdit(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
@@ -92,6 +125,7 @@ public class HouseController extends BaseController {
 				model.addAttribute("message", "保存失败,错误信息:"+e.getMessage());
 			}
 		}
+		params.put("page_id", "house");
 		model.put("params", params);
 		return "house_add";
 	}
