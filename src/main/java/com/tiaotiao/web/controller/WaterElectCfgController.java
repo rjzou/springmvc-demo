@@ -18,11 +18,11 @@ import com.tiaotiao.web.service.CheckinService;
 import com.tiaotiao.web.service.CheckoutService;
 import com.tiaotiao.web.service.HouseService;
 import com.tiaotiao.web.service.RoomService;
-import com.tiaotiao.web.service.WaterelectCfgService;
-import com.tiaotiao.web.service.WaterelectService;
+import com.tiaotiao.web.service.WaterElectCfgService;
+import com.tiaotiao.web.service.WaterElectService;
  
 @Controller
-public class WaterelectCfgController extends BaseController {
+public class WaterElectCfgController extends BaseController {
  
 	@Resource
 	private RoomService roomService;
@@ -37,10 +37,10 @@ public class WaterelectCfgController extends BaseController {
 	private CheckinService checkinService;
 	
 	@Resource
-	private WaterelectService waterelectService;
+	private WaterElectService waterelectService;
 	
 	@Resource
-	private WaterelectCfgService waterelectCfgService;
+	private WaterElectCfgService waterelectCfgService;
 	
 	/**
 	 * 

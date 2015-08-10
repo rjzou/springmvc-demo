@@ -39,6 +39,10 @@
             <th class="col-sm-2">入住姓名</th>
             <td>${params.customname}</td>
         </tr>
+        <tr>
+            <th class="col-sm-2">上次抄表时间</th>
+            <td>${params.pre_s_day}</td>
+        </tr>
   		<tr>
             <th class="col-sm-2">上次水度数</th>
             <td>${params.water}</td>

@@ -18,7 +18,7 @@ import com.tiaotiao.web.utils.Dao;
  * @author zouruijin
  */
 @Service
-public class WaterelectCfgService {
+public class WaterElectCfgService {
 	@Resource
 	private Dao dao;
 	/**

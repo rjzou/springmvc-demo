@@ -23,8 +23,9 @@ import com.tiaotiao.web.service.CheckinService;
 import com.tiaotiao.web.service.CheckoutService;
 import com.tiaotiao.web.service.HouseService;
 import com.tiaotiao.web.service.RoomService;
-import com.tiaotiao.web.service.RoomtypeService;
-import com.tiaotiao.web.service.WaterelectService;
+import com.tiaotiao.web.service.RoomTypeService;
+import com.tiaotiao.web.service.WaterElectService;
+import com.tiaotiao.web.utils.DateUtil;
 
 import sun.applet.resources.MsgAppletViewer;
  
@@ -38,7 +39,7 @@ public class CheckoutController extends BaseController {
 	private HouseService houseService;
 	
 	@Resource
-	private RoomtypeService roomtypeService;
+	private RoomTypeService roomtypeService;
 	
 	@Resource
 	private CheckinService checkinService;
@@ -47,12 +48,12 @@ public class CheckoutController extends BaseController {
 	private CheckoutService checkoutService;
 	
 	@Resource
-	private WaterelectService waterelectService;
+	private WaterElectService waterelectService;
 	
 	@RequestMapping(value = "/room_checkout", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = checkoutService.selectAllNotEmptyRoom(params, page); 
+		Page<Map<String, Object>> list = checkoutService.getAllRoomfulByParams(params, page); 
 		model.put("p", cpage);
 		model.put("list", list);
 		List<RoomType> types = roomtypeService.selectAllRoomType();
@@ -142,7 +143,9 @@ public class CheckoutController extends BaseController {
 		params.put("keyprice", String.valueOf(checkin.get("keyprice")));
 		int sumkeyprice = Integer.valueOf(checkin.get("keycount").toString())*Integer.valueOf(checkin.get("keyprice").toString());
 		params.put("sumkeyprice", String.valueOf(sumkeyprice));
-		WaterElect we = waterelectService.selectWaterelectById(houseid, roomno);
+		int year = DateUtil.getThisYear();
+		int month = DateUtil.getThisMonth();// 获取月份
+		WaterElect we = waterelectService.getWaterElectById(houseid, roomno,year,month);
 		if (we == null) {
 			model.addAttribute("danger", "还没有抄水电表，不可以退房,10秒钟自动返回");
 		}else{
