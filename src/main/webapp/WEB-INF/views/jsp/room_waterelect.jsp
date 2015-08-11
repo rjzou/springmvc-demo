@@ -35,7 +35,8 @@
 					<th>栋</th>
 					<th>房间号</th>
 					<th>入住姓名</th>
-					<th>入住日期</th>
+					<th>入住时间</th>
+					<th>上次抄表时间</th>
 					<th>上次水读数</th>
 					<th>上次电读数</th>
 					<th>操作</th>
@@ -48,7 +49,8 @@
 						<td>${item.housename }</td>
 						<td>${item.roomno }</td>
 						<td>${item.customname }</td>
-						<td>${item.year }-${item.month }-${item.day }</td>
+						<td>${item.in_date }</td>
+						<td>${item.pre_s_date }</td>
 						<td>${item.water }</td>
 						<td>${item.elect }</td>
 						<td>

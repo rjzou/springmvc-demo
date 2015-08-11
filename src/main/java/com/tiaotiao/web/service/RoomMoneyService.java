@@ -30,9 +30,9 @@ public class RoomMoneyService {
 	 * @throws Exception
 	 */
 	public int insertRoomMoney(RoomMoney rm) throws Exception{
-		Object[] params = { rm.getHouseid(), rm.getRoomno(),rm.getRoommoney(),rm.getYear(),rm.getMonth(),rm.getDay(), rm.getCreated()};
-		String sql = "insert into t_room_money(houseid,roomno,roommoney,year,month,day,created) "
-				+ " values(?,?,?,?,?,?,?) ";
+		Object[] params = { rm.getHouseid(), rm.getRoomno(),rm.getMonthmoney(),rm.getPressmoney(),rm.getRoommoney(),rm.getYear(),rm.getMonth(),rm.getDay(), rm.getCreated()};
+		String sql = "insert into t_room_money(houseid,roomno,monthmoney,pressmoney,roommoney,year,month,day,created) "
+				+ " values(?,?,?,?,?,?,?,?,?) ";
 		int n = dao.update(sql, params);
 		return n;
 	}
@@ -43,8 +43,8 @@ public class RoomMoneyService {
 	 * @throws Exception
 	 */
 	public int updateRoomMoney(RoomMoney rm) throws Exception{
-		Object[] params = { rm.getRoommoney(),rm.getYear(), rm.getMonth(), rm.getUpdated() ,rm.getHouseid(), rm.getRoomno()};
-		String sql = "update t_room_money set roommoney = ?,year = ?,month = ?,updated =? where houseid=? and roomno =? ";
+		Object[] params = { rm.getMonthmoney(),rm.getPressmoney() , rm.getRoommoney(),rm.getYear(), rm.getMonth(), rm.getUpdated() ,rm.getHouseid(), rm.getRoomno()};
+		String sql = "update t_room_money set monthmoney = ?,pressmoney= ? , roommoney = ?,year = ?,month = ?,updated =? where houseid=? and roomno =? ";
 		int n = dao.update(sql, params);
 		return n;
 	}
@@ -87,12 +87,13 @@ public class RoomMoneyService {
 		String roomtypeid = params.get("roomtypeid");
 		int year = DateUtil.getThisYear();
 		int month = DateUtil.getThisMonth();
+		int pre_month = month - 1;
 		String sql = " SELECT "+
 				"     tmp.housename, "+
 				"     tmp.houseid, "+
 				"     tmp.roomno, "+
-				"     tmp.monthmoney, "+
-				"     tmp.pressmoney, "+
+				"     rm.monthmoney, "+
+				"     rm.pressmoney, "+
 				"     CONCAT_WS('-',rm.year,rm.month,rm.day) as pre_s_day, "+
 				"     rm.roommoney, " +
 				"     tmp.typecode, "+
@@ -128,12 +129,11 @@ public class RoomMoneyService {
 				"             t_room_money "+
 				"         WHERE "+
 				"             1 = 1 ";
-				sql = sql + " and year =  "+year;
-				sql = sql + " and month =  "+month;
-//				"     ) " ;
-//				sql = sql + " and year =  "+year;
-//				sql = sql + " and month =  "+month;
+				sql = sql + " and year =  " + year;
+				sql = sql + " and month =  " + month;
 				sql = sql + " ) ";
+				sql = sql + " and rm.year =  " + year;
+				sql = sql + " and rm.month =  " + pre_month;
 				if (houseid != null && houseid.trim().length() > 0 ) {
 					sql = sql + " AND tmp.houseid in ("+houseid+")";
 				}
@@ -153,8 +153,8 @@ public class RoomMoneyService {
 				"     r.roomno, " + 
 				"	  rt.typename," +
 				"     c.customname," +
-				"     c.monthmoney, " +
-				"     c.pressmoney, " +
+				"     rm.monthmoney, " +
+				"     rm.pressmoney, " +
 				"     CONCAT_WS('-',c.year,c.month,c.day) as in_day, " +
 				"     CONCAT_WS('-',rm.year,rm.month,rm.day) as s_date, " +
 				"     rm.roommoney, " + 
@@ -195,8 +195,8 @@ public class RoomMoneyService {
                 "     r.houseid, "+
                 "     r.roomno, "+
                 "     c.customname,"+
-                "     c.monthmoney, "+
-                "     c.pressmoney, "+
+                "     rm.monthmoney, "+
+                "     rm.pressmoney, "+
                 "     CONCAT_WS('-',c.year,c.month,c.day) as in_day, " + 
                 "     rm.year as s_year,"+ 
                 "     rm.month as s_month,"  + 
@@ -234,6 +234,55 @@ public class RoomMoneyService {
 				" AND c.roomno = ? "+
 				" AND we.year = ? "+ 
 				" AND we.month = ? " ;
+		return dao.findFirst(sql, params);
+	}
+	
+	/**
+	 *  显示入住信息
+	 * @param house_id
+	 * @param room_no
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String,Object> getRoomMoneyCheckinMapById(int houseid,int roomno) throws Exception{
+		int year = DateUtil.getThisYear();
+		int pre_month = DateUtil.getThisMonth() -1 ;
+		Object[] params = { houseid,roomno,year,pre_month};
+		String sql = " SELECT "+
+					"     h.housename, "+
+					"     c.houseid, "+
+					"     c.roomno, "+
+					"     c.customname, "+
+					"     c.iphone, "+
+					"     c.cardid, "+
+					"     rm.monthmoney, "+
+					"     rm.pressmoney, "+
+//					"     c.internet, "+
+					"     c.trash, "+
+					"     c.keycount, "+
+					"     c.keyprice, "+
+					"     CONCAT_WS('-',we.year,we.month,we.day) as pre_s_date, " + 
+					"     we.water, "+ 
+					"     we.elect, "+
+					"     c.created "+
+					" FROM "+
+					"     t_checkin as c, "+
+					"     t_house as h, "+
+					"     t_waterelect as we , "+ 
+					"  	  t_room_money as rm"+
+					" WHERE "+
+					"     c.houseid = h.id "+
+					" AND c.houseid = we.houseid "+
+					" AND c.roomno = we.roomno " + 
+					" AND c.houseid = rm.houseid " + 
+					" AND c.roomno = rm.roomno " + 
+					" AND we.year = rm.year " + 
+					" AND we.month = rm.month " + 
+					" AND c.houseid = ? "+
+					" AND c.roomno = ? "+
+					" AND we.year = ? "+ 
+					" AND we.month = ? ";
+				
 		return dao.findFirst(sql, params);
 	}
 }

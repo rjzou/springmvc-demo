@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tiaotiao.web.entity.Checkin;
 import com.tiaotiao.web.entity.House;
+import com.tiaotiao.web.entity.NetCfg;
 import com.tiaotiao.web.entity.Room;
 import com.tiaotiao.web.entity.RoomMoney;
 import com.tiaotiao.web.entity.RoomType;
@@ -24,6 +25,7 @@ import com.tiaotiao.web.entity.WaterElectCfg;
 import com.tiaotiao.web.service.CheckinService;
 import com.tiaotiao.web.service.CheckoutService;
 import com.tiaotiao.web.service.HouseService;
+import com.tiaotiao.web.service.NetCfgService;
 import com.tiaotiao.web.service.RoomMoneyService;
 import com.tiaotiao.web.service.RoomService;
 import com.tiaotiao.web.service.RoomTypeService;
@@ -57,6 +59,9 @@ public class CheckinController extends BaseController {
 	
 	@Resource
 	private RoomMoneyService roomMoneyService;
+	
+	@Resource
+	private NetCfgService netCfgService;
 	
 	@RequestMapping(value = "/room_checkin", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
@@ -123,12 +128,10 @@ public class CheckinController extends BaseController {
 			checkin.setCustomname(customname);
 			checkin.setIphone(iphone);
 			checkin.setCardid(cardid);
-			checkin.setMonthmoney(monthmoney);
-			checkin.setPressmoney(pressmoney);
 			checkin.setWater(water);
 			checkin.setElect(elect);
-			checkin.setIp(ip);
-			checkin.setInternet(internet);
+//			checkin.setIp(ip);
+//			checkin.setInternet(internet);
 			checkin.setTrash(trash);
 			checkin.setKeycount(keycount);
 			checkin.setKeyprice(keyprice);
@@ -163,13 +166,26 @@ public class CheckinController extends BaseController {
 			RoomMoney rm = new RoomMoney();
 			rm.setHouseid(houseid);
 			rm.setRoomno(roomno);
+			rm.setMonthmoney(monthmoney);
+			rm.setPressmoney(pressmoney);
 			rm.setRoommoney(sumprice);
 			rm.setYear(year);
 			rm.setMonth(month);
 			rm.setDay(day);
 			rm.setCreated(System.currentTimeMillis());
 			rm.setUpdated(System.currentTimeMillis());
-			return roomCheckinSave(checkin,we,rm,params,model);
+			
+			NetCfg nc = new NetCfg();
+			nc.setHouseid(houseid);
+			nc.setRoomno(roomno);
+			nc.setIp(ip);
+			nc.setNetprice(40);
+			nc.setYear(year);
+			nc.setMonth(month);
+			nc.setDay(day);
+			nc.setCreated(System.currentTimeMillis());
+			nc.setUpdated(System.currentTimeMillis());
+			return roomCheckinSave(checkin,we,rm,nc,params,model);
 		}
 		params.put("page_id", "room_checkin");
 		model.put("params", params);
@@ -210,25 +226,47 @@ public class CheckinController extends BaseController {
 	 * @return
 	 * @throws Exception
 	 */
-	public String roomCheckinSave(Checkin checkin,WaterElect we,RoomMoney rm,@RequestParam Map<String, String> params, ModelMap model) throws Exception {
+	public String roomCheckinSave(Checkin checkin,WaterElect we,RoomMoney rm,NetCfg nc,@RequestParam Map<String, String> params, ModelMap model) throws Exception {
 		int houseid = Integer.valueOf(params.get("houseid"));
 		int roomno = Integer.valueOf(params.get("roomno"));
 		
 		try {
-			Checkin entity = checkinService.getCheckinById(houseid, roomno);
-			int n = 0, m = 0 , o = 0;
-			if (entity != null) {
+			Checkin checkin_entity = checkinService.getCheckinById(houseid, roomno);
+			int n = 0 ;
+			if (checkin_entity != null) {
 				n = checkinService.updateCheckin(checkin);
-				m = waterElectService.updateWaterElect(we);
-				o = roomMoneyService.updateRoomMoney(rm);
 				
 			}else{
 				n = checkinService.insertCheckin(checkin);
+			}
+			WaterElect waterElect_entity = waterElectService.getWaterElectById(we.getHouseid(), we.getRoomno(), we.getYear(), we.getMonth());
+			int m = 0 ;
+			if (waterElect_entity != null) {
+				m = waterElectService.updateWaterElect(we);
+				
+			}else{
 				m = waterElectService.insertWaterElect(we);
+			}
+			
+			RoomMoney roomMoney_entity = roomMoneyService.getRoomMoneyById(rm.getHouseid(), rm.getRoomno(), rm.getYear(), rm.getMonth());
+			int o = 0;
+			if (roomMoney_entity != null) {
+				o = roomMoneyService.updateRoomMoney(rm);
+				
+			}else{
 				o = roomMoneyService.insertRoomMoney(rm);
 			}
 			
-			if (n > 0 && m > 0 && o > 0) {
+			NetCfg netCfg_entity = netCfgService.getNetCfgById(houseid, roomno);
+			int p = 0 ;
+			if (netCfg_entity != null) {
+				p = netCfgService.updateNetCfg(nc);
+				
+			}else{
+				p = netCfgService.insertNetCfg(nc);
+			}
+			
+			if (n > 0 && m > 0 && o > 0 && p > 0) {
 				model.addAttribute("message", "入住成功,应收 "+ rm.getRoommoney() +"元,10秒钟自动返回");
 			}else{
 				model.addAttribute("message", "入住失败,10秒钟自动返回");

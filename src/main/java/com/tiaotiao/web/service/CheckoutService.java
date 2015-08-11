@@ -128,37 +128,43 @@ public class CheckoutService {
 		String roomtypeid = params.get("roomtypeid");
 		int year = DateUtil.getThisYear();
 		int month = DateUtil.getThisMonth();
+		int pre_month = month - 1 ;
+		Object[] sql_params = { year , pre_month,year , pre_month, year , month };
 		String sql = " SELECT "+
 				" 	h.housename, "+
 				" 	r.houseid, "+
 				" 	r.roomno, "+
 				" 	c.customname, "+
-				" 	c.year, "+
-				" 	c.month, "+
-				" 	c.day, "+
-				" 	c.water, "+
-				" 	c.elect, "+
+				" 	CONCAT_WS('-',c.year,c.month,c.day) as in_date, "+
+				" 	rm.pre_s_date, "+
+				" 	we.water, "+
+				" 	we.elect, "+
 				" 	r.created "+
 				" FROM "+
 				" 	t_room as r, "+
 				" 	t_house as h, "+
-				" 	t_checkin as c "+
+				" 	t_checkin as c,"
+				+ " (select houseid,roomno,water,elect from t_waterelect where year=? and month=?) as we, "
+				+ " (select houseid,roomno,CONCAT_WS('-',year,month,day) as pre_s_date from t_room_money where year=? and month=?) as rm "+
 				" WHERE "+
 				" 	r.houseid = h.id "+
 				" AND c.houseid = r.houseid "+
 				" AND c.roomno = r.roomno "+
+				" AND c.houseid = we.houseid "+
+				" AND c.roomno = we.roomno "+
+				" AND c.houseid = rm.houseid "+
+				" AND c.roomno = rm.roomno "+
 				" and (r.houseid,r.roomno) not in "+
-				" (select houseid,roomno from t_waterelect where 1=1";
-				sql = sql + " and year =  "+year;
-				sql = sql + " and month =  "+month;
-				sql = sql + ") ";
+				" (select houseid,roomno from t_waterelect where 1=1"+
+				" and year = ? " +
+				" and month = ? ) ";
 				if (houseid != null && houseid.trim().length() > 0 ) {
 					sql = sql + " and r.houseid in ("+houseid+")";
 				}
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
 					sql = sql + " and r.typecode in ('"+roomtypeid+"')";
 				}
-		return dao.find(sql, null, pageRequest);
+		return dao.find(sql, sql_params, pageRequest);
 	}
 	/**
 	 * 取得一栋楼退房数量

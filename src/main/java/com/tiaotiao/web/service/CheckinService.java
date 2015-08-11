@@ -98,9 +98,9 @@ public class CheckinService {
 	 * @throws Exception
 	 */
 	public Map<String,Object> getCheckinMapById(int houseid,int roomno) throws Exception{
-		Object[] params = { houseid,roomno};
 		int year = DateUtil.getThisYear();
-		int month = DateUtil.getThisMonth() -1 ;
+		int pre_month = DateUtil.getThisMonth() -1 ;
+		Object[] params = { houseid,roomno,year,pre_month};
 		String sql = " SELECT "+
 					"     h.housename, "+
 					"     c.houseid, "+
@@ -114,7 +114,7 @@ public class CheckinService {
 					"     c.trash, "+
 					"     c.keycount, "+
 					"     c.keyprice, "+
-					"     CONCAT_WS('-',c.year,c.month,c.day) as pre_s_day, " + 
+					"     CONCAT_WS('-',we.year,we.month,we.day) as pre_s_date, " + 
 					"     we.water, "+ 
 					"     we.elect, "+
 					"     c.created "+
@@ -126,10 +126,11 @@ public class CheckinService {
 					"     c.houseid = h.id "+
 					" AND c.houseid = we.houseid "+
 					" AND c.roomno = we.roomno " + 
-					" AND we.year = " + year
-					+ " AND we.month = "+ month
-					+ " AND c.houseid = ? "+
-					" AND c.roomno = ? ";
+					" AND c.houseid = ? "+
+					" AND c.roomno = ? "+
+					" AND we.year = ? "+ 
+					" AND we.month = ? ";
+				
 		return dao.findFirst(sql, params);
 	}
 	
@@ -177,8 +178,8 @@ public class CheckinService {
 				"     r.roomno, " + 
 				"	  rt.typename," +
 				"     c.customname," +
-				"     c.monthmoney, " +
-				"     c.pressmoney, " +
+				"     rm.monthmoney, " +
+				"     rm.pressmoney, " +
 				"     CONCAT_WS('-',c.year,c.month,c.day) as in_day, " +
 				"     CONCAT_WS('-',rm.year,rm.month,rm.day) as s_date, " +
 				"     rm.roommoney, " + 
@@ -252,19 +253,28 @@ public class CheckinService {
 		String sql = " SELECT "+
 						"         ci.houseid, "+
 						"         ci.roomno, "+
-						"         ci.monthmoney, "+
-						"         ci.pressmoney, "+
+						"         rm.monthmoney, "+
+						"         rm.pressmoney, "+
 						"         CONCAT_WS('-',rm.year,rm.month,rm.day) as s_date, "+
 						"         ci.trash, "+
 						"         ci.internet, "+
 						"         (ci.keycount * ci.keyprice) as sum_keyprice, "+
+						"         we.water, "+
+						"         we.waterprice, "+
+						"         we.elect, "+
+						"         we.electprice, "+
 						"         rm.roommoney "+
 						" FROM "+
-						"         t_checkin as ci, "+
-						"         t_room_money AS rm "+
+						"         t_checkin as ci, "+ 
+						" 		  t_waterelect as we,"+
+						"         t_room_money as rm "+
 						" WHERE "+
 						"         ci.houseid = rm.houseid "+
-						" AND ci.roomno = rm.roomno ";
+						" AND ci.roomno = rm.roomno " + 
+						" AND ci.houseid = we.houseid " +
+						" AND ci.roomno = we.roomno " +
+						" AND we.year = rm.year " + 
+						" AND we.month = rm.month ";
 						if (houseid != null && houseid.trim().length() > 0 ) {
 							sql = sql + " AND ci.houseid in ("+houseid+")";
 						}

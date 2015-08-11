@@ -58,11 +58,11 @@
 					<th>*</th>
 					<th>栋</th>
 					<th>房间号</th>
-					<th>实收月租</th>
-					<th>实收押金</th>
-					<th>上月收费日期</th>
-					<th>本月应收日期</th>
+					<th>上月实收月租</th>
+					<th>上月实收押金</th>
+					<th>上月收租日期</th>
 					<th>上月实收费用</th>
+					<th>本月应收日期</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -72,11 +72,11 @@
 						<td>${status.count }</td>
 						<td>${item.housename }</td>
 						<td>${item.roomno }</td>
-						<td>${item.monthmoney }</td>
-						<td>${item.pressmoney }</td>
+						<td>${item.monthmoney } 元</td>
+						<td>${item.pressmoney } 元</td>
 						<td>${item.pre_s_day }</td>
+						<td>${item.roommoney } 元</td>
 						<td>${item.cin_day }</td>
-						<td>${item.roommoney }</td>
 						<td>
 							<a class="btn btn-primary btn-sm" href="${ctx}/room_to_money?houseid=${item.houseid }&roomno=${item.roomno }" role="button">收房租</a>
 						</td>

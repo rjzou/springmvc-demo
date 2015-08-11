@@ -47,9 +47,33 @@ public class NetCfgService {
 		int n = dao.update(sql, params);
 		return n;
 	}
-	
 	/**
-	 * 取得水电价格表实体数据
+	 * 
+	 * @param nc
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateNetCfgPrice(NetCfg nc) throws Exception{
+		Object[] params = { nc.getNetprice(), nc.getUpdated(),nc.getHouseid(),nc.getRoomno()};
+		String sql = "update t_net_cfg set netprice = ?,updated =? where houseid=? and roomno =? ";
+		int n = dao.update(sql, params);
+		return n;
+	}
+	/**
+	 * 
+	 * @param houseid
+	 * @param roomno
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteNetCfg(int houseid,int roomno) throws Exception{
+		Object[] params = { houseid, roomno};
+		String sql = "delete from  t_net_cfg where houseid=? and roomno =? ";
+		int n = dao.update(sql, params);
+		return n;
+	}
+	/**
+	 * 取得在用网络表实体数据
 	 * @param house_id
 	 * @param room_no
 	 * @return

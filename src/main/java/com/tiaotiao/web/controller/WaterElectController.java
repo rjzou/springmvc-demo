@@ -72,7 +72,7 @@ public class WaterElectController extends BaseController {
 		params.put("cardid", String.valueOf(checkin.get("cardid")));
 //		params.put("year", String.valueOf(checkin.get("year")));
 //		params.put("month", String.valueOf(checkin.get("month")));
-		params.put("pre_s_day", String.valueOf(checkin.get("pre_s_day")));
+		params.put("pre_s_date", String.valueOf(checkin.get("pre_s_date")));
 		params.put("water", String.valueOf(checkin.get("water")));
 		params.put("elect", String.valueOf(checkin.get("elect")));
 		params.put("page_id", "room_waterelect");

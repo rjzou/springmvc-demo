@@ -8,6 +8,8 @@ package com.tiaotiao.web.entity;
 public class RoomMoney {
 	private int houseid;
 	private int roomno;
+	private int monthmoney;
+	private int pressmoney;
 	private double roommoney;
 	private int year;
 	private int month;
@@ -27,6 +29,18 @@ public class RoomMoney {
 		this.roomno = roomno;
 	}
 	
+	public int getMonthmoney() {
+		return monthmoney;
+	}
+	public void setMonthmoney(int monthmoney) {
+		this.monthmoney = monthmoney;
+	}
+	public int getPressmoney() {
+		return pressmoney;
+	}
+	public void setPressmoney(int pressmoney) {
+		this.pressmoney = pressmoney;
+	}
 	public double getRoommoney() {
 		return roommoney;
 	}

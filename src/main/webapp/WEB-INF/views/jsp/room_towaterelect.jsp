@@ -23,7 +23,7 @@
             </script>
       </c:if> 
        <div class="form-group">
-      		<button type="submit" class="btn btn-primary">保存</button>
+      		<button type="submit" class="btn btn-primary">保存抄表</button>
 			<a class="btn btn-default" href="${ctx}/room_waterelect" role="button">返回</a>
 	   </div>
       <table class="table table-bordered">
@@ -41,7 +41,7 @@
         </tr>
         <tr>
             <th class="col-sm-2">上次抄表时间</th>
-            <td>${params.pre_s_day}</td>
+            <td>${params.pre_s_date}</td>
         </tr>
   		<tr>
             <th class="col-sm-2">上次水度数</th>
@@ -66,7 +66,7 @@
 			<input type="number" class="form-control" id="inputElect" name="inputElect" value="${params.inputElect}"
 				placeholder="输入电读数" required>
 		</div>
-		<button type="submit" class="btn btn-primary">保存</button>
+		<button type="submit" class="btn btn-primary">保存抄表</button>
 		<a class="btn btn-default" href="${ctx}/room_waterelect" role="button">返回</a>
 	</form>
 </div>

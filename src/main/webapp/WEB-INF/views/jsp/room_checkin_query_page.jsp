@@ -48,7 +48,7 @@
         </tr>
         <tr>
             <th class="col-sm-2">入住日期</th>
-            <td><span class="label label-success">${params.in_date}</span> - 现在</td>
+            <td><span class="label label-success">${params.in_date}</span> 已经入住 <span class="label label-success">x</span> 天</td>
         </tr>
 		</table>
 		
@@ -57,14 +57,15 @@
 		  <div class="panel-heading">收费记录</div>
 		
 		  <!-- Table -->
-		  <table class="table">
+		  <div class="table-responsive">
+		  <table class="table table-condensed">
 		  <thead>
 		  <tr>
 		  	<th class="col-sm-1">实收日期</th>
 		  	<th class="col-sm-1">实收月租</th>
 		  	<th class="col-sm-1">实收押金</th>
-		  	<th class="col-sm-1">实收水费</th>
-		  	<th class="col-sm-1">实收电费</th>
+		  	<th class="col-sm-1">实抄水/电读数</th>
+		  	<th class="col-sm-1">本月水/电价</th>
 		  	<th class="col-sm-1">实收网费</th>
 		  	<th class="col-sm-1">实收卫生费</th>
 		  	<th class="col-sm-1">实收钥匙串押金</th>
@@ -77,8 +78,8 @@
 	            <td><span class="label label-success">${item.s_date }</span></td>
 	            <td><span class="label label-success">${item.monthmoney }</span></td>
 	            <td><span class="label label-success">${item.pressmoney}</span></td>
-	            <td><span class="label label-success"></span></td>
-	            <td><span class="label label-success"></span></td>
+	            <td><span class="label label-success">${item.water}/${item.elect}</span></td>
+	            <td><span class="label label-success">${item.waterprice}/${item.electprice}</span></td>
 	            <td><span class="label label-success">${item.internet}</span></td>
 	            <td><span class="label label-success">${item.trash}</span></td>
 	            <td><span class="label label-success">${item.sum_keyprice}</span></td>
@@ -87,6 +88,7 @@
         	</c:forEach>
         	</tbody>
 		  </table>
+		  </div>
 		</div>
  	<input type="hidden" id="houseid" name="houseid" value="${params.houseid}"/>
  	<input type="hidden" id="roomno" name="roomno" value="${params.roomno}"/>
