@@ -45,11 +45,31 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
+          	<li><a href="#">${pageContext.request.userPrincipal.name}</a></li>
             <li><a href="${ctx}/main">Dashboard</a></li>
             <li><a href="#">Settings</a></li>
             <li><a href="#">Profile</a></li>
             <li><a href="#">Help</a></li>
-            <li><a href="${ctx}/loginout">退出</a></li>
+            <li>
+            	<sec:authorize access="hasRole('ROLE_USER')">
+				<!-- For login user -->
+				<c:url value="/j_spring_security_logout" var="logoutUrl" />
+				<form action="${logoutUrl}" method="post" id="logoutForm">
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
+				</form>
+				<script>
+					function formSubmit() {
+						document.getElementById("logoutForm").submit();
+					}
+				</script>
+		
+				<c:if test="${pageContext.request.userPrincipal.name != null}">
+						<a href="javascript:formSubmit()"> Logout </a>
+				</c:if>
+
+			</sec:authorize>
+            </li>
           </ul>
           <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">

@@ -25,14 +25,15 @@
 	<mvc:resources mapping="/resources/**" location="/resources/" />
  
 	<mvc:annotation-driven />
-	<!-- interceptors
+	<!-- interceptors -->
     <mvc:interceptors >    
         <mvc:interceptor>    
         	<mvc:mapping path="/**"/>
         	<mvc:exclude-mapping path="/resources/**"/>  
         	<mvc:exclude-mapping path="/login"/>
+        	<mvc:exclude-mapping path="/auth/**"/>
             <bean class="com.tiaotiao.web.interceptor.SessionInterceptor"></bean>    
         </mvc:interceptor>    
     </mvc:interceptors>
-     -->
+    
 </beans>

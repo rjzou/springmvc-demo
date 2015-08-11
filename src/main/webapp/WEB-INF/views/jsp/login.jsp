@@ -1,90 +1,62 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@page session="true"%>
-<html>
-<head>
-<title>Login Page</title>
-<style>
-.error {
-	padding: 15px;
-	margin-bottom: 20px;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	color: #a94442;
-	background-color: #f2dede;
-	border-color: #ebccd1;
-}
+<%@include file="/tag.jsp"%>
 
-.msg {
-	padding: 15px;
-	margin-bottom: 20px;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
 
-#login-box {
-	width: 300px;
-	padding: 20px;
-	margin: 100px auto;
-	background: #fff;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border: 1px solid #000;
-}
-</style>
-</head>
-<body onload='document.loginForm.username.focus();'>
+    <title>登录</title>
 
-	<h1>Spring Security Login Form (Remember Me Example)</h1>
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="${ctx}/resources/css/bootstrap.min.css">
 
-	<div id="login-box">
+    <!-- Custom styles for this template -->
+    <link href="${ctx}/resources/css/signin.css" rel="stylesheet">
 
-		<h3>Login with Username and Password</h3>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
 
-		<c:if test="${not empty error}">
+  <body>
+    <div class="container">
+      <form class="form-signin" method="post" action="<c:url value='/auth/login_check?targetUrl=${targetUrl}' />">
+        <h2 class="form-signin-heading">Please sign in </h2>
+                  <c:if test="${!empty message}">  
+                             <div class="alert alert-danger" role="alert">${message}</div>
+                 </c:if> 
+        <c:if test="${not empty error}">
 			<div class="error">${error}</div>
 		</c:if>
 		<c:if test="${not empty msg}">
 			<div class="msg">${msg}</div>
 		</c:if>
-
-		<form name='loginForm'
-			action="<c:url value='/auth/login_check?targetUrl=${targetUrl}' />"
-			method='POST'>
-
-			<table>
-				<tr>
-					<td>User:</td>
-					<td><input type='text' name='username'></td>
-				</tr>
-				<tr>
-					<td>Password:</td>
-					<td><input type='password' name='password' /></td>
-				</tr>
-
-				<!-- if this is login for update, ignore remember me check -->
-				<c:if test="${empty loginUpdate}">
-					<tr>
-						<td></td>
-						<td>Remember Me: <input type="checkbox" name="remember-me" /></td>
-					</tr>
-				</c:if>
-
-				<tr>
-					<td colspan='2'><input name="submit" type="submit"
-						value="submit" /></td>
-				</tr>
-
-			</table>
-
-			<input type="hidden" name="${_csrf.parameterName}"
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Email address" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        	<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
+      </form>
 
-		</form>
+    </div> <!-- /container -->
 
-	</div>
-
-</body>
+  </body>
 </html>
