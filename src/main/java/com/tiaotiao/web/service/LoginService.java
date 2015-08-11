@@ -33,5 +33,18 @@ public class LoginService {
 		}
 		return false;
 	}
+	/**
+	 * 
+	 * @param email
+	 * @param password
+	 * @return
+	 * @throws Exception
+	 */
+	public User getUser(String email,String password) throws Exception{
+		Object[] params = { email, password};
+		String sql = "select email,password from t_user where email=? and password =? ";
+		User u = dao.findFirst(User.class,sql, params);
+		return u;
+	}
 	
 }
