@@ -72,7 +72,7 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">欢迎 ${pageContext.request.userPrincipal.name} <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="#">个人资料</a></li>
-                <li><a href="#">修改密码</a></li>
+                <li><a href="${ctx}/user_password">修改密码</a></li>
                 <li>
             	<sec:authorize access="hasRole('ROLE_USER')">
 				<!-- For login user -->

@@ -32,23 +32,23 @@
   <body>
     <div class="container">
       <form class="form-signin" method="post" action="<c:url value='/auth/login_check?targetUrl=${targetUrl}' />">
-        <h2 class="form-signin-heading">Please sign in </h2>
+        <h2 class="form-signin-heading">出租房智能管理系统 </h2>
                   <c:if test="${!empty message}">  
                              <div class="alert alert-info" role="alert">${message}</div>
                  </c:if> 
                  <c:if test="${!empty error}">  
                              <div class="alert alert-warning" role="alert">${error}</div>
                  </c:if> 
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="text" id="username" name="username" class="form-control" placeholder="Email address" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+        <label for="username" class="sr-only">输入用户名</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="输入用户名" required autofocus>
+        <label for="password" class="sr-only">输入密码</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="输入密码" required>
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="remember-me" /> Remember me
+            <input type="checkbox" name="remember-me" /> 记住我
           </label>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">登入</button>
         	<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
       </form>

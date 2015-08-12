@@ -44,7 +44,7 @@ public class LoginController {
 //		model.addAttribute("message", "用户名和密码错误");
 		
 		if (error != null) {
-		model.addAttribute("error", "Invalid username and password!");
+		model.addAttribute("error", "用户名和密码错误!");
 		
 		//login form for update, if login error, get the targetUrl from session again.
 		String targetUrl = getRememberMeTargetUrlFromSession(request);
@@ -53,23 +53,14 @@ public class LoginController {
 			model.addAttribute("targetUrl", targetUrl);
 			model.addAttribute("loginUpdate", true);
 		}
-		
 	}
 
 	if (logout != null) {
-		model.addAttribute("message", "You've been logged out successfully.");
+		model.addAttribute("message", "您已经成功登出系统.");
 	}
 		return "login";
 	}
 	
-
-	
-	
-	@RequestMapping(value = "/loginout", method = RequestMethod.GET)
-	public String loginout(ModelMap model, HttpSession session) {
-		session.removeAttribute("LoginUser");
-		return "login";
-	}
 	/**
 	 * If the login in from remember me cookie, refer
 	 * org.springframework.security.authentication.AuthenticationTrustResolverImpl

@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>springmvc-demo</groupId>
-	<artifactId>springmvc-demo</artifactId>
+	<groupId>com.tiaotiaobox</groupId>
+	<artifactId>myboss</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>springmvc-demo Maven Webapp</name>
+	<name>myboss</name>
 	<url>http://maven.apache.org</url>
 	
 	<licenses>
@@ -18,11 +18,11 @@
 	
 	<properties>
 		<jdk.version>1.7</jdk.version>
-		<!-- <spring.version>4.2.0.RELEASE</spring.version>  -->
-		<spring.version>3.2.8.RELEASE</spring.version>
+		<spring.version>4.2.0.RELEASE</spring.version>
+		<!-- <spring.version>3.2.8.RELEASE</spring.version>  -->
 		<jstl.version>1.2</jstl.version>
 		<spring.security.version>3.2.3.RELEASE</spring.security.version>
-		<mysql.connector.version>5.1.35</mysql.connector.version>
+		<mysql.connector.version>5.1.36</mysql.connector.version>
 		<javax.servlet.version>3.1.0</javax.servlet.version>
 		<logback.version>1.0.13</logback.version>
 		<jcl-over-slf4j.version>1.7.5</jcl-over-slf4j.version>
@@ -40,11 +40,13 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
 		</dependency>
-		<dependency>
+		
+		<!-- <dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.2</version>
 		</dependency>
+		 -->
 		<!-- 引入Spring相关Jar -->
 		<dependency>
 			<groupId>commons-dbutils</groupId>
@@ -111,7 +113,6 @@
 			<artifactId>sitemesh</artifactId>
 			<version>2.4.2</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>javaee</groupId>

@@ -1,8 +1,5 @@
 package com.tiaotiao.web.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -23,28 +20,16 @@ public class LoginService {
 	
 	
 	public Boolean CheckUserLogin(User user) throws Exception{
-		List<String> list = new ArrayList<String>();
-		list.add(user.getEmail());
-		list.add(user.getPassword());
-		String sql = "select email,password from t_user where email=? and password =? ";
-		User u = dao.findFirst(User.class,sql, list.toArray());
-		if (u != null) {
-			return true;
-		}
+//		List<String> list = new ArrayList<String>();
+//		list.add(user.getEmail());
+//		list.add(user.getPassword());
+//		String sql = "select email,password from t_user where email=? and password =? ";
+//		User u = dao.findFirst(User.class,sql, list.toArray());
+//		if (u != null) {
+//			return true;
+//		}
 		return false;
 	}
-	/**
-	 * 
-	 * @param email
-	 * @param password
-	 * @return
-	 * @throws Exception
-	 */
-	public User getUser(String email,String password) throws Exception{
-		Object[] params = { email, password};
-		String sql = "select email,password from t_user where email=? and password =? ";
-		User u = dao.findFirst(User.class,sql, params);
-		return u;
-	}
+
 	
 }

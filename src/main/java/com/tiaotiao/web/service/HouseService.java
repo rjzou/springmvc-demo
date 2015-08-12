@@ -1,6 +1,5 @@
 package com.tiaotiao.web.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.tiaotiao.web.entity.House;
-import com.tiaotiao.web.entity.Room;
-import com.tiaotiao.web.entity.User;
+import com.tiaotiao.web.entity.UserHouses;
 import com.tiaotiao.web.utils.Dao;
 
 
@@ -38,6 +36,20 @@ public class HouseService {
 		int n = dao.update(sql, params);
 		return n;
 	}
+	/**
+	 * 
+	 * @param uh
+	 * @return
+	 * @throws Exception
+	 */
+	public int insertUserHouses(UserHouses uh) throws Exception{
+		Object[] params = { uh.getUsername() , uh.getHouseid()};
+		String sql = "insert into user_houses(username,houseid) values(?,?) ";
+		int n = dao.update(sql, params);
+		return n;
+	}
+	
+	
 	/**
 	 * 
 	 * @param house
@@ -104,7 +116,7 @@ public class HouseService {
 	 * @return
 	 * @throws Exception
 	 */
-	public House selectHouseById(String id) throws Exception{
+	public House getHouseById(String id) throws Exception{
 		String sql = "select housename,description,created,updated from t_house where id = ? ";
 		return dao.findFirst(House.class,sql, id);
 	}

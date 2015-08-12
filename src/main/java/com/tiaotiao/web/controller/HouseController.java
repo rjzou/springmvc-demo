@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tiaotiao.web.entity.House;
 import com.tiaotiao.web.entity.Room;
+import com.tiaotiao.web.entity.UserHouses;
 import com.tiaotiao.web.service.CheckinService;
 import com.tiaotiao.web.service.CheckoutService;
 import com.tiaotiao.web.service.HouseService;
@@ -66,9 +67,16 @@ public class HouseController extends BaseController {
 		house.setHousename(housename);
 		house.setDescription(description);
 		house.setCreated(System.currentTimeMillis());
+		
 		try {
 			int n = houseService.insertHouse(house);
+//			int m = houseService.insertUserHouses(uh);
 			if (n > 0) {
+//				houseService.
+//				UserHouses uh = new UserHouses();
+//				uh.setUsername(username);
+//				uh.setHouseid(houseid);
+				
 				model.addAttribute("message", "保存成功");
 			}else{
 				model.addAttribute("message", "保存失败");
@@ -84,7 +92,7 @@ public class HouseController extends BaseController {
 	@RequestMapping(value = "/house_toedit", method = RequestMethod.GET)
 	public String toHouseEdit(String id,ModelMap model, @RequestParam Map<String, String> params) throws Exception {
 		model.put("id", id);
-		House house = houseService.selectHouseById(id);
+		House house = houseService.getHouseById(id);
 		model.put("housename", house.getHousename());
 		model.put("description", house.getDescription());
 		params.put("page_id", "house");
@@ -95,7 +103,7 @@ public class HouseController extends BaseController {
 	@RequestMapping(value = "/house_todel", method = RequestMethod.GET)
 	public String houseToDel(String id,ModelMap model, @RequestParam Map<String, String> params) throws Exception {
 		params.put("id", id);
-		House house = houseService.selectHouseById(id);
+		House house = houseService.getHouseById(id);
 		params.put("housename", house.getHousename());
 		params.put("description", house.getDescription());
 		params.put("page_id", "house");
@@ -108,7 +116,7 @@ public class HouseController extends BaseController {
 		int houseid = Integer.valueOf(id);
 		Object checkin_count = checkinService.getCheckinCountByHouseid(houseid);
 		Object checkout_count = checkoutService.getCheckoutCountByHouseid(houseid);
-		House house = houseService.selectHouseById(id);
+		House house = houseService.getHouseById(id);
 		params.put("housename", house.getHousename());
 		params.put("description", house.getDescription());
 		model.put("params", params);
