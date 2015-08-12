@@ -41,6 +41,8 @@
             <td>${params.description}</td>
         </tr>
         </table>
+        	<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
 		<button type="submit" class="btn btn-primary" data-toggle="confirmation" data-placement="top" data-popout="true" <c:if test="${!empty danger}">disabled</c:if> >确认删除</button>
 		<a class="btn btn-default" href="${ctx}/room" role="button">返回</a>
 	</form>

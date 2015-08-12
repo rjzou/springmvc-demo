@@ -12,7 +12,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Dashboard Template for Bootstrap</title>
+    <title>Boss</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="${ctx}/resources/css/bootstrap.min.css">
@@ -31,7 +31,6 @@
   </head>
 
   <body>
-  
   <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -41,16 +40,40 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">未来出租房智能管理系统</a>
+          <a class="navbar-brand" href="#">出租房智能管理系统</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-          	<li><a href="#">${pageContext.request.userPrincipal.name}</a></li>
-            <li><a href="${ctx}/main">Dashboard</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Help</a></li>
-            <li>
+           	<li><a href="${ctx}/main">我的待办</a></li>
+           	<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">常用 <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="${ctx}/room_checkin">开始入住</a></li>
+                <li><a href="${ctx}/room_checkin_query">入住查询</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="${ctx}/room_money">收房租</a></li>
+                <li><a href="${ctx}/room_money_query">收租查询</a></li>
+                <li><a href="${ctx}/room_checkout">现在退房</a></li>
+                <li><a href="${ctx}/room_waterelect">抄水表</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">配置 <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+              	<li><a href="${ctx}/netcfg">网络开关</a></li>
+                <li><a href="${ctx}/house">楼房配置</a></li>
+                <li><a href="${ctx}/room">房间配置</a></li>
+                <li><a href="${ctx}/waterelectcfg">水电价配置</a></li>
+              </ul>
+            </li>
+            <li><a href="#">帮助</a></li>
+          	
+           <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">欢迎 ${pageContext.request.userPrincipal.name} <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">个人资料</a></li>
+                <li><a href="#">修改密码</a></li>
+                <li>
             	<sec:authorize access="hasRole('ROLE_USER')">
 				<!-- For login user -->
 				<c:url value="/j_spring_security_logout" var="logoutUrl" />
@@ -65,11 +88,15 @@
 				</script>
 		
 				<c:if test="${pageContext.request.userPrincipal.name != null}">
-						<a href="javascript:formSubmit()"> Logout </a>
+						<a href="javascript:formSubmit()"> 登出 </a>
 				</c:if>
 
-			</sec:authorize>
+				</sec:authorize>
+			
+            	</li>
+              </ul>
             </li>
+           
           </ul>
           <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
@@ -77,7 +104,7 @@
         </div>
       </div>
     </nav>
-
+     
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
@@ -90,9 +117,9 @@
             <li <c:if test="${params.page_id == 'room_money_query'}">class="active" </c:if>><a href="${ctx}/room_money_query">收租查询</a></li>
             <li <c:if test="${params.page_id == 'room_checkout'}">class="active" </c:if>><a href="${ctx}/room_checkout">现在退房</a></li>
             <li <c:if test="${params.page_id == 'room_waterelect'}">class="active" </c:if>><a href="${ctx}/room_waterelect">抄水电表</a></li>
-            <li <c:if test="${params.page_id == 'netcfg'}">class="active" </c:if>><a href="${ctx}/netcfg">网络开关</a></li>
           </ul>
           <ul class="nav nav-sidebar">
+            <li <c:if test="${params.page_id == 'netcfg'}">class="active" </c:if>><a href="${ctx}/netcfg">网络开关</a></li>
           	<li <c:if test="${params.page_id == 'house'}">class="active" </c:if>><a href="${ctx}/house">楼房配置</a></li>
             <li <c:if test="${params.page_id == 'room'}">class="active" </c:if>><a href="${ctx}/room">房间配置</a></li>
             <li <c:if test="${params.page_id == 'waterelectcfg'}">class="active" </c:if>><a href="${ctx}/waterelectcfg">水电价配置</a></li>
@@ -103,7 +130,9 @@
           
           
         </div>
+        
       </div>
+
     </div>
 
   </body>

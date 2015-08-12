@@ -111,6 +111,8 @@
 			    </c:otherwise>
 			</c:choose>
 		</button>
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
 		<button type="submit" class="btn btn-primary" onclick="return save();">确定入住</button>
 		<a class="btn btn-default" href="${ctx}/room_checkin" role="button">返回</a>
 	</form>

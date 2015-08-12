@@ -25,6 +25,10 @@
 			<input type="text" class="form-control" id="inputDescription" name="inputDescription"  value="${params.inputDescription}"
 				placeholder="备注">
 		</div>
+		
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
+				
 		<button type="submit" class="btn btn-primary">保存</button>
 		<a class="btn btn-default" href="${ctx}/house" role="button">返回</a>
 	</form>

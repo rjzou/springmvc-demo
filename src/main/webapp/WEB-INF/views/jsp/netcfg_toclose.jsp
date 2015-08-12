@@ -49,7 +49,8 @@
             <td>${params.sumprice} </td>
         </tr>
         </table>
-		
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
 		<button type="submit" class="btn btn-primary"  data-toggle="confirmation" data-placement="top" data-popout="true"  onclick="return save();">关闭网络</button>
 		<a class="btn btn-default" href="${ctx}/netcfg_close" role="button">返回</a>
 	</form>

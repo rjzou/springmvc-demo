@@ -66,6 +66,8 @@
 			<input type="number" class="form-control" id="inputElect" name="inputElect" value="${params.inputElect}"
 				placeholder="输入电读数" required>
 		</div>
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
 		<button type="submit" class="btn btn-primary">保存抄表</button>
 		<a class="btn btn-default" href="${ctx}/room_waterelect" role="button">返回</a>
 	</form>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@include file="/tag.jsp"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,161 +8,101 @@
   </head>
 
   <body>
+          <div class="panel panel-info">
+			  <!-- Default panel contents -->
+			  <div class="panel-heading">抄水表</div>
+			  <!-- Table -->
+			  <div class="table-responsive">
+				  <table class="table table-striped  table-condensed">
+	              <thead>
+	                <tr>
+	                  <th>#</th>
+	                  <th>楼栋/房间号/房型</th>
+	                  <th>客户名称</th>
+	                  <th>上次抄表时间</th>
+	                  <th>上次水/电读数</th>
+	                  <th>操作</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	                <c:choose>
+						<c:when test="${empty room_we_list.content }">
+							<tr>
+								<td colspan="9"><p class="text-center">非常好,没有待办工作</p></td>
+							</tr>
+						</c:when>
+						<c:otherwise>
+		              		<c:forEach items="${room_we_list.content}" var="item" varStatus="status">
+								<tr>
+									<td>${status.count }</td>
+									<td>${item.housename }/${item.roomno }/${item.typename }</td>
+									<td>${item.customname }</td>
+									<td>${item.pre_s_date }</td>
+									<td>${item.water }/${item.elect }</td>
+									<td>
+										<a class="btn btn-primary btn-sm" href="${ctx}/room_towaterelect?houseid=${item.houseid }&roomno=${item.roomno }" role="button">抄表</a>
+									</td>
+									<td>${item.description }</td>
+								</tr>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
+	              </tbody>
+	            </table>
+			</div>
+			</div>
 
-
-          <h1 class="page-header">Dashboard</h1>
-
-          <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
+         <div class="panel panel-info">
+			  <!-- Default panel contents -->
+			  <div class="panel-heading">收房租</div>
+			  <!-- Table -->
+			  <div class="table-responsive">
+				  <table class="table table-striped  table-condensed">
+	              <thead>
+	                <tr>
+	                  <th>#</th>
+	                  <th>楼栋/房间号/房型</th>
+	                  <th>客户名称</th>
+	                  <th>上月实收月租</th>
+	                  <th>上月实收押金</th>
+	                  <th>上月收租日期</th>
+	                  <th>上月实收费用</th>
+	                  <th>本月应收日期</th>
+	                  <th>操作</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	              <c:choose>
+					<c:when test="${empty room_money_list.content }">
+						<tr>
+							<td colspan="9"><p class="text-center">非常好,没有待办工作</p></td>
+						</tr>
+					</c:when>
+					<c:otherwise>
+		               	<c:forEach items="${room_money_list.content}" var="item" varStatus="status">
+							<tr>
+								<td>${status.count }</td>
+								<td>${item.housename }/${item.roomno }/${item.typename }</td>
+								<td>${item.customname }</td>
+								<td>${item.monthmoney }</td>
+								<td>${item.pressmoney }</td>
+								<td>${item.pre_s_date }</td>
+								<td>${item.roommoney }</td>
+								<td>${item.cin_day }</td>
+								<td>
+									<a class="btn btn-primary btn-sm" href="${ctx}/room_to_money?houseid=${item.houseid }&roomno=${item.roomno }" role="button">收房租</a>
+								</td>
+							</tr>
+						</c:forEach>
+					 </c:otherwise>
+					</c:choose>
+	              </tbody>
+	            </table>
             </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-          </div>
+			</div>
 
-          <h2 class="sub-header">Section title</h2>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                  <td>sit</td>
-                </tr>
-                <tr>
-                  <td>1,002</td>
-                  <td>amet</td>
-                  <td>consectetur</td>
-                  <td>adipiscing</td>
-                  <td>elit</td>
-                </tr>
-                <tr>
-                  <td>1,003</td>
-                  <td>Integer</td>
-                  <td>nec</td>
-                  <td>odio</td>
-                  <td>Praesent</td>
-                </tr>
-                <tr>
-                  <td>1,003</td>
-                  <td>libero</td>
-                  <td>Sed</td>
-                  <td>cursus</td>
-                  <td>ante</td>
-                </tr>
-                <tr>
-                  <td>1,004</td>
-                  <td>dapibus</td>
-                  <td>diam</td>
-                  <td>Sed</td>
-                  <td>nisi</td>
-                </tr>
-                <tr>
-                  <td>1,005</td>
-                  <td>Nulla</td>
-                  <td>quis</td>
-                  <td>sem</td>
-                  <td>at</td>
-                </tr>
-                <tr>
-                  <td>1,006</td>
-                  <td>nibh</td>
-                  <td>elementum</td>
-                  <td>imperdiet</td>
-                  <td>Duis</td>
-                </tr>
-                <tr>
-                  <td>1,007</td>
-                  <td>sagittis</td>
-                  <td>ipsum</td>
-                  <td>Praesent</td>
-                  <td>mauris</td>
-                </tr>
-                <tr>
-                  <td>1,008</td>
-                  <td>Fusce</td>
-                  <td>nec</td>
-                  <td>tellus</td>
-                  <td>sed</td>
-                </tr>
-                <tr>
-                  <td>1,009</td>
-                  <td>augue</td>
-                  <td>semper</td>
-                  <td>porta</td>
-                  <td>Mauris</td>
-                </tr>
-                <tr>
-                  <td>1,010</td>
-                  <td>massa</td>
-                  <td>Vestibulum</td>
-                  <td>lacinia</td>
-                  <td>arcu</td>
-                </tr>
-                <tr>
-                  <td>1,011</td>
-                  <td>eget</td>
-                  <td>nulla</td>
-                  <td>Class</td>
-                  <td>aptent</td>
-                </tr>
-                <tr>
-                  <td>1,012</td>
-                  <td>taciti</td>
-                  <td>sociosqu</td>
-                  <td>ad</td>
-                  <td>litora</td>
-                </tr>
-                <tr>
-                  <td>1,013</td>
-                  <td>torquent</td>
-                  <td>per</td>
-                  <td>conubia</td>
-                  <td>nostra</td>
-                </tr>
-                <tr>
-                  <td>1,014</td>
-                  <td>per</td>
-                  <td>inceptos</td>
-                  <td>himenaeos</td>
-                  <td>Curabitur</td>
-                </tr>
-                <tr>
-                  <td>1,015</td>
-                  <td>sodales</td>
-                  <td>ligula</td>
-                  <td>in</td>
-                  <td>libero</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
+			</div>
+			
+			
   </body>
 </html>

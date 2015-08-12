@@ -74,7 +74,7 @@
 						<td>${item.roomno }</td>
 						<td>${item.monthmoney } 元</td>
 						<td>${item.pressmoney } 元</td>
-						<td>${item.pre_s_day }</td>
+						<td>${item.pre_s_date }</td>
 						<td>${item.roommoney } 元</td>
 						<td>${item.cin_day }</td>
 						<td>

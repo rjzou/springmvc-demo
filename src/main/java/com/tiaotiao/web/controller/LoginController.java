@@ -23,11 +23,7 @@ public class LoginController {
 //	@Resource
 //	private LoginService loginService;
 	
-	@RequestMapping(value = {"/", "/main", "/welcome**"}, method = RequestMethod.GET)
-	public String printIndex(HttpServletRequest request,ModelMap model) {
-		//request.userPrincipal.name
-		return "main";
-	}
+
 //	@RequestMapping(value = "/login", method = RequestMethod.GET)
 //	public String login() {
 //		return "login";
@@ -61,7 +57,7 @@ public class LoginController {
 	}
 
 	if (logout != null) {
-		model.addAttribute("msg", "You've been logged out successfully.");
+		model.addAttribute("message", "You've been logged out successfully.");
 	}
 		return "login";
 	}

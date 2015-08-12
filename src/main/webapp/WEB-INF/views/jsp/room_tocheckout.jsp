@@ -109,6 +109,8 @@
  	<input type="hidden" id="houseid" name="houseid" value="${params.houseid}"/>
  	<input type="hidden" id="roomno" name="roomno" value="${params.roomno}"/>
  	<input type="hidden" id="paymoney" name="paymoney" value="${params.paymoney}"/>
+ 		<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
 		<button type="submit" class="btn btn-primary" data-toggle="confirmation" data-placement="top" data-popout="true" <c:if test="${!empty danger}">disabled</c:if> >确认退房</button>
 		<a class="btn btn-default" href="${ctx}/room_checkout" role="button">返回</a>
 	</form>

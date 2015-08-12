@@ -94,7 +94,7 @@ public class RoomMoneyService {
 				"     tmp.roomno, "+
 				"     rm.monthmoney, "+
 				"     rm.pressmoney, "+
-				"     CONCAT_WS('-',rm.year,rm.month,rm.day) as pre_s_day, "+
+				"     CONCAT_WS('-',rm.year,rm.month,rm.day) as pre_s_date, "+
 				"     rm.roommoney, " +
 				"     tmp.typecode, "+
 				"     tmp.cin_day "+

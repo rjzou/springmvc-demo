@@ -38,6 +38,8 @@
 			<input type="number" class="form-control" id="inputElectPrice" name="inputElectPrice" value="${params.inputElectPrice}"
 				placeholder="输入电价格" required>
 		</div>
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
 		<button type="submit" class="btn btn-primary">生成数据并保存</button>
 		<a class="btn btn-default" href="${ctx}/waterelectcfg" role="button">返回</a>
 	</form>

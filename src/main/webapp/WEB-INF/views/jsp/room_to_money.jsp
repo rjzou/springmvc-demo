@@ -111,6 +111,8 @@
  	
  	<input type="hidden" id="pressmoney" name="pressmoney" value="${params.pressmoney}"/>
  	<input type="hidden" id="roommoney" name="roommoney" value="${params.roommoney}"/>
+ 		<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
  	 	<div class="form-group">
 			<button class="btn btn-primary" data-toggle="confirmation" data-placement="top" data-popout="true" <c:if test="${!empty danger}">disabled</c:if> >确认收房租</button>
 			<a class="btn btn-default" href="${ctx}/room_money" role="button">返回</a>

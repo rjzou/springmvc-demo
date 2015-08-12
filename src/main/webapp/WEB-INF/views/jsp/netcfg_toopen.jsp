@@ -79,6 +79,8 @@
 			    </c:otherwise>
 			</c:choose>
 		</button>
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
 		<button type="submit" class="btn btn-primary" onclick="return save();">开通网络</button>
 		<a class="btn btn-default" href="${ctx}/netcfg" role="button">返回</a>
 	</form>
