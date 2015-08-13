@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -56,14 +57,15 @@ public class RoomMoneyController extends BaseController {
 	private NetCfgService netCfgService;
 	
 	@RequestMapping(value = "/room_money", method = RequestMethod.GET)
-	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		String username  = hsr.getUserPrincipal().getName();
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = roomMoneyService.getAllRoomfulMapByMonth(params, page); 
+		Page<Map<String, Object>> list = roomMoneyService.getAllRoomfulMapByMonth(params, page,username); 
 		model.put("p", cpage);
 		model.put("list", list);
 		List<RoomType> types = roomtypeService.selectAllRoomType();
 		model.put("types", types);
-		List<House> houses = houseService.selectAllHouse();
+		List<House> houses = houseService.selectAllHouse(username);
 		model.put("houses", houses);
 		params.put("page_id", "room_money");
 		model.put("params", params);
@@ -71,7 +73,7 @@ public class RoomMoneyController extends BaseController {
 	}
 	@RequestMapping(value = "/room_to_money", method = RequestMethod.GET)
 	public String roomToMoney(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		Map<String,Object> checkin = roomMoneyService.getRoomMoneyCheckinMapById(houseid,roomno);
 		NetCfg netCfg = netCfgService.getNetCfgById(houseid, roomno);
@@ -130,7 +132,7 @@ public class RoomMoneyController extends BaseController {
 	
 	@RequestMapping(value = "/room_money_add", method = RequestMethod.POST)
 	public String roomToMoneyAdd(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		int year = DateUtil.getThisYear();
 		int month = DateUtil.getThisMonth();
@@ -229,27 +231,28 @@ public class RoomMoneyController extends BaseController {
 	}
 		
 	@RequestMapping(value = "/room_money_query", method = RequestMethod.GET)
-	public String roomMoneyQuery(ModelMap model ,@RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+	public String roomMoneyQuery(ModelMap model ,@RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		String username  = hsr.getUserPrincipal().getName();
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = roomMoneyService.queryAllRoomMoneyByParams(params, page); 
+		Page<Map<String, Object>> list = roomMoneyService.queryAllRoomMoneyByParams(params, page,username); 
 		model.put("p", cpage);
 		model.put("list", list);
 		List<RoomType> types = roomtypeService.selectAllRoomType();
 		model.put("types", types);
-		List<House> houses = houseService.selectAllHouse();
+		List<House> houses = houseService.selectAllHouse(username);
 		model.put("houses", houses);
 		model.put("params", params);
 		params.put("page_id", "room_money_query");
 		return "room_money_query";
 	}
 	@RequestMapping(value = "/room_money_query", method = RequestMethod.POST)
-	public String roomMoneyQuerySearch(ModelMap model , @RequestParam Map<String, String> params,  @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
-		return this.roomMoneyQuery(model, params, cpage);
+	public String roomMoneyQuerySearch(ModelMap model , @RequestParam Map<String, String> params,  @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		return this.roomMoneyQuery(model, params, cpage,hsr);
 	}	
 	
 	@RequestMapping(value = "/room_money_query_page", method = RequestMethod.GET)
 	public String roomMoneyQueryPage(@RequestParam Map<String, String> params,ModelMap model) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		int year = Integer.valueOf(params.get("year"));
 		int month = Integer.valueOf(params.get("month"));

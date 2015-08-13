@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="row">
-  <form class="navbar-form navbar-left" role="search" method="post">
+  <form class="navbar-form navbar-left" role="search" method="post" action="${ctx}/room">
   <div class="form-group">
   <select class="selectpicker"  name="selectHouse" multiple>
 	  	<c:forEach var="house" items="${houses}">  
@@ -44,6 +44,8 @@
   
     <input type="text" class="form-control" id="roomno" name="roomno"  placeholder="请输入房间号"  value="${params.roomno}">
   </div>
+  	<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
   <button type="submit" class="btn btn-default"  onclick="return to_search();">查询</button>
   <a class="btn btn-primary" href="${ctx}/room_toadd" role="button">新建房间</a>
 </form>

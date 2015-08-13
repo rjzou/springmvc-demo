@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,10 +42,11 @@ public class RoomController extends BaseController {
 	private RoomTypeService roomtypeService;
 	
 	@RequestMapping(value = "/room", method = RequestMethod.GET)
-	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		String username  = hsr.getUserPrincipal().getName();
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = roomService.selectAllRoom(params, page); 
-		List<House> houses = houseService.selectAllHouse();
+		Page<Map<String, Object>> list = roomService.selectAllRoom(params, page ,username); 
+		List<House> houses = houseService.selectAllHouse(username);
 		List<RoomType> types = roomtypeService.selectAllRoomType();
 		model.put("types", types);
 		model.put("p", cpage);
@@ -55,12 +57,13 @@ public class RoomController extends BaseController {
 		return "room";
 	}
 	@RequestMapping(value = "/room", method = RequestMethod.POST)
-	public String roomSearch(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
-		return this.printIndex(model, params, cpage);
+	public String roomSearch(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		return this.printIndex(model, params, cpage,hsr);
 	}
 	@RequestMapping(value = "/room_toadd", method = RequestMethod.GET)
-	public String toRoomAdd(ModelMap model, @RequestParam Map<String, String> params) throws Exception {
-		List<House> houses = houseService.selectAllHouse();
+	public String toRoomAdd(ModelMap model, @RequestParam Map<String, String> params,HttpServletRequest hsr) throws Exception {
+		String username  = hsr.getUserPrincipal().getName();
+		List<House> houses = houseService.selectAllHouse(username);
 		params.put("page_id", "room");
 		model.put("houses", houses);
 		model.put("params", params);
@@ -69,7 +72,7 @@ public class RoomController extends BaseController {
  
 	@RequestMapping(value = "/room_add", method = RequestMethod.POST)
 	public String roomAdd(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
-		int houseid = Integer.valueOf(params.get("selectHouse"));
+		String houseid = params.get("selectHouse");
 		int roomno = Integer.valueOf(params.get("inputRoom"));
 		int monthmoney = Integer.valueOf(params.get("inputMonthMoney"));
 		int pressmoney = Integer.valueOf(params.get("inputPressMoney"));
@@ -103,8 +106,9 @@ public class RoomController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/room_toedit", method = RequestMethod.GET)
-	public String toRoomEdit(@RequestParam Map<String, String> params,ModelMap model) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+	public String toRoomEdit(@RequestParam Map<String, String> params,ModelMap model,HttpServletRequest hsr) throws Exception {
+		String username  = hsr.getUserPrincipal().getName();
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		//System.out.println(houseid);
 		Room room = roomService.selectRoomById(houseid, roomno);
@@ -112,24 +116,25 @@ public class RoomController extends BaseController {
 		params.put("pressmoney", String.valueOf(room.getPressmoney()));
 		params.put("typecode", room.getTypecode());
 		params.put("description", room.getDescription());
-		List<House> houses = houseService.selectAllHouse();
+		List<House> houses = houseService.selectAllHouse(username);
 		model.put("houses", houses);
 		params.put("page_id", "room");
 		model.put("params", params);
 		return "room_edit";
 	}
 	@RequestMapping(value = "/room_edit", method = RequestMethod.POST)
-	public String roomEdit(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+	public String roomEdit(@RequestParam Map<String, String> params, ModelMap model,HttpServletRequest hsr) throws Exception {
+		String username  = hsr.getUserPrincipal().getName();
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
-		int input_houseid = Integer.valueOf(params.get("selectHouse"));
+		String input_houseid = params.get("selectHouse");
 		int input_roomno = Integer.valueOf(params.get("inputRoom"));
 		int monthmoney = Integer.valueOf(params.get("inputMonthMoney"));
 		int pressmoney = Integer.valueOf(params.get("inputPressMoney"));
 		String typecode = params.get("optionsRoomtypes");
 		String description = params.get("inputDescription");
 		
-		List<House> houses = houseService.selectAllHouse();
+		List<House> houses = houseService.selectAllHouse(username);
 		model.put("houses", houses);
 		
 		Room room = new Room();

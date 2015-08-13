@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,10 +47,11 @@ public class WaterElectController extends BaseController {
 	private WaterElectCfgService waterelectCfgService;
 
 	@RequestMapping(value = "/room_waterelect", method = RequestMethod.GET)
-	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		String username  = hsr.getUserPrincipal().getName();
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = checkoutService.selectAllNotWaterElectRoom(params, page); 
-		List<House> houses = houseService.selectAllHouse();
+		Page<Map<String, Object>> list = checkoutService.selectAllNotWaterElectRoom(params, page,username); 
+		List<House> houses = houseService.selectAllHouse(username);
 		model.put("p", cpage);
 		model.put("list", list);
 		model.put("params", params);
@@ -60,7 +62,7 @@ public class WaterElectController extends BaseController {
 	
 	@RequestMapping(value = "/room_towaterelect", method = RequestMethod.GET)
 	public String toRoomAdd(ModelMap model,@RequestParam Map<String, String> params) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		
 		Map<String,Object> checkin = checkinService.getCheckinMapById(houseid,roomno);
@@ -82,7 +84,7 @@ public class WaterElectController extends BaseController {
  
 	@RequestMapping(value = "/room_waterelect_save", method = RequestMethod.POST)
 	public String roomAdd(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		int inputWater = Integer.valueOf(params.get("inputWater"));
 		int inputElect = Integer.valueOf(params.get("inputElect"));

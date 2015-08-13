@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -51,14 +52,15 @@ public class CheckoutController extends BaseController {
 	private WaterElectService waterelectService;
 	
 	@RequestMapping(value = "/room_checkout", method = RequestMethod.GET)
-	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		String username  = hsr.getUserPrincipal().getName();
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = checkoutService.getAllRoomfulByParams(params, page); 
+		Page<Map<String, Object>> list = checkoutService.getAllRoomfulByParams(params, page, username); 
 		model.put("p", cpage);
 		model.put("list", list);
 		List<RoomType> types = roomtypeService.selectAllRoomType();
 		model.put("types", types);
-		List<House> houses = houseService.selectAllHouse();
+		List<House> houses = houseService.selectAllHouse(username);
 		model.put("houses", houses);
 		params.put("page_id", "room_checkout");
 		model.put("params", params);
@@ -66,13 +68,13 @@ public class CheckoutController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/room_checkout", method = RequestMethod.POST)
-	public String search(ModelMap model , @RequestParam Map<String, String> params,  @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
-		return this.printIndex(model, params, cpage);
+	public String search(ModelMap model , @RequestParam Map<String, String> params,  @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		return this.printIndex(model, params, cpage,hsr);
 	}	
  
 	@RequestMapping(value = "/room_checkout_add", method = RequestMethod.POST)
 	public String roomCheckoutAdd(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		double paymoney = Double.valueOf(params.get("paymoney"));
 		Map<String,Object> checkin_map = checkinService.getCheckinMapById(houseid, roomno);
@@ -123,7 +125,7 @@ public class CheckoutController extends BaseController {
 	
 	@RequestMapping(value = "/room_tocheckout", method = RequestMethod.GET)
 	public String toCheckout(@RequestParam Map<String, String> params,ModelMap model) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		Map<String,Object> checkin = checkinService.getCheckinMapById(houseid,roomno);
 		params.put("houseid", String.valueOf(checkin.get("houseid")));

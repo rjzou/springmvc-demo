@@ -6,7 +6,7 @@ package com.tiaotiao.web.entity;
  *
  */
 public class WaterElect {
-	private int houseid;
+	private String houseid;
 	private int roomno;
 	private int water;
 	private double waterprice;
@@ -17,10 +17,12 @@ public class WaterElect {
 	private int day;
 	private long created;
 	private long updated;
-	public int getHouseid() {
+
+
+	public String getHouseid() {
 		return houseid;
 	}
-	public void setHouseid(int houseid) {
+	public void setHouseid(String houseid) {
 		this.houseid = houseid;
 	}
 	public int getRoomno() {

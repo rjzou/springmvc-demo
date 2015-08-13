@@ -3,6 +3,7 @@ package com.tiaotiao.web.controller;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -57,9 +58,10 @@ public class NetCfgController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/netcfg", method = RequestMethod.GET)
-	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		String username  = hsr.getUserPrincipal().getName();
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = netCfgService.getEmptyNetListByParams(params, page); 
+		Page<Map<String, Object>> list = netCfgService.getEmptyNetListByParams(params, page,username); 
 		model.put("p", cpage);
 		model.put("list", list);
 		params.put("page_id", "netcfg");
@@ -74,9 +76,10 @@ public class NetCfgController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/netcfg_close", method = RequestMethod.GET)
-	public String netCfgToClose(ModelMap model,@RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+	public String netCfgToClose(ModelMap model,@RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		String username  = hsr.getUserPrincipal().getName();
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = netCfgService.getHasNetListByParams(params, page); 
+		Page<Map<String, Object>> list = netCfgService.getHasNetListByParams(params, page , username); 
 		model.put("p", cpage);
 		model.put("list", list);
 		params.put("page_id", "netcfg");
@@ -93,7 +96,7 @@ public class NetCfgController extends BaseController {
 	 */
 	@RequestMapping(value = "/netcfg_toclose", method = RequestMethod.GET)
 	public String netCfgToClose(ModelMap model,@RequestParam Map<String, String> params) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		Map<String,Object> netCfgMap = netCfgService.getNetCfgMapById(houseid, roomno);
 		
@@ -130,7 +133,7 @@ public class NetCfgController extends BaseController {
 	 */
 	@RequestMapping(value = "/netcfg_toopen", method = RequestMethod.GET)
 	public String netCfgToOpen(ModelMap model,@RequestParam Map<String, String> params) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		Map<String,Object> netCfgMap = netCfgService.getNetCfgMapById(houseid, roomno);
 		
@@ -145,7 +148,7 @@ public class NetCfgController extends BaseController {
  
 	@RequestMapping(value = "/netcfg_open", method = RequestMethod.POST)
 	public String netCfgOpen(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		String ip = params.get("inputIP");
 		String usr = params.get("inputUsr");
@@ -177,7 +180,7 @@ public class NetCfgController extends BaseController {
 
 	public String netCfgCalc(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
 		double netprice = Double.valueOf(params.get("netprice"));
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		
 		Map<String,Object> netCfgMap = netCfgService.getNetCfgMapById(houseid, roomno);
@@ -198,7 +201,7 @@ public class NetCfgController extends BaseController {
 	}
 	
 	public String netCfgSave(NetCfg nc,@RequestParam Map<String, String> params, ModelMap model) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		
 		Map<String,Object> netCfgMap = netCfgService.getNetCfgMapById(houseid, roomno);

@@ -23,6 +23,10 @@ import com.tiaotiao.web.utils.Dao;
 public class NetCfgService {
 	@Resource
 	private Dao dao;
+	
+	@Resource
+	private PermissionService permissionService;
+	
 	/**
 	 * 插入网络配置表数据
 	 * @param nc
@@ -66,7 +70,7 @@ public class NetCfgService {
 	 * @return
 	 * @throws Exception
 	 */
-	public int deleteNetCfg(int houseid,int roomno) throws Exception{
+	public int deleteNetCfg(String houseid,int roomno) throws Exception{
 		Object[] params = { houseid, roomno};
 		String sql = "delete from  t_net_cfg where houseid=? and roomno =? ";
 		int n = dao.update(sql, params);
@@ -79,7 +83,7 @@ public class NetCfgService {
 	 * @return
 	 * @throws Exception
 	 */
-	public NetCfg getNetCfgById(int houseid,int roomno) throws Exception{
+	public NetCfg getNetCfgById(String houseid,int roomno) throws Exception{
 		Object[] params = { houseid,roomno};
 		String sql = "select houseid,roomno,ip,usr,pwd,year,netprice,month,day,created,updated from t_net_cfg where houseid = ? and roomno = ? ";
 		return dao.findFirst(NetCfg.class,sql, params);
@@ -92,7 +96,7 @@ public class NetCfgService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<String,Object> getNetCfgMapById(int houseid,int roomno) throws Exception{
+	public Map<String,Object> getNetCfgMapById(String houseid,int roomno) throws Exception{
 		Object[] params = { houseid,roomno};
 		String sql = "  select r.houseid,h.housename,r.roomno,ci.customname,40 as netprice from t_house as h ,t_room as r,t_checkin as ci "+
 				"  where h.id = r.houseid "+
@@ -111,7 +115,7 @@ public class NetCfgService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> getEmptyNetListByParams(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+	public Page<Map<String, Object>> getEmptyNetListByParams(Map<String, String> params, final PageRequest pageRequest ,String username ) throws Exception{
 		String houseid = params.get("houseid");
 		String roomno = params.get("roomno");
 		String sql = "  select r.houseid,h.housename,r.roomno,ci.customname,40 as netprice from t_house as h ,t_room as r,t_checkin as ci  "+
@@ -127,6 +131,7 @@ public class NetCfgService {
 				if (roomno != null && roomno.trim().length() > 0 ) {
 					sql = sql + " and ci.roomno in ('"+roomno+"')";
 				}
+				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+") ";
 				sql = sql + " order by ci.houseid,ci.roomno ";
 		return dao.find(sql, null, pageRequest);
 	}
@@ -138,7 +143,7 @@ public class NetCfgService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> getHasNetListByParams(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+	public Page<Map<String, Object>> getHasNetListByParams(Map<String, String> params, final PageRequest pageRequest , String username) throws Exception{
 		String houseid = params.get("houseid");
 		String roomno = params.get("roomno");
 		String sql = "  select r.houseid,h.housename,r.roomno,ci.customname,40 as netprice from t_house as h ,t_room as r,t_checkin as ci ,t_net_cfg as nc "+
@@ -154,6 +159,9 @@ public class NetCfgService {
 				if (roomno != null && roomno.trim().length() > 0 ) {
 					sql = sql + " and ci.roomno in ('"+roomno+"')";
 				}
+				
+				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+") ";
+				
 				sql = sql + " order by ci.year,ci.month,ci.day ";
 		return dao.find(sql, null, pageRequest);
 	}

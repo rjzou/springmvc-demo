@@ -16,8 +16,6 @@
 		</license>
 	</licenses>
 	
-	
-	
 	<properties>
 		<jdk.version>1.7</jdk.version>
 		<spring.version>4.2.0.RELEASE</spring.version>
@@ -159,6 +157,17 @@
 			<version>${logback.version}</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>com.fasterxml.uuid</groupId>
+			<artifactId>java-uuid-generator</artifactId>
+			<version>3.1.4</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>springmvc-demo</finalName>

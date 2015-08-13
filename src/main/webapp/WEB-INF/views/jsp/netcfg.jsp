@@ -29,6 +29,8 @@
 	 return true;
   }
   </script>
+  <input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
   <button type="submit" class="btn btn-default" onclick="return to_search();">查询</button>
 </form>
 </div><!-- /.row -->

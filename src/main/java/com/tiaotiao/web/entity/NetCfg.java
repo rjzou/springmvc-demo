@@ -6,7 +6,7 @@ package com.tiaotiao.web.entity;
  *
  */
 public class NetCfg {
-	private int houseid;
+	private String houseid;
 	private int roomno;
 	private String ip;
 	private String usr;
@@ -18,10 +18,12 @@ public class NetCfg {
 	private long created;
 	private long updated;
 	
-	public int getHouseid() {
+
+	
+	public String getHouseid() {
 		return houseid;
 	}
-	public void setHouseid(int houseid) {
+	public void setHouseid(String houseid) {
 		this.houseid = houseid;
 	}
 	public int getRoomno() {

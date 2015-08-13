@@ -1,7 +1,7 @@
 package com.tiaotiao.web.entity;
 
 public class Checkout {
-	private int houseid;
+	private String houseid;
 	private int roomno;
 	private String username;
 	private String iphone;
@@ -22,10 +22,12 @@ public class Checkout {
 	private long created;
 	private long updated;
 
-	public int getHouseid() {
+
+
+	public String getHouseid() {
 		return houseid;
 	}
-	public void setHouseid(int houseid) {
+	public void setHouseid(String houseid) {
 		this.houseid = houseid;
 	}
 	public int getRoomno() {

@@ -2,7 +2,7 @@ package com.tiaotiao.web.entity;
 
 public class UserHouses {
 	private String username;
-	private int houseid;
+	private String houseid;
 	
 	public String getUsername() {
 		return username;
@@ -10,10 +10,10 @@ public class UserHouses {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public int getHouseid() {
+	public String getHouseid() {
 		return houseid;
 	}
-	public void setHouseid(int houseid) {
+	public void setHouseid(String houseid) {
 		this.houseid = houseid;
 	}
 	

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -64,14 +65,15 @@ public class CheckinController extends BaseController {
 	private NetCfgService netCfgService;
 	
 	@RequestMapping(value = "/room_checkin", method = RequestMethod.GET)
-	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		String username  = hsr.getUserPrincipal().getName();
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = checkinService.selectAllEmptyRoom(params, page); 
+		Page<Map<String, Object>> list = checkinService.selectAllEmptyRoom(params, page,username); 
 		model.put("p", cpage);
 		model.put("list", list);
 		List<RoomType> types = roomtypeService.selectAllRoomType();
 		model.put("types", types);
-		List<House> houses = houseService.selectAllHouse();
+		List<House> houses = houseService.selectAllHouse(username);
 		model.put("houses", houses);
 		params.put("page_id", "room_checkin");
 		model.put("params", params);
@@ -79,8 +81,8 @@ public class CheckinController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/room_checkin", method = RequestMethod.POST)
-	public String roomCheckinSearch(ModelMap model , @RequestParam Map<String, String> params,  @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
-		return this.printIndex(model, params, cpage);
+	public String roomCheckinSearch(ModelMap model , @RequestParam Map<String, String> params,  @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		return this.printIndex(model, params, cpage,hsr);
 	}	
  
 	@RequestMapping(value = "/room_checkin_add", method = RequestMethod.POST)
@@ -88,7 +90,7 @@ public class CheckinController extends BaseController {
 		String customname = params.get("inputCustomname");
 		String iphone = params.get("inputIphone");
 		String cardid = params.get("inputCardid");
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		
 		int monthmoney = Integer.valueOf(params.get("inputMonthMoney"));
@@ -227,7 +229,7 @@ public class CheckinController extends BaseController {
 	 * @throws Exception
 	 */
 	public String roomCheckinSave(Checkin checkin,WaterElect we,RoomMoney rm,NetCfg nc,@RequestParam Map<String, String> params, ModelMap model) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		
 		try {
@@ -285,7 +287,7 @@ public class CheckinController extends BaseController {
 	
 	@RequestMapping(value = "/room_tocheckin", method = RequestMethod.GET)
 	public String toCheckin(@RequestParam Map<String, String> params,ModelMap model) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		params.put("houseid", params.get("houseid"));
 		params.put("roomno", params.get("roomno"));
@@ -310,22 +312,23 @@ public class CheckinController extends BaseController {
 		return "room_tocheckin";
 	}
 	@RequestMapping(value = "/room_checkin_query", method = RequestMethod.GET)
-	public String roomCheckinQuery(ModelMap model ,@RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+	public String roomCheckinQuery(ModelMap model ,@RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		String username  = hsr.getUserPrincipal().getName();
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = checkinService.queryAllRoomfulByParams(params, page); 
+		Page<Map<String, Object>> list = checkinService.queryAllRoomfulByParams(params, page,username); 
 		model.put("p", cpage);
 		model.put("list", list);
 		List<RoomType> types = roomtypeService.selectAllRoomType();
 		model.put("types", types);
-		List<House> houses = houseService.selectAllHouse();
+		List<House> houses = houseService.selectAllHouse(username);
 		model.put("houses", houses);
 		params.put("page_id", "room_checkin_query");
 		model.put("params", params);
 		return "room_checkin_query";
 	}
 	@RequestMapping(value = "/room_checkin_query", method = RequestMethod.POST)
-	public String roomCheckinQuerySearch(ModelMap model , @RequestParam Map<String, String> params,  @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
-		return this.roomCheckinQuery(model, params, cpage);
+	public String roomCheckinQuerySearch(ModelMap model , @RequestParam Map<String, String> params,  @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		return this.roomCheckinQuery(model, params, cpage,hsr);
 	}	
 	
 	@RequestMapping(value = "/room_checkin_query_page", method = RequestMethod.GET)

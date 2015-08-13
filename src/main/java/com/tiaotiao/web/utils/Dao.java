@@ -1,23 +1,25 @@
 package com.tiaotiao.web.utils;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import javax.naming.spi.DirStateFactory.Result;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,6 +29,7 @@ import org.springframework.stereotype.Repository;
 
 import com.tiaotiao.web.utils.dbutils.HumpBeanProcessor;
 import com.tiaotiao.web.utils.dbutils.HumpMatcher;
+import com.tiaotiao.web.utils.dbutils.ProcRunner;
 
 /**
  * dbutils常用模板，使用log4jdbc监控sql执行，需要用到dao的地方直接注入即可
@@ -51,7 +54,35 @@ public class Dao {
 		return dataSource;
 	}
 
+	public Object[] execProc(String pro_sql, Connection conn, Object[] params) throws SQLException {
+	    // Use ProcRunner to populate our result list from a stored procedure
+		ProcRunner prun = new ProcRunner();
+		// Create a ResultSetHandler implementation to convert the
+		// first row into an Object[].
+		ResultSetHandler<Object[]> rsh = new ResultSetHandler<Object[]>() {
+		    public Object[] handle(ResultSet rs) throws SQLException {
+		        if (!rs.next()) {
+		            return null;
+		        }
+		        ResultSetMetaData meta = rs.getMetaData();
+		        int cols = meta.getColumnCount();
+		        Object[] result = new Object[cols];
 
+		        for (int i = 0; i < cols; i++) {
+		            result[i] = rs.getObject(i + 1);
+		        }
+		        return result;
+		    }
+		};
+				
+				
+//		 Object[] result = prun.queryProc(conn,
+//                 "{CALL p_wcct_get_office_staff(?)}",
+//             rsh, new Object[] { param });
+		
+		    Object[] result = prun.queryProc(conn, pro_sql, rsh, params);
+	    return result;
+	}
 
 	/**
 	 * 执行sql语句

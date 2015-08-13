@@ -25,6 +25,10 @@ public class CheckoutService {
 	@Resource
 	private Dao dao;
 	
+	
+	@Resource
+	private PermissionService permissionService;
+	
 	/**
 	 * 插入checkout 表数据
 	 * 
@@ -87,7 +91,7 @@ public class CheckoutService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> getAllRoomfulByParams(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+	public Page<Map<String, Object>> getAllRoomfulByParams(Map<String, String> params, final PageRequest pageRequest,String username) throws Exception{
 		String houseid = params.get("houseid");
 		String roomtypeid = params.get("roomtypeid");
 		String sql = " SELECT "+
@@ -112,6 +116,8 @@ public class CheckoutService {
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
 					sql = sql + " AND r.typecode in ('"+roomtypeid+"')";
 				}
+				
+				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+") ";
 		return dao.find(sql, null, pageRequest);
 	}
 	
@@ -123,7 +129,7 @@ public class CheckoutService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> selectAllNotWaterElectRoom(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+	public Page<Map<String, Object>> selectAllNotWaterElectRoom(Map<String, String> params, final PageRequest pageRequest,String username) throws Exception{
 		String houseid = params.get("houseid");
 		String roomtypeid = params.get("roomtypeid");
 		int year = DateUtil.getThisYear();
@@ -164,6 +170,7 @@ public class CheckoutService {
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
 					sql = sql + " and r.typecode in ('"+roomtypeid+"')";
 				}
+				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+") ";
 		return dao.find(sql, sql_params, pageRequest);
 	}
 	/**

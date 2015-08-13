@@ -23,6 +23,9 @@ public class RoomMoneyService {
 	@Resource
 	private Dao dao;
 	
+	@Resource
+	private PermissionService permissionService;
+	
 	/**
 	 * 插入 RoomMoney 表数据
 	 * @param rm
@@ -69,7 +72,7 @@ public class RoomMoneyService {
 	 * @return
 	 * @throws Exception
 	 */
-	public RoomMoney getRoomMoneyById(int houseid,int roomno,int year,int month) throws Exception{
+	public RoomMoney getRoomMoneyById(String houseid,int roomno,int year,int month) throws Exception{
 		Object[] params = { houseid,roomno,year,month};
 		String sql = "select houseid,roomno,roommoney,year,month,day,created from t_room_money where houseid = ? and roomno = ? and year = ? and month = ? ";
 		return dao.findFirst(RoomMoney.class,sql, params);
@@ -82,7 +85,7 @@ public class RoomMoneyService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> getAllRoomfulMapByMonth(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+	public Page<Map<String, Object>> getAllRoomfulMapByMonth(Map<String, String> params, final PageRequest pageRequest,String username) throws Exception{
 		String houseid = params.get("houseid"); 
 		String roomtypeid = params.get("roomtypeid");
 		int year = DateUtil.getThisYear();
@@ -140,10 +143,11 @@ public class RoomMoneyService {
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
 					sql = sql + " AND tmp.typecode in ('"+roomtypeid+"')";
 				}
+				sql = sql +" and tmp.houseid in ("+permissionService.getUserHouses(username)+")";
 		return dao.find(sql, null, pageRequest);
 	}
 	
-	public Page<Map<String, Object>> queryAllRoomMoneyByParams(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+	public Page<Map<String, Object>> queryAllRoomMoneyByParams(Map<String, String> params, final PageRequest pageRequest,String username) throws Exception{
 		String houseid = params.get("houseid");
 		String roomtypeid = params.get("roomtypeid");
 		String roomno = params.get("roomno");
@@ -182,11 +186,12 @@ public class RoomMoneyService {
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
 					sql = sql + " AND rt.typecode in ('"+roomtypeid+"')";
 				}
+				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+") ";
 				sql = sql + " order by rm.created desc ";
 		return dao.find(sql, null, pageRequest);
 	}
 	
-	public Map<String,Object> getRoomMoneyQueryPageMapById(int houseid,int roomno,int year,int month) throws Exception{
+	public Map<String,Object> getRoomMoneyQueryPageMapById(String houseid,int roomno,int year,int month) throws Exception{
 		Object[] params = { houseid,roomno,year,month};
 //		int year = DateUtil.getThisYear();
 //		int month = DateUtil.getThisMonth() -1 ;
@@ -244,7 +249,7 @@ public class RoomMoneyService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<String,Object> getRoomMoneyCheckinMapById(int houseid,int roomno) throws Exception{
+	public Map<String,Object> getRoomMoneyCheckinMapById(String houseid,int roomno) throws Exception{
 		int year = DateUtil.getThisYear();
 		int pre_month = DateUtil.getThisMonth() -1 ;
 		Object[] params = { houseid,roomno,year,pre_month};

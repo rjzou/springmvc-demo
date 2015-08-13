@@ -1,5 +1,7 @@
 package com.tiaotiao.web.service;
 
+import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,31 +26,18 @@ public class HouseService {
 	@Resource
 	private Dao dao;
 	
-	/**
-	 * 
-	 * @param house
-	 * @return
-	 * @throws Exception
-	 */
-	public int insertHouse(House house) throws Exception{
-		Object[] params = { house.getHousename(), house.getDescription(), house.getCreated()};
-		String sql = "insert into t_house(housename,description,created) values(?,?,?) ";
-		int n = dao.update(sql, params);
-		return n;
-	}
-	/**
-	 * 
-	 * @param uh
-	 * @return
-	 * @throws Exception
-	 */
-	public int insertUserHouses(UserHouses uh) throws Exception{
-		Object[] params = { uh.getUsername() , uh.getHouseid()};
-		String sql = "insert into user_houses(username,houseid) values(?,?) ";
-		int n = dao.update(sql, params);
-		return n;
-	}
 	
+	@Resource
+	private PermissionService permissionService;
+	
+	public int insertHouse(House h,String username) throws Exception{
+		Connection conn = dao.getConn(false);
+		Object[] params = { h.getId(),username,h.getHousename(),h.getDescription()};
+		String pro_sql = " {CALL p_insert_houses(?,?,?,?)} ";
+		Object[] result = dao.execProc(pro_sql, conn, params);
+		int n = Integer.valueOf(result[0].toString());
+		return n;
+	}
 	
 	/**
 	 * 
@@ -78,14 +67,14 @@ public class HouseService {
 	
 	/**
 	 * 
-	 * @param params
-	 * @param pageRequest
+	 * @param username
 	 * @return
 	 * @throws Exception
 	 */
-	public List<House> selectAllHouse() throws Exception{
-		String sql = "select id,housename,description,created,updated from t_house ";
-		return dao.find(House.class,sql);
+	public List<House> selectAllHouse(String username) throws Exception{
+		Object[] params = { username };
+		String sql = "select id,housename,description,created,updated from t_house as h,user_houses as uh where h.id = uh.houseid and username = ? ";
+		return dao.find(House.class,sql,params);
 	}
 	
 	/**
@@ -95,7 +84,7 @@ public class HouseService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> selectAllHouse(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+	public Page<Map<String, Object>> selectAllHouse(Map<String, String> params, final PageRequest pageRequest,String username) throws Exception{
 		String housename = params.get("housename");
 		String sql = " SELECT "+
 				" 	h.id, "+
@@ -108,6 +97,7 @@ public class HouseService {
 		if (housename != null && housename.trim().length() > 0 ) {
 			sql = sql + " and h.housename  like '%"+housename+"%'";
 		}
+		sql = sql + " and h.houseid in ('"+permissionService.getUserHouses(username)+"') ";
 		return dao.find(sql, null, pageRequest);
 	}
 	/**

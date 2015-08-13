@@ -28,6 +28,9 @@ public class CheckinService {
 	@Resource
 	private Dao dao;
 	
+	@Resource
+	private PermissionService permissionService;
+	
 	/**
 	 * 
 	 * @param checkin
@@ -59,9 +62,9 @@ public class CheckinService {
 		return n;
 	}
 	
-	public int deleteCheckin(int houseid,int roomno) throws Exception{
+	public int deleteCheckin(String houseid,int roomno) throws Exception{
 		Object[] params = { houseid, roomno};
-		String sql = "delete from  t_checkin where houseid=? and roomno =? ";
+		String sql = "delete from  t_checkin where houseid = ? and roomno =? ";
 		int n = dao.update(sql, params);
 		return n;
 	}
@@ -73,7 +76,7 @@ public class CheckinService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Checkin getCheckinById(int houseid,int roomno) throws Exception{
+	public Checkin getCheckinById(String houseid,int roomno) throws Exception{
 		Object[] params = { houseid,roomno};
 		String sql = "select houseid,roomno,customname,iphone,cardid,monthmoney,pressmoney,water,elect,internet,ip,trash,keycount,keyprice,year,month,day,created from t_checkin where houseid = ? and roomno = ? ";
 		return dao.findFirst(Checkin.class,sql, params);
@@ -97,7 +100,7 @@ public class CheckinService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<String,Object> getCheckinMapById(int houseid,int roomno) throws Exception{
+	public Map<String,Object> getCheckinMapById(String houseid,int roomno) throws Exception{
 		int year = DateUtil.getThisYear();
 		int pre_month = DateUtil.getThisMonth() -1 ;
 		Object[] params = { houseid,roomno,year,pre_month};
@@ -141,7 +144,7 @@ public class CheckinService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> selectAllEmptyRoom(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+	public Page<Map<String, Object>> selectAllEmptyRoom(Map<String, String> params, final PageRequest pageRequest,String username) throws Exception{
 		String houseid = params.get("houseid");
 		String roomtypeid = params.get("roomtypeid");
 		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.description,r.created from t_room as r,t_house h "
@@ -153,6 +156,7 @@ public class CheckinService {
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
 					sql = sql + " and r.typecode in ('"+roomtypeid+"')";
 				}
+				sql = sql +" and r.houseid in ("+permissionService.getUserHouses(username)+")";
 		return dao.find(sql, null, pageRequest);
 	}
 	
@@ -164,7 +168,7 @@ public class CheckinService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> queryAllRoomfulByParams(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+	public Page<Map<String, Object>> queryAllRoomfulByParams(Map<String, String> params, final PageRequest pageRequest,String username) throws Exception{
 		String houseid = params.get("houseid");
 		String roomtypeid = params.get("roomtypeid");
 		String roomno = params.get("roomno");
@@ -209,7 +213,7 @@ public class CheckinService {
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
 					sql = sql + " AND rt.typecode in ('"+roomtypeid+"')";
 				}
-				
+				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+")";
 				sql = sql + " order by rm.created desc ";
 		return dao.find(sql, sql_params, pageRequest);
 	}
@@ -294,7 +298,7 @@ public class CheckinService {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Object getRoomMoneyTimes(int houseid,int roomno,int year,int month) throws SQLException{
+	public Object getRoomMoneyTimes(String houseid,int roomno,int year,int month) throws SQLException{
 		Object[] params = { houseid,roomno,year,month};
 		String sql =" select count(1) as times from t_room_money as rm "+
 					" where rm.houseid = ? " + 

@@ -16,6 +16,8 @@
   
     <input type="text" class="form-control"  id="housename" name="housename" placeholder="请输入楼房名称"  value="${params.housename}">
   </div>
+  	<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
   <button type="submit" class="btn btn-default">查询</button>
   <a class="btn btn-primary" href="${ctx}/house_toadd" role="button">新建楼房</a>
 </form>

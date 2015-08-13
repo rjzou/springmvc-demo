@@ -25,6 +25,8 @@
 	 return true;
   }
   </script>
+  <input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
   <button type="submit" class="btn btn-default" onclick="return to_search();">查询</button>
   <a class="btn btn-primary" href="${ctx}/waterelectcfg_toadd" role="button">生成水电价格</a>
 </form>

@@ -2,15 +2,17 @@ package com.tiaotiao.web.entity;
 
 public class House {
 
-	private int id;
+	private String id;
 	private String housename;
 	private String description;
 	private long created;
 	private long updated;
-	public int getId() {
+
+	
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getHousename() {

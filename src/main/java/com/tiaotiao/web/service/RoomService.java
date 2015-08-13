@@ -1,7 +1,5 @@
 package com.tiaotiao.web.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -10,9 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.tiaotiao.web.entity.House;
 import com.tiaotiao.web.entity.Room;
-import com.tiaotiao.web.entity.User;
 import com.tiaotiao.web.utils.Dao;
 
 
@@ -26,6 +22,9 @@ public class RoomService {
 	@Resource
 	private Dao dao;
 	
+
+	@Resource
+	private PermissionService permissionService;
 	/**
 	 * 
 	 * @param room
@@ -44,7 +43,7 @@ public class RoomService {
 	 * @return
 	 * @throws Exception
 	 */
-	public int updateRoom(Room room,int sourceHouseid,int sourceRoomno) throws Exception{
+	public int updateRoom(Room room,String sourceHouseid,int sourceRoomno) throws Exception{
 		Object[] params = { room.getHouseid(), room.getRoomno(), room.getMonthmoney(),room.getPressmoney(),room.getTypecode(), room.getDescription(), room.getUpdated(),sourceHouseid, sourceRoomno};
 		String sql = "update t_room set houseid = ?,roomno = ?,monthmoney = ?,pressmoney = ?,typecode = ? ,description = ?,updated =? where houseid=? and roomno =? ";
 		int n = dao.update(sql, params);
@@ -57,7 +56,7 @@ public class RoomService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> selectAllRoom(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+	public Page<Map<String, Object>> selectAllRoom(Map<String, String> params, final PageRequest pageRequest,String username) throws Exception{
 		String houseid = params.get("houseid");
 		String roomno = params.get("roomno");
 		String roomtypeid = params.get("roomtypeid");
@@ -80,7 +79,7 @@ public class RoomService {
 				" 	r.houseid = h.id "+
 				" and r.typecode = rt.typecode ";
 				if (houseid != null && houseid.trim().length() > 0 ) {
-					sql = sql + " AND r.houseid in ("+houseid+")";
+					sql = sql + " AND r.houseid in ('"+houseid+"')";
 				}
 				if (roomno != null && roomno.trim().length() > 0 ) {
 					sql = sql + " AND r.roomno in ("+roomno+")";
@@ -88,6 +87,7 @@ public class RoomService {
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
 					sql = sql + " AND r.typecode in ('"+roomtypeid+"')";
 				}
+				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+") ";
 		return dao.find(sql, null, pageRequest);
 	}
 	/**
@@ -140,7 +140,7 @@ public class RoomService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Room selectRoomById(int houseid,int roomno) throws Exception{
+	public Room selectRoomById(String houseid,int roomno) throws Exception{
 		Object[] params = { houseid,roomno};
 		String sql = "select houseid,roomno,monthmoney,pressmoney,typecode,description,created from t_room where houseid = ? and roomno = ? ";
 		return dao.findFirst(Room.class,sql, params);

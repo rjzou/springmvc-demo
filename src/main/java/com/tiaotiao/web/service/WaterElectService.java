@@ -52,7 +52,7 @@ public class WaterElectService {
 	 * @return
 	 * @throws Exception
 	 */
-	public WaterElect getWaterElectById(int houseid,int roomno,int year,int month) throws Exception{
+	public WaterElect getWaterElectById(String houseid,int roomno,int year,int month) throws Exception{
 		Object[] params = { houseid,roomno,year,month};
 		String sql = "select houseid,roomno,water,waterprice,elect,electprice,year,month,day,created,updated from t_waterelect where houseid = ? and roomno = ? and year = ? and month = ? ";
 		return dao.findFirst(WaterElect.class,sql, params);
@@ -66,7 +66,7 @@ public class WaterElectService {
 	 * @return
 	 * @throws Exception
 	 */
-	public WaterElect selectWaterelectByIdAndYearMonth(int houseid,int roomno,int year,int month) throws Exception{
+	public WaterElect selectWaterelectByIdAndYearMonth(String houseid,int roomno,int year,int month) throws Exception{
 		Object[] params = { houseid,roomno,year,month};
 		String sql = "select houseid,roomno,water,waterprice,elect,electprice,year,month,day,created,updated from t_waterelect where houseid = ? and roomno = ? and year = ? and month = ?";
 		return dao.findFirst(WaterElect.class,sql, params);

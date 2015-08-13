@@ -45,6 +45,8 @@
   
     <input type="text" class="form-control" id="roomno" name="roomno"  placeholder="输入房间号" value="${params.roomno}">
   </div>
+  	<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
   <button type="submit" class="btn btn-default" onclick="return to_search();">查询</button>
   <p class="text-left">
   </p>

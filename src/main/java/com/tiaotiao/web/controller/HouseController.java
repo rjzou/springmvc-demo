@@ -3,6 +3,7 @@ package com.tiaotiao.web.controller;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,12 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tiaotiao.web.entity.House;
-import com.tiaotiao.web.entity.Room;
-import com.tiaotiao.web.entity.UserHouses;
 import com.tiaotiao.web.service.CheckinService;
 import com.tiaotiao.web.service.CheckoutService;
 import com.tiaotiao.web.service.HouseService;
 import com.tiaotiao.web.service.RoomMoneyService;
+import com.tiaotiao.web.utils.GuidUtil;
  
 @Controller
 public class HouseController extends BaseController {
@@ -37,9 +37,10 @@ public class HouseController extends BaseController {
 	private RoomMoneyService roomMoneyService;
 	
 	@RequestMapping(value = "/house", method = RequestMethod.GET)
-	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		String username  = hsr.getUserPrincipal().getName();
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = houseService.selectAllHouse(params, page); 
+		Page<Map<String, Object>> list = houseService.selectAllHouse(params, page,username); 
 		model.put("p", cpage);
 		model.put("list", list);
 		model.put("params", params);
@@ -49,8 +50,8 @@ public class HouseController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/house", method = RequestMethod.POST)
-	public String houseSearch(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
-		return this.printIndex(model, params, cpage);
+	public String houseSearch(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		return this.printIndex(model, params, cpage,hsr);
 	}
 	@RequestMapping(value = "/house_toadd", method = RequestMethod.GET)
 	public String toHouseAdd(ModelMap model , @RequestParam Map<String, String> params) throws Exception {
@@ -60,23 +61,31 @@ public class HouseController extends BaseController {
 	}
  
 	@RequestMapping(value = "/house_add", method = RequestMethod.POST)
-	public String houseAdd(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
-		String housename = params.get("inputHousename");
-		String description = params.get("inputDescription");
+	public String houseAdd(@RequestParam Map<String, String> params, ModelMap model ,HttpServletRequest hsr) throws Exception {
+		String id = params.get("id");
+		String housename = params.get("housename");
+		String description = params.get("description");
 		House house = new House();
+		
+		if (id == null || id.trim() == "") {
+			id = GuidUtil.guid();
+		}
+		
+		house.setId(id);
 		house.setHousename(housename);
 		house.setDescription(description);
 		house.setCreated(System.currentTimeMillis());
-		
+		String username  = hsr.getUserPrincipal().getName();
 		try {
-			int n = houseService.insertHouse(house);
-//			int m = houseService.insertUserHouses(uh);
+			House h = houseService.getHouseById(id);
+			int n = 0;
+			if (h != null) {
+				n = houseService.updateHouse(house);
+			}
+			else{
+				n = houseService.insertHouse(house,username);
+			}
 			if (n > 0) {
-//				houseService.
-//				UserHouses uh = new UserHouses();
-//				uh.setUsername(username);
-//				uh.setHouseid(houseid);
-				
 				model.addAttribute("message", "保存成功");
 			}else{
 				model.addAttribute("message", "保存失败");
@@ -84,6 +93,7 @@ public class HouseController extends BaseController {
 		} catch (Exception e) {
 			model.addAttribute("message", "保存失败,错误信息:"+e.getMessage());
 		}
+		params.put("id", id);
 		params.put("page_id", "house");
 		model.put("params", params);
 		return "house_add";
@@ -133,7 +143,7 @@ public class HouseController extends BaseController {
 	}
 	@RequestMapping(value = "/house_edit", method = RequestMethod.POST)
 	public String houseEdit(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
-		int hiddenid = Integer.valueOf(params.get("hiddenid"));
+		String hiddenid = params.get("hiddenid");
 		String housename = params.get("inputHousename");
 		String description = params.get("inputDescription");
 		House house = new House();

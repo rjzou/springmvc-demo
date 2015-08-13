@@ -15,17 +15,17 @@
       </c:if> 
 		
 		<div class="form-group">
-			<label class="control-label" for="inputHousename">楼房名字</label> 
+			<label class="control-label" for="housename">楼房名字</label> 
 			<input
-				type="text" class="form-control" id="inputHousename" name="inputHousename"  value="${params.inputHousename}"
+				type="text" class="form-control" id="housename" name="housename"  value="${params.housename}"
 				placeholder="输入楼房名字" required>
 		</div>
 		<div class="form-group">
-			<label class="control-label" for="inputDescription">备注</label>
-			<input type="text" class="form-control" id="inputDescription" name="inputDescription"  value="${params.inputDescription}"
+			<label class="control-label" for="description">备注</label>
+			<input type="text" class="form-control" id="description" name="description"  value="${params.description}"
 				placeholder="备注">
 		</div>
-		
+		 <input type="hidden" id="id" name="id" value="${params.id}"/>
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
 				
