@@ -54,7 +54,7 @@
 		
 		<div class="panel panel-default">
 		  <!-- Default panel contents -->
-		  <div class="panel-heading">收费记录</div>
+		  <div class="panel-heading">收租记录</div>
 		
 		  <!-- Table -->
 		  <div class="table-responsive">
@@ -80,7 +80,7 @@
 	            <td><span class="label label-success">${item.pressmoney}</span></td>
 	            <td><span class="label label-success">${item.water}/${item.elect}</span></td>
 	            <td><span class="label label-success">${item.waterprice}/${item.electprice}</span></td>
-	            <td><span class="label label-success">${item.internet}</span></td>
+	            <td><span class="label label-success">${item.netprice}</span></td>
 	            <td><span class="label label-success">${item.trash}</span></td>
 	            <td><span class="label label-success">${item.sum_keyprice}</span></td>
 	            <td><span class="label label-success">${item.roommoney}</span></td>

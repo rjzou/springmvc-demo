@@ -47,7 +47,9 @@
   </div>
   <button type="submit" class="btn btn-default" onclick="return to_search();">查询</button>
   <p class="text-left">
-  <span class="label label-danger">还有空房21间</span>
+  <span class="label label-danger">还有空房${params.empty_room_count}间</span>
+  <span class="label label-info">今天入住${params.empty_room_count}间</span>
+  <span class="label label-warning">今天退房${params.empty_room_count}间</span>
   </p>
 </form>
 </div><!-- /.row -->
@@ -58,6 +60,7 @@
 					<th>*</th>
 					<th>栋</th>
 					<th>房间号</th>
+					<th>房型</th>
 					<th>参考月租</th>
 					<th>参考押金</th>
 					<th>操作</th>
@@ -69,6 +72,7 @@
 					<tr>
 						<td>${status.count }</td>
 						<td>${item.housename }</td>
+						<td>${item.typename }</td>
 						<td>${item.roomno }</td>
 						<td>${item.monthmoney }</td>
 						<td>${item.pressmoney }</td>

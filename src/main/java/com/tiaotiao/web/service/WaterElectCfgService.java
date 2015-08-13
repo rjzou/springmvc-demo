@@ -1,6 +1,7 @@
 package com.tiaotiao.web.service;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 
@@ -21,6 +22,9 @@ import com.tiaotiao.web.utils.Dao;
 public class WaterElectCfgService {
 	@Resource
 	private Dao dao;
+	
+	private Logger logger = Logger.getLogger(WaterElectCfgService.class.getName());
+	
 	/**
 	 * 插入水电价格表数据
 	 * @param wec

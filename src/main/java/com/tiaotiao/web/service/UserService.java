@@ -1,5 +1,7 @@
 package com.tiaotiao.web.service;
 
+import java.util.logging.Logger;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ import com.tiaotiao.web.utils.Dao;
 public class UserService {
 	@Resource
 	private Dao dao;
+	
+	private Logger logger = Logger.getLogger(UserService.class.getName());
+	
 	
 	/**
 	 * 

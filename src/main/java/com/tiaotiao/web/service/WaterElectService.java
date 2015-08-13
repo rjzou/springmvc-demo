@@ -1,5 +1,7 @@
 package com.tiaotiao.web.service;
 
+import java.util.logging.Logger;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -18,6 +20,10 @@ import com.tiaotiao.web.utils.Dao;
 public class WaterElectService {
 	@Resource
 	private Dao dao;
+	
+	private Logger logger = Logger.getLogger(WaterElectService.class.getName());
+	
+	
 	/**
 	 * 插入水电表数据
 	 * @param we

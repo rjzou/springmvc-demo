@@ -1,5 +1,7 @@
 package com.tiaotiao.web.service;
 
+import java.util.logging.Logger;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ public class LoginService {
 	@Resource
 	private Dao dao;
 	
+	private Logger logger = Logger.getLogger(LoginService.class.getName());
 	
 	public Boolean CheckUserLogin(User user) throws Exception{
 //		List<String> list = new ArrayList<String>();

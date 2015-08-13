@@ -3,6 +3,7 @@ package com.tiaotiao.web.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 
@@ -26,6 +27,8 @@ import com.tiaotiao.web.utils.Dao;
 public class RoomTypeService {
 	@Resource
 	private Dao dao;
+	
+	private Logger logger = Logger.getLogger(RoomTypeService.class.getName());
 	
 	/**
 	 * 

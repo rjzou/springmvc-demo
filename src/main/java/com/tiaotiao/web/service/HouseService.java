@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.tiaotiao.web.entity.House;
 import com.tiaotiao.web.entity.UserHouses;
+import com.tiaotiao.web.interceptor.SessionInterceptor;
 import com.tiaotiao.web.utils.Dao;
 
 
@@ -29,6 +32,8 @@ public class HouseService {
 	
 	@Resource
 	private PermissionService permissionService;
+	
+	private Logger logger = Logger.getLogger(HouseService.class.getName());
 	
 	public int insertHouse(House h,String username) throws Exception{
 		Connection conn = dao.getConn(false);
@@ -97,7 +102,8 @@ public class HouseService {
 		if (housename != null && housename.trim().length() > 0 ) {
 			sql = sql + " and h.housename  like '%"+housename+"%'";
 		}
-		sql = sql + " and h.houseid in ('"+permissionService.getUserHouses(username)+"') ";
+		sql = sql + " and h.id in ("+permissionService.getUserHouses(username)+") ";
+		logger.log(Level.INFO, sql);
 		return dao.find(sql, null, pageRequest);
 	}
 	/**

@@ -75,6 +75,8 @@ public class CheckinController extends BaseController {
 		model.put("types", types);
 		List<House> houses = houseService.selectAllHouse(username);
 		model.put("houses", houses);
+		Object empty_room_count = checkinService.getEmptyRoomCount();
+		params.put("empty_room_count", empty_room_count.toString());
 		params.put("page_id", "room_checkin");
 		model.put("params", params);
 		return "room_checkin";
@@ -333,7 +335,7 @@ public class CheckinController extends BaseController {
 	
 	@RequestMapping(value = "/room_checkin_query_page", method = RequestMethod.GET)
 	public String roomCheckinQueryPage(@RequestParam Map<String, String> params,ModelMap model, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		int year = Integer.valueOf(params.get("year"));
 		int month = Integer.valueOf(params.get("month"));

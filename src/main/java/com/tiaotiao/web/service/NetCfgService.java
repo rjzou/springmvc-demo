@@ -1,6 +1,7 @@
 package com.tiaotiao.web.service;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 
@@ -26,6 +27,8 @@ public class NetCfgService {
 	
 	@Resource
 	private PermissionService permissionService;
+	
+	private Logger logger = Logger.getLogger(NetCfgService.class.getName());
 	
 	/**
 	 * 插入网络配置表数据

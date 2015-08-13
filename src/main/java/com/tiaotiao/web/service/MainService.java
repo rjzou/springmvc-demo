@@ -1,6 +1,7 @@
 package com.tiaotiao.web.service;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 
@@ -24,6 +25,8 @@ public class MainService {
 	@Resource
 	private Dao dao;
 
+	private Logger logger = Logger.getLogger(MainService.class.getName());
+	
 	/**
 	 * 得到待办待抄手电数据
 	 * @param houseid

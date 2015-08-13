@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 
@@ -30,6 +32,8 @@ public class CheckinService {
 	
 	@Resource
 	private PermissionService permissionService;
+	
+	private Logger logger = Logger.getLogger(CheckinService.class.getName());
 	
 	/**
 	 * 
@@ -133,7 +137,8 @@ public class CheckinService {
 					" AND c.roomno = ? "+
 					" AND we.year = ? "+ 
 					" AND we.month = ? ";
-				
+		logger.log(Level.INFO, sql);
+		
 		return dao.findFirst(sql, params);
 	}
 	
@@ -147,8 +152,11 @@ public class CheckinService {
 	public Page<Map<String, Object>> selectAllEmptyRoom(Map<String, String> params, final PageRequest pageRequest,String username) throws Exception{
 		String houseid = params.get("houseid");
 		String roomtypeid = params.get("roomtypeid");
-		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.description,r.created from t_room as r,t_house h "
-				+ " where r.houseid = h.id and (r.houseid,r.roomno) not in (select houseid,roomno from t_checkin)  ";
+		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.description,rt.typename "
+				+ " from t_room as r,t_room_type as rt,t_house as h "
+				+ " where r.houseid = h.id "
+				+ " and r.typecode = rt.typecode "
+				+ " and (r.houseid,r.roomno) not in (select houseid,roomno from t_checkin)  ";
 				
 				if (houseid != null && houseid.trim().length() > 0 ) {
 					sql = sql + " and r.houseid in ("+houseid+")";
@@ -157,6 +165,9 @@ public class CheckinService {
 					sql = sql + " and r.typecode in ('"+roomtypeid+"')";
 				}
 				sql = sql +" and r.houseid in ("+permissionService.getUserHouses(username)+")";
+				
+				logger.log(Level.INFO, sql);
+				
 		return dao.find(sql, null, pageRequest);
 	}
 	
@@ -215,6 +226,9 @@ public class CheckinService {
 				}
 				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+")";
 				sql = sql + " order by rm.created desc ";
+				
+				logger.log(Level.INFO, sql);
+				
 		return dao.find(sql, sql_params, pageRequest);
 	}
 	/**
@@ -226,7 +240,7 @@ public class CheckinService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<String,Object> getCheckinQueryPageMapById(int houseid,int roomno,int year,int month) throws Exception{
+	public Map<String,Object> getCheckinQueryPageMapById(String houseid,int roomno,int year,int month) throws Exception{
 		Object[] params = { houseid,roomno};
 		String sql = " SELECT "+
 				" 	h.housename, "+
@@ -244,6 +258,9 @@ public class CheckinService {
 				" AND r.roomno = c.roomno "+
 				" AND c.houseid = ? "+
 				" AND c.roomno = ? " ;
+		
+		logger.log(Level.INFO, sql);
+		
 		return dao.findFirst(sql, params);
 	}
 	
@@ -261,7 +278,7 @@ public class CheckinService {
 						"         rm.pressmoney, "+
 						"         CONCAT_WS('-',rm.year,rm.month,rm.day) as s_date, "+
 						"         ci.trash, "+
-						"         ci.internet, "+
+						"         nc.netprice, "+
 						"         (ci.keycount * ci.keyprice) as sum_keyprice, "+
 						"         we.water, "+
 						"         we.waterprice, "+
@@ -270,22 +287,28 @@ public class CheckinService {
 						"         rm.roommoney "+
 						" FROM "+
 						"         t_checkin as ci, "+ 
-						" 		  t_waterelect as we,"+
+						" 		  t_waterelect as we," + 
+						"		  t_net_cfg as nc,"+
 						"         t_room_money as rm "+
 						" WHERE "+
 						"         ci.houseid = rm.houseid "+
 						" AND ci.roomno = rm.roomno " + 
 						" AND ci.houseid = we.houseid " +
 						" AND ci.roomno = we.roomno " +
+						" AND ci.houseid = nc.houseid " +
+						" AND ci.roomno = nc.roomno " +
 						" AND we.year = rm.year " + 
 						" AND we.month = rm.month ";
 						if (houseid != null && houseid.trim().length() > 0 ) {
-							sql = sql + " AND ci.houseid in ("+houseid+")";
+							sql = sql + " AND ci.houseid in ('"+houseid+"')";
 						}
 						if (roomno != null && roomno.trim().length() > 0 ) {
 							sql = sql + " AND ci.roomno in ("+roomno+")";
 						}
 						sql = sql + " order by rm.created asc ";
+						
+						logger.log(Level.INFO, sql);
+						
 		return dao.find(sql, null, pageRequest);
 	}
 	
@@ -305,6 +328,7 @@ public class CheckinService {
 					" and rm.roomno = ? " + 
 					" and rm.year <= ? " + 
 					" and rm.month <= ?"; 
+		logger.log(Level.INFO, sql);
 		Object o= dao.findBy(sql,"times",params);
 		return o;
 	}
@@ -318,6 +342,7 @@ public class CheckinService {
 		Object[] params = { houseid};
 		String sql =" select count(1) as cnt from t_checkin as c "+
 					" where c.houseid = ? "; 
+		logger.log(Level.INFO, sql);
 		Object o= dao.findBy(sql,"cnt",params);
 		return o;
 	}
@@ -334,8 +359,25 @@ public class CheckinService {
 		String sql =" select count(1) as cnt from t_checkin as c "+
 					" where c.houseid = ? " + 
 					" and c.roomno = ?"; 
+		logger.log(Level.INFO, sql);
 		Object o= dao.findBy(sql,"cnt",params);
 		return o;
 	}
-	
+	/**
+	 * 得到空房的数量
+	 * @param houseid
+	 * @param roomno
+	 * @return
+	 * @throws SQLException
+	 */
+	public Object getEmptyRoomCount() throws SQLException{
+		String sql =" select count(1) as cnt from t_room as r "+
+				" where (r.houseid,r.roomno) not in "+
+				" (select ci.houseid,ci.roomno from t_checkin as ci) "; 
+		
+		
+		logger.log(Level.INFO, sql);
+		Object o= dao.findBy(sql,"cnt");
+		return o;
+	}
 }

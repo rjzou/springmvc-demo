@@ -1,6 +1,7 @@
 package com.tiaotiao.web.service;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 
@@ -25,6 +26,8 @@ public class RoomService {
 
 	@Resource
 	private PermissionService permissionService;
+	
+	private Logger logger = Logger.getLogger(RoomService.class.getName());
 	/**
 	 * 
 	 * @param room

@@ -2,6 +2,7 @@ package com.tiaotiao.web.service;
 
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 
@@ -28,6 +29,8 @@ public class CheckoutService {
 	
 	@Resource
 	private PermissionService permissionService;
+	
+	private Logger logger = Logger.getLogger(CheckoutService.class.getName());
 	
 	/**
 	 * 插入checkout 表数据

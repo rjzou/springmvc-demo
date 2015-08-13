@@ -33,17 +33,17 @@ public class PermissionService {
 		Object[] params = { username };
 		String sql = "select username,houseid from user_houses where username= ? ";
 		List<UserHouses> usList = dao.find(UserHouses.class, sql, params);
-		
-		List<String> houses = new ArrayList<String>();
-		StringBuffer sb = new StringBuffer();
-		for (UserHouses userHouses : usList) {
-			houses.add(userHouses.getHouseid());
+		String result = "''";
+		if (usList.size() > 0 ) {
+			StringBuffer sb = new StringBuffer();
+			for (UserHouses userHouses : usList) {
+				sb.append("'");
+				sb.append(userHouses.getHouseid());
+				sb.append("',");
+			}
+			result = StringUtils.substringBeforeLast(sb.toString(), ",");
 		}
-		String result = ""; 
-		if (houses.size() > 0) {
-			result = StringUtils.join(houses.toArray(),",");
-		}		
-				
+		
 		return result;
 	}
 	
