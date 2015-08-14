@@ -32,7 +32,7 @@
             <td>${params.roomno}</td>
         </tr>
           <tr>
-            <th class="col-sm-2">客户名称</th>
+            <th class="col-sm-2">客户姓名</th>
             <td>${params.customname}</td>
         </tr>
           <tr>

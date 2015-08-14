@@ -12,7 +12,7 @@
 <div class="row">
   <form class="navbar-form navbar-left" role="search" action="${ctx}/room_checkout" method="post">
    <div class="form-group">
-  <select class="selectpicker" name="selectHouse" multiple>
+  <select class="selectpicker" name="selectHouse"  title="请选择..." multiple>
 	  	<c:forEach var="house" items="${houses}">  
 	  	<option value="${house.id}"  <c:if test="${fn:contains(params.houseid, house.id) == true }">selected="selected"</c:if> > 
 			${house.housename}  
@@ -32,7 +32,7 @@
   </div>
   
   <div class="form-group">
-  <select class="selectpicker" name="selectRoomtype" multiple>
+  <select class="selectpicker" name="selectRoomtype"  title="请选择..." multiple>
 	  	<c:forEach var="type" items="${types}">  
 	  	<option value="${type.typecode}" <c:if test="${fn:contains(params.roomtypeid, type.typecode) == true }">selected="selected"</c:if>> 
 			${type.typename}  
@@ -47,7 +47,9 @@
   </div>
   <button type="submit" class="btn btn-default" onclick="return to_search();">查询</button>
   <p class="text-left">
-  <span class="label label-info">已经在住 8 间</span>
+   <span class="label label-success">在住 x 间</span>
+  <span class="label label-info">今天退房 x 间</span>
+  <span class="label label-warning">今天入住 x 间</span>
   </p>
 </form>
 </div><!-- /.row -->
@@ -55,9 +57,11 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>*</th>
-					<th>栋</th>
-					<th>房间号</th>
+					<th>#</th>
+					<th>栋 - 房间号 - 房型</th>
+					<th>客户姓名</th>
+					<th>入住时间</th>
+					<th>上次收租时间</th>
 					<th>实收月租</th>
 					<th>实收押金</th>
 					<th>操作</th>
@@ -68,12 +72,15 @@
 				<c:forEach items="${list.content}" var="item" varStatus="status">
 					<tr>
 						<td>${status.count }</td>
-						<td>${item.housename }</td>
-						<td>${item.roomno }</td>
+						<td>${item.housename } - ${item.roomno } - ${item.typename }</td>
+						<td>${item.customname }</td>
+						<td>${item.in_date }</td>
+						<td>${item.pre_s_date }</td>
 						<td>${item.monthmoney } 元</td>
 						<td>${item.pressmoney } 元</td>
 						<td>
 							<a class="btn btn-primary btn-sm" href="${ctx}/room_tocheckout?houseid=${item.houseid }&roomno=${item.roomno }" role="button">退房</a>
+							<a class="btn btn-info btn-sm" href="${ctx}/room_checkin_query_page?houseid=${item.houseid }&roomno=${item.roomno }&return_url=${ctx}/room_checkout" role="button">详情</a>
 						</td>
 						<td>${item.description }</td>
 					</tr>

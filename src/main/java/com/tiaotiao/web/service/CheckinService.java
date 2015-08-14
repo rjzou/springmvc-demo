@@ -1,5 +1,6 @@
 package com.tiaotiao.web.service;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.tiaotiao.web.entity.Checkin;
+import com.tiaotiao.web.entity.House;
 import com.tiaotiao.web.entity.Room;
 import com.tiaotiao.web.entity.User;
 import com.tiaotiao.web.utils.Dao;
@@ -105,38 +107,55 @@ public class CheckinService {
 	 * @throws Exception
 	 */
 	public Map<String,Object> getCheckinMapById(String houseid,int roomno) throws Exception{
-		int year = DateUtil.getThisYear();
-		int pre_month = DateUtil.getThisMonth() -1 ;
-		Object[] params = { houseid,roomno,year,pre_month};
+//		int year = DateUtil.getThisYear();
+//		int pre_month = DateUtil.getThisMonth() -1 ;
+		Object[] params = { houseid,roomno};
 		String sql = " SELECT "+
-					"     h.housename, "+
-					"     c.houseid, "+
-					"     c.roomno, "+
-					"     c.customname, "+
-					"     c.iphone, "+
-					"     c.cardid, "+
-					"     c.monthmoney, "+
-					"     c.pressmoney, "+
-					"     c.internet, "+
-					"     c.trash, "+
-					"     c.keycount, "+
-					"     c.keyprice, "+
-					"     CONCAT_WS('-',we.year,we.month,we.day) as pre_s_date, " + 
-					"     we.water, "+ 
-					"     we.elect, "+
-					"     c.created "+
-					" FROM "+
-					"     t_checkin as c, "+
-					"     t_house as h, "+
-					"     t_waterelect as we "+
-					" WHERE "+
-					"     c.houseid = h.id "+
-					" AND c.houseid = we.houseid "+
-					" AND c.roomno = we.roomno " + 
-					" AND c.houseid = ? "+
-					" AND c.roomno = ? "+
-					" AND we.year = ? "+ 
-					" AND we.month = ? ";
+				" 	h.housename, "+
+				" 	c.houseid, "+
+				" 	c.roomno, "+
+				" 	c.customname, "+
+				" 	c.iphone, "+
+				" 	c.cardid, "+
+				" 	rm.monthmoney, "+
+				" 	rm.pressmoney, "+
+				" 	rm.roommoney, "+
+				" 	nc.netprice, "+
+				" 	c.trash, "+
+				" 	c.keycount, "+
+				" 	c.keyprice, "+
+				" 	CONCAT_WS( "+
+				" 		'-', "+
+				" 		rm.year, "+
+				" 		rm.month, "+
+				" 		rm.day "+
+				" 	) AS pre_s_date, "+
+				" 	we.water, "+
+				" 	we.elect, "+
+				" 	c.created "+
+				" FROM "+
+				" 	t_checkin AS c, "+
+				"   t_net_cfg as nc, "+
+				" 	t_house AS h, "+
+				" 	t_waterelect AS we, "+
+				"   t_room_money as rm, "+
+				"   v_room_money_last as rml "+
+				" WHERE "+
+				" 	c.houseid = h.id "+
+				" AND c.houseid = we.houseid "+
+				" AND c.roomno = we.roomno "+
+				" AND rm.year = we.year "+
+				" AND rm.month = we.month "+
+				" AND c.houseid = rm.houseid "+
+				" AND c.roomno = rm.roomno "+
+				" AND c.houseid = rml.houseid "+
+				" AND c.roomno = rml.roomno "+
+				" AND rm.year = rml.last_year "+
+				" AND rm.month = rml.last_month "+
+				" AND c.houseid = nc.houseid "+
+				" AND c.roomno = nc.roomno "+
+				" AND c.houseid = ? "+
+				" AND c.roomno = ? ";
 		logger.log(Level.INFO, sql);
 		
 		return dao.findFirst(sql, params);
@@ -225,7 +244,7 @@ public class CheckinService {
 					sql = sql + " AND rt.typecode in ('"+roomtypeid+"')";
 				}
 				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+")";
-				sql = sql + " order by rm.created desc ";
+				sql = sql + " order by c.year desc,c.month desc,c.day desc ";
 				
 				logger.log(Level.INFO, sql);
 				
@@ -240,14 +259,15 @@ public class CheckinService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<String,Object> getCheckinQueryPageMapById(String houseid,int roomno,int year,int month) throws Exception{
+	public Map<String,Object> getCheckinQueryPageMapById(String houseid,int roomno) throws Exception{
 		Object[] params = { houseid,roomno};
 		String sql = " SELECT "+
 				" 	h.housename, "+
 				" 	r.houseid, "+
 				" 	r.roomno, "+
 				" 	c.customname, "+
-				" 	CONCAT_WS('-', c.year, c.month, c.day) AS in_date "+
+				" 	CONCAT_WS('-', c.year, c.month, c.day) AS in_date, " + 
+				"   datediff(now(), CONCAT_WS('-', c.year, c.month, c.day)) as in_days "+
 				" FROM "+
 				" 	t_room AS r, "+
 				" 	t_house AS h, "+
@@ -363,21 +383,33 @@ public class CheckinService {
 		Object o= dao.findBy(sql,"cnt",params);
 		return o;
 	}
+//	/**
+//	 * 得到空房的数量
+//	 * @param houseid
+//	 * @param roomno
+//	 * @return
+//	 * @throws SQLException
+//	 */
+//	public Object getEmptyRoomCount() throws SQLException{
+//		String sql =" select count(1) as cnt from t_room as r "+
+//				" where (r.houseid,r.roomno) not in "+
+//				" (select ci.houseid,ci.roomno from t_checkin as ci) "; 
+//		
+//		
+//		logger.log(Level.INFO, sql);
+//		Object o= dao.findBy(sql,"cnt");
+//		return o;
+//	}
 	/**
-	 * 得到空房的数量
-	 * @param houseid
-	 * @param roomno
+	 * 统计  还有空房x间, 今天入住x间, 今天退房x间  
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public Object getEmptyRoomCount() throws SQLException{
-		String sql =" select count(1) as cnt from t_room as r "+
-				" where (r.houseid,r.roomno) not in "+
-				" (select ci.houseid,ci.roomno from t_checkin as ci) "; 
-		
-		
-		logger.log(Level.INFO, sql);
-		Object o= dao.findBy(sql,"cnt");
-		return o;
+	public Object[] getRoomTongJi() throws Exception{
+		Connection conn = dao.getConn(false);
+//		Object[] params = { h.getId(),username,h.getHousename(),h.getDescription()};
+		String pro_sql = " {CALL p_get_room_tongji()} ";
+		Object[] result = dao.execProc(pro_sql, conn);
+		return result;
 	}
 }

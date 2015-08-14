@@ -48,7 +48,7 @@
         </tr>
         <tr>
             <th class="col-sm-2">入住日期</th>
-            <td><span class="label label-success">${params.in_date}</span> 已经入住 <span class="label label-success">x</span> 天</td>
+            <td><span class="label label-success">${params.in_date}</span> 已经入住 <span class="label label-success">${params.in_days}</span> 天</td>
         </tr>
 		</table>
 		
@@ -93,7 +93,14 @@
  	<input type="hidden" id="houseid" name="houseid" value="${params.houseid}"/>
  	<input type="hidden" id="roomno" name="roomno" value="${params.roomno}"/>
  	<input type="hidden" id="paymoney" name="paymoney" value="${params.paymoney}"/>
-		<a class="btn btn-default" href="${ctx}/room_checkin_query" role="button">返回</a>
+ 	  <c:choose>
+			<c:when test="${!empty params.return_url }">
+				<a class="btn btn-default" href="${params.return_url}" role="button">返回</a>
+			</c:when>
+			<c:otherwise>
+				<a class="btn btn-default" href="${ctx}/room_checkin_query" role="button">返回</a>
+			</c:otherwise>
+	  </c:choose>
 	</form>
 </div>
 </body>

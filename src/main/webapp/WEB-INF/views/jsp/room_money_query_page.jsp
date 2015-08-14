@@ -90,7 +90,7 @@
          </c:if>  
           <tr>
             <th class="col-sm-2">网费(元)</th>
-            <td><span class="label label-success">${params.internet}</span></td>
+            <td><span class="label label-success">${params.netprice}</span></td>
         </tr>
          <tr>
             <th class="col-sm-2">卫生费(元)</th>
@@ -126,7 +126,7 @@
 	            +<span class="label label-success">${params.usedwaterprice}</span>
 	            +<span class="label label-success">${params.usedelectprice}</span>
 	            </c:if>  
-	            +<span class="label label-success">${params.internet}</span>
+	            +<span class="label label-success">${params.netprice}</span>
 	            +<span class="label label-success">${params.trash}</span>
 	            <c:if test="${params.times == 1}">  
 	            +<span class="label label-success">${params.sumkeyprice}</span>

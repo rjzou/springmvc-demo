@@ -289,8 +289,8 @@ public class RoomMoneyController extends BaseController {
 		}
 		
 		params.put("electprice", query.get("electprice").toString());
-		params.put("internet", query.get("internet").toString());
-		params.put("ip", query.get("ip").toString());
+		params.put("netprice", query.get("netprice").toString());
+		params.put("ip", query.get("ip") == null?"":query.get("ip").toString());
 		params.put("trash", query.get("trash").toString());
 		params.put("keycount", query.get("keycount").toString());
 		params.put("keyprice", query.get("keyprice").toString());

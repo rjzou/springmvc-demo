@@ -1,6 +1,5 @@
 package com.tiaotiao.web.controller;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.tiaotiao.web.entity.Checkin;
-import com.tiaotiao.web.entity.Checkout;
 import com.tiaotiao.web.entity.House;
 import com.tiaotiao.web.entity.RoomType;
 import com.tiaotiao.web.entity.WaterElect;
@@ -27,8 +24,7 @@ import com.tiaotiao.web.service.RoomService;
 import com.tiaotiao.web.service.RoomTypeService;
 import com.tiaotiao.web.service.WaterElectService;
 import com.tiaotiao.web.utils.DateUtil;
-
-import sun.applet.resources.MsgAppletViewer;
+import com.tiaotiao.web.utils.GuidUtil;
  
 @Controller
 public class CheckoutController extends BaseController {
@@ -76,51 +72,21 @@ public class CheckoutController extends BaseController {
 	public String roomCheckoutAdd(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
 		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
-		double paymoney = Double.valueOf(params.get("paymoney"));
-		Map<String,Object> checkin_map = checkinService.getCheckinMapById(houseid, roomno);
-		Checkout checkout = new Checkout();
-		checkout.setHouseid(houseid);
-		checkout.setRoomno(roomno);
-		checkout.setUsername(String.valueOf(checkin_map.get("username")));
-		checkout.setIphone(String.valueOf(checkin_map.get("iphone")));
-		checkout.setUserid(String.valueOf(checkin_map.get("userid")));
-		checkout.setMonthmoney(Integer.valueOf(checkin_map.get("monthmoney").toString()));
-		checkout.setPressmoney(Integer.valueOf(checkin_map.get("pressmoney").toString()));
-		checkout.setWater(Integer.valueOf(checkin_map.get("water").toString()));
-		checkout.setElect(Integer.valueOf(checkin_map.get("elect").toString()));
-		checkout.setIp(String.valueOf(checkin_map.get("ip")));
-		checkout.setInternet(Integer.valueOf(checkin_map.get("internet").toString()));
-		checkout.setTrash(Integer.valueOf(checkin_map.get("trash").toString()));
-		checkout.setPaymoney(paymoney);
-		checkout.setKeycount(Integer.valueOf(checkin_map.get("keycount").toString()));
-		checkout.setKeyprice(Integer.valueOf(checkin_map.get("keyprice").toString()));
-		Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month=cal.get(Calendar.MONTH);//获取月份
-        int day=cal.get(Calendar.DATE);//获取日
-        checkout.setYear(year);
-        checkout.setMonth(month);
-        checkout.setDay(day);
-		checkout.setCreated(System.currentTimeMillis());
+		double coutmoney = Double.valueOf(params.get("coutmoney"));
+		String newId = GuidUtil.guid();
 		try {
-			int n = checkoutService.insertCheckout(checkout);
+			int n = checkoutService.checkout(newId, houseid, roomno , coutmoney);
 			if (n > 0) {
-				int m = checkinService.deleteCheckin(houseid, roomno);
-				if (m>0) {
-					model.addAttribute("message", "退房成功,10秒钟自动返回");
-				}
-				else{
-					model.addAttribute("message", "删除入住数据失败,10秒钟自动返回");
-				}
+					model.addAttribute("message", "操作退房成功,10秒钟自动返回");
 			}else{
-				model.addAttribute("message", "插入退房数据失败,10秒钟自动返回");
+				model.addAttribute("error", "操作退房失败,10秒钟自动返回");
 			}
 		} catch (Exception e) {
-				model.addAttribute("message", "保存失败,10秒钟自动返回,错误信息:"+e.getMessage());
+				model.addAttribute("error", "操作退房失败,10秒钟自动返回,错误信息:"+e.getMessage());
 		}
 		params.put("page_id", "room_checkout");
 		model.put("params", params);
-		return "room_tocheckout";
+		return "room_tocheckout_page";
 	}
 	
 	@RequestMapping(value = "/room_tocheckout", method = RequestMethod.GET)
@@ -136,12 +102,12 @@ public class CheckoutController extends BaseController {
 		params.put("cardid", String.valueOf(checkin.get("cardid")));
 		params.put("monthmoney", String.valueOf(checkin.get("monthmoney")));
 		params.put("pressmoney", String.valueOf(checkin.get("pressmoney")));
-		params.put("year", String.valueOf(checkin.get("year")));
-		params.put("month", String.valueOf(checkin.get("month")));
-		params.put("day", String.valueOf(checkin.get("day")));
+		params.put("roommoney", String.valueOf(checkin.get("roommoney")));
+		params.put("pre_s_date", String.valueOf(checkin.get("pre_s_date")));//上次收租时间
+//		params.put("day", String.valueOf(checkin.get("day")));
 		params.put("water", String.valueOf(checkin.get("water")));
 		params.put("elect", String.valueOf(checkin.get("elect")));
-		params.put("internet", String.valueOf(checkin.get("internet")));//网费
+		params.put("netprice", String.valueOf(checkin.get("netprice")));//网费
 		params.put("trash", String.valueOf(checkin.get("trash")));//卫生费
 		params.put("keycount", String.valueOf(checkin.get("keycount")));
 		params.put("keyprice", String.valueOf(checkin.get("keyprice")));
@@ -163,15 +129,15 @@ public class CheckoutController extends BaseController {
 			params.put("electprice", String.valueOf(we.getElectprice()));
 			params.put("usedwaterprice", String.valueOf(usedWaterPrice));
 			params.put("usedelectprice", String.valueOf(usedElectPrice));
-			double paymoney = Integer.valueOf(checkin.get("pressmoney").toString()) - 
-					usedWaterPrice -usedElectPrice - Integer.valueOf(checkin.get("internet").toString()) - 
+			double coutmoney = Integer.valueOf(checkin.get("pressmoney").toString()) - 
+					usedWaterPrice -usedElectPrice - Integer.valueOf(checkin.get("netprice").toString()) - 
 					Integer.valueOf(checkin.get("trash").toString())-sumkeyprice;
 			String msg ="需要收取 ";
-			if (paymoney > 0) {
+			if (coutmoney > 0) {
 				msg = "需要退还 ";
 			}
 			params.put("msg", msg);
-			params.put("paymoney", String.valueOf(paymoney));
+			params.put("coutmoney", String.valueOf(coutmoney));
 		}
 		params.put("page_id", "room_checkout");
 		model.put("params", params);

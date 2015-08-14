@@ -1,6 +1,5 @@
 package com.tiaotiao.web.controller;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -75,8 +74,10 @@ public class CheckinController extends BaseController {
 		model.put("types", types);
 		List<House> houses = houseService.selectAllHouse(username);
 		model.put("houses", houses);
-		Object empty_room_count = checkinService.getEmptyRoomCount();
-		params.put("empty_room_count", empty_room_count.toString());
+		Object[] room_tongji = checkinService.getRoomTongJi();
+		params.put("empty_room_count", room_tongji[0].toString());
+		params.put("today_checkin_room_count", room_tongji[1].toString());
+		params.put("today_checkout_room_count", room_tongji[2].toString());
 		params.put("page_id", "room_checkin");
 		model.put("params", params);
 		return "room_checkin";
@@ -337,9 +338,10 @@ public class CheckinController extends BaseController {
 	public String roomCheckinQueryPage(@RequestParam Map<String, String> params,ModelMap model, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
 		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
-		int year = Integer.valueOf(params.get("year"));
-		int month = Integer.valueOf(params.get("month"));
-		Map<String,Object> query = checkinService.getCheckinQueryPageMapById(houseid, roomno, year, month);
+		String return_url = params.get("return_url");
+//		int year = Integer.valueOf(params.get("year"));
+//		int month = Integer.valueOf(params.get("month"));
+		Map<String,Object> query = checkinService.getCheckinQueryPageMapById(houseid, roomno);
 		
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
 		Page<Map<String, Object>> list = checkinService.queryAllRoomMoneyMapByParams(params, page); 
@@ -355,6 +357,7 @@ public class CheckinController extends BaseController {
 //		params.put("monthmoney", query.get("monthmoney").toString());
 //		params.put("pressmoney", query.get("pressmoney").toString());
 		params.put("in_date", query.get("in_date").toString());
+		params.put("in_days", query.get("in_days").toString());
 //		params.put("s_date", query.get("s_date").toString());
 //		params.put("s_date", query.get("s_date").toString());
 //		params.put("s_date", query.get("s_date").toString());
@@ -386,6 +389,7 @@ public class CheckinController extends BaseController {
 //		int sumkeyprice = Integer.valueOf(query.get("keycount").toString())*Integer.valueOf(query.get("keyprice").toString());
 //		params.put("sumkeyprice", String.valueOf(sumkeyprice));
 		params.put("page_id", "room_checkin_query");
+		params.put("return_url", return_url);
 		model.put("params", params);
 		return "room_checkin_query_page";
 	}

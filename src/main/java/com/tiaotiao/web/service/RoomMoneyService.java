@@ -1,6 +1,7 @@
 package com.tiaotiao.web.service;
 
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
@@ -190,7 +191,7 @@ public class RoomMoneyService {
 					sql = sql + " AND rt.typecode in ('"+roomtypeid+"')";
 				}
 				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+") ";
-				sql = sql + " order by rm.created desc ";
+				sql = sql + " order by c.year desc,c.month desc,c.day desc ";
 		return dao.find(sql, null, pageRequest);
 	}
 	
@@ -213,8 +214,8 @@ public class RoomMoneyService {
                 "     rm.roommoney, "+ 
                 "     rm.year as d_year, "+ 
                 "     rm.month as d_month, " + 
-                "     c.internet,"+ 
-                "     c.ip,"+ 
+                "     nc.netprice, "+ 
+                "     nc.ip, "+ 
                 "     c.trash, " + 
                 "     c.keycount, "+ 
                 "     c.keyprice,"+ 
@@ -225,15 +226,18 @@ public class RoomMoneyService {
                 " FROM "+
                 "     t_room AS r, "+
                 "     t_house AS h, "+
-                "     t_checkin AS c, "
-                + "   t_waterelect AS we,"+
-                "     t_room_money AS rm "+
+                "     t_checkin AS c, "+ 
+                "     t_waterelect AS we,"+
+                "     t_room_money AS rm,"+ 
+                "     t_net_cfg as nc "+
                 " WHERE "+
                 "     r.houseid = h.id "+
                 " AND r.houseid = c.houseid "+
                 " AND r.roomno = c.roomno "+ 
                 " AND c.houseid = we.houseid "+ 
                 " AND c.roomno = we.roomno " + 
+                " AND c.roomno = nc.roomno " + 
+                " AND c.houseid = nc.houseid " + 
                 " AND we.year = rm.year "+ 
                 " AND we.month = rm.month "+
                 " AND r.houseid = rm.houseid "+
@@ -242,6 +246,8 @@ public class RoomMoneyService {
 				" AND c.roomno = ? "+
 				" AND we.year = ? "+ 
 				" AND we.month = ? " ;
+		
+		logger.log(Level.INFO, sql);
 		return dao.findFirst(sql, params);
 	}
 	

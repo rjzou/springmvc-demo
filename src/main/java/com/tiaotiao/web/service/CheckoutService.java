@@ -1,7 +1,9 @@
 package com.tiaotiao.web.service;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.tiaotiao.web.entity.Checkout;
+import com.tiaotiao.web.entity.House;
 import com.tiaotiao.web.entity.Room;
 import com.tiaotiao.web.utils.Dao;
 import com.tiaotiao.web.utils.DateUtil;
@@ -49,6 +52,25 @@ public class CheckoutService {
 		int n = dao.update(sql, params);
 		return n;
 	}
+	
+	/**
+	 * 执行退房操作
+	 * @param newId 退房编号
+	 * @param houseid 需要退房的楼栋号
+	 * @param roomno 需要退房的房间号
+	 * @param coutmoney  退回的金额
+	 * @return 0 退房失败，1 退房成功
+	 * @throws Exception
+	 */
+	public int checkout(String newId,String houseid,int roomno,double coutmoney) throws Exception{
+		Connection conn = dao.getConn(false);
+		Object[] params = { newId , houseid , roomno , coutmoney};
+		String pro_sql = " {CALL p_check_out(?,?,?,?)} ";
+		Object[] result = dao.execProc(pro_sql, conn, params);
+		int n = Integer.valueOf(result[0].toString());
+		return n;
+	}
+	
 	/**
 	 * 
 	 * @param room
@@ -101,18 +123,31 @@ public class CheckoutService {
 				" 	h.housename, "+
 				" 	r.houseid, "+
 				" 	r.roomno, "+
-				" 	c.monthmoney, "+
-				" 	c.pressmoney, "+
-				" 	r.description, "+
-				" 	r.created "+
+				" 	c.customname, "+
+				" 	rm.monthmoney, " +
+				" 	rm.pressmoney, " +
+				" 	r.description, " + 
+				"   rt.typename, "+
+				" 	CONCAT_WS('-', c.year, c.month, c.day) AS in_date, "+
+				" 	CONCAT_WS('-', rm.year, rm.month, rm.day) AS pre_s_date "+
 				" FROM "+
-				" 	t_room AS r, "+
-				" 	t_house AS h, "+
-				" 	t_checkin AS c "+
+				" 	t_room as r, "+
+				" 	t_room_type as rt, "+
+				" 	t_house as h, "+
+				" 	t_checkin as c, "+
+				" 	t_room_money as rm, "+
+				" 	v_room_money_last as rml "+
 				" WHERE "+
 				" 	r.houseid = h.id "+
 				" AND r.houseid = c.houseid "+
-				" AND r.roomno = c.roomno ";
+				" AND r.roomno = c.roomno "+
+				" AND r.typecode = rt.typecode "+
+				" AND c.houseid = rm.houseid "+
+				" AND c.roomno = rm.roomno "+
+				" AND c.houseid = rml.houseid "+
+				" AND c.roomno = rml.roomno "+
+				" AND rm.year = rml.last_year "+
+				" AND rm.month = rml.last_month ";
 				if (houseid != null && houseid.trim().length() > 0 ) {
 					sql = sql + " AND r.houseid in ("+houseid+")";
 				}
@@ -121,6 +156,8 @@ public class CheckoutService {
 				}
 				
 				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+") ";
+				
+				logger.log(Level.INFO, sql);
 		return dao.find(sql, null, pageRequest);
 	}
 	
@@ -174,6 +211,8 @@ public class CheckoutService {
 					sql = sql + " and r.typecode in ('"+roomtypeid+"')";
 				}
 				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+") ";
+				
+				logger.log(Level.INFO, sql);
 		return dao.find(sql, sql_params, pageRequest);
 	}
 	/**

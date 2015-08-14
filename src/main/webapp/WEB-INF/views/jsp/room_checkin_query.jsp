@@ -56,9 +56,9 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>*</th>
+					<th>#</th>
 					<th>栋 - 房间号 - 房型</th>
-					<th>客户名称</th>
+					<th>客户姓名</th>
 					<th>入住日期</th>
 					<th>实收月租</th>
 					<th>实收押金</th>

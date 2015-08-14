@@ -12,7 +12,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Boss</title>
+    <title>出租房智能管理系统V1.0</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="${ctx}/resources/css/bootstrap.min.css">
@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">出租房智能管理系统</a>
+          <a class="navbar-brand" href="#">出租房智能管理系统V1.0</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -54,6 +54,7 @@
                 <li><a href="${ctx}/room_money">收房租</a></li>
                 <li><a href="${ctx}/room_money_query">收租查询</a></li>
                 <li><a href="${ctx}/room_checkout">现在退房</a></li>
+                <li><a href="${ctx}/room_checkout_query">退房查询</a></li>
                 <li><a href="${ctx}/room_waterelect">抄水表</a></li>
               </ul>
             </li>
@@ -116,6 +117,7 @@
             <li <c:if test="${params.page_id == 'room_money'}">class="active" </c:if>><a href="${ctx}/room_money">收房租</a></li>
             <li <c:if test="${params.page_id == 'room_money_query'}">class="active" </c:if>><a href="${ctx}/room_money_query">收租查询</a></li>
             <li <c:if test="${params.page_id == 'room_checkout'}">class="active" </c:if>><a href="${ctx}/room_checkout">现在退房</a></li>
+            <li <c:if test="${params.page_id == 'room_checkout_query'}">class="active" </c:if>><a href="${ctx}/room_checkout_query">退房查询</a></li>
             <li <c:if test="${params.page_id == 'room_waterelect'}">class="active" </c:if>><a href="${ctx}/room_waterelect">抄水电表</a></li>
           </ul>
           <ul class="nav nav-sidebar">

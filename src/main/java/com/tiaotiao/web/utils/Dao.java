@@ -54,6 +54,9 @@ public class Dao {
 		return dataSource;
 	}
 
+	public Object[] execProc(String pro_sql, Connection conn) throws SQLException {
+		return execProc(pro_sql, conn,null);
+	}
 	public Object[] execProc(String pro_sql, Connection conn, Object[] params) throws SQLException {
 	    // Use ProcRunner to populate our result list from a stored procedure
 		ProcRunner prun = new ProcRunner();

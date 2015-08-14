@@ -12,7 +12,7 @@
 <div class="row">
   <form class="navbar-form navbar-left" role="search" method="post">
   <div class="form-group">
-  <select class="selectpicker" id="selectYear" name="selectYear" multiple>
+  <select class="selectpicker" id="selectYear" name="selectYear"  title="请选择..." multiple>
 	  <option value="2015" <c:if test="${fn:contains(params.year, '2015') == true}">selected="selected"</c:if>>2015</option>
       <option value="2016" <c:if test="${fn:contains(params.year, '2016') == true}">selected="selected"</c:if>>2016</option>
   </select>
@@ -35,7 +35,7 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>*</th>
+					<th>#</th>
 					<th>年</th>
 					<th>月</th>
 					<th>水价</th>

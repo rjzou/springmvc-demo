@@ -12,7 +12,7 @@
 <div class="row">
   <form class="navbar-form navbar-left" role="search" method="post" action="${ctx}/room">
   <div class="form-group">
-  <select class="selectpicker"  name="selectHouse" multiple>
+  <select class="selectpicker"  name="selectHouse"  title="请选择..." multiple>
 	  	<c:forEach var="house" items="${houses}">  
 	  	<option value="${house.id}"   <c:if test="${fn:contains(params.houseid, house.id) == true }">selected="selected"</c:if> > 
 			${house.housename}  
@@ -31,7 +31,7 @@
   </script>
   </div>
     <div class="form-group">
-  <select class="selectpicker" name="selectRoomtype" multiple>
+  <select class="selectpicker" name="selectRoomtype"  title="请选择..." multiple>
 	  	<c:forEach var="type" items="${types}">  
 	  	<option value="${type.typecode}" <c:if test="${fn:contains(params.roomtypeid, type.typecode) == true }">selected="selected"</c:if>> 
 			${type.typename}  

@@ -47,8 +47,16 @@
             <th class="col-sm-2">入住姓名</th>
             <td>${params.customname}</td>
         </tr>
+        <tr>
+            <th class="col-sm-2">上次收租时间</th>
+            <td><span class="label label-success">${params.pre_s_date}</span></td>
+        </tr>
+        <tr>
+            <th class="col-sm-2">实收月租(元)</th>
+            <td><span class="label label-success">${params.monthmoney}</span></td>
+        </tr>
   		<tr>
-            <th class="col-sm-2">押金(元)</th>
+            <th class="col-sm-2">实收押金(元)</th>
             <td><span class="label label-success">${params.pressmoney}</span></td>
         </tr>
          <tr>
@@ -79,7 +87,7 @@
         </tr>
           <tr>
             <th class="col-sm-2">网费(元)</th>
-            <td><span class="label label-danger">${params.internet}</span></td>
+            <td><span class="label label-danger">${params.netprice}</span></td>
         </tr>
          <tr>
             <th class="col-sm-2">卫生费(元)</th>
@@ -97,10 +105,10 @@
 				       <h3><span class="label label-danger">没有抄水电表</span></h3>
 				    </c:when>
 				    <c:otherwise>
-	            <span class="label label-success">${params.pressmoney}</span>-<span class="label label-danger">${params.usedwaterprice}</span>
-	            -<span class="label label-danger">${params.usedelectprice}</span>-<span class="label label-danger">${params.internet}</span>
-	            -<span class="label label-danger">${params.trash}</span>-<span class="label label-danger">${params.sumkeyprice}</span>
-	             = <h3>${params.msg}<span class="label label-warning">${params.paymoney} 元</span></h3>
+	            <span class="label label-success">${params.pressmoney}</span> - <span class="label label-danger">${params.usedwaterprice}</span>
+	             - <span class="label label-danger">${params.usedelectprice}</span> - <span class="label label-danger">${params.netprice}</span>
+	             - <span class="label label-danger">${params.trash}</span> - <span class="label label-danger">${params.sumkeyprice}</span>
+	             = <h3>${params.msg}<span class="label label-warning">${params.coutmoney} 元</span></h3>
               		</c:otherwise>
 				</c:choose>
              </td>
@@ -108,7 +116,7 @@
 		</table>
  	<input type="hidden" id="houseid" name="houseid" value="${params.houseid}"/>
  	<input type="hidden" id="roomno" name="roomno" value="${params.roomno}"/>
- 	<input type="hidden" id="paymoney" name="paymoney" value="${params.paymoney}"/>
+ 	<input type="hidden" id="coutmoney" name="coutmoney" value="${params.coutmoney}"/>
  		<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
 		<button type="submit" class="btn btn-primary" data-toggle="confirmation" data-placement="top" data-popout="true" <c:if test="${!empty danger}">disabled</c:if> >确认退房</button>

@@ -12,7 +12,7 @@
 <div class="row">
   <form class="navbar-form navbar-left" role="search">
   <div class="form-group">
-  <select class="selectpicker" multiple>
+  <select class="selectpicker"  title="请选择..." multiple>
 	  	<c:forEach var="house" items="${houses}">  
 	  	<option value="${house.id}"> 
 			${house.housename}  
@@ -31,7 +31,7 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>*</th>
+					<th>#</th>
 					<th>栋</th>
 					<th>房间号</th>
 					<th>入住姓名</th>

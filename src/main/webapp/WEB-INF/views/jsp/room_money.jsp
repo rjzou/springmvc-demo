@@ -12,7 +12,7 @@
 <div class="row">
   <form class="navbar-form navbar-left" role="search" action="${ctx}/room_checkin" method="post">
    <div class="form-group">
-  <select class="selectpicker" name="selectHouse" multiple>
+  <select class="selectpicker" name="selectHouse"  title="请选择..." multiple>
 	  	<c:forEach var="house" items="${houses}">  
 	  	<option value="${house.id}"  <c:if test="${fn:contains(params.houseid, house.id) == true }">selected="selected"</c:if> > 
 			${house.housename}  
@@ -32,7 +32,7 @@
   </div>
   
   <div class="form-group">
-  <select class="selectpicker" name="selectRoomtype" multiple>
+  <select class="selectpicker" name="selectRoomtype"  title="请选择..." multiple>
 	  	<c:forEach var="type" items="${types}">  
 	  	<option value="${type.typecode}" <c:if test="${fn:contains(params.roomtypeid, type.typecode) == true }">selected="selected"</c:if>> 
 			${type.typename}  
@@ -49,7 +49,7 @@
 				value="${_csrf.token}" />
   <button type="submit" class="btn btn-default" onclick="return to_search();">查询</button>
   <p class="text-left">
-  <span class="label label-danger">本月有21间需要收房租</span>
+  <span class="label label-info">本月有x间需要收房租</span>
   </p>
 </form>
 </div><!-- /.row -->
@@ -57,7 +57,7 @@
 		<table class="table table-striped">
 			<thead> 
 				<tr>
-					<th>*</th>
+					<th>#</th>
 					<th>栋</th>
 					<th>房间号</th>
 					<th>上月实收月租</th>
