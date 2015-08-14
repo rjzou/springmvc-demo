@@ -156,6 +156,7 @@ public class CheckoutService {
 				}
 				
 				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+") ";
+				sql = sql + " order by c.year desc,c.month desc,c.day desc,c.created desc ";
 				
 				logger.log(Level.INFO, sql);
 		return dao.find(sql, null, pageRequest);
@@ -243,4 +244,152 @@ public class CheckoutService {
 		Object o= dao.findBy(sql,"cnt",params);
 		return o;
 	}
+	
+	/**
+	 * 退房查询
+	 * @param params
+	 * @param pageRequest
+	 * @param username
+	 * @return
+	 * @throws Exception
+	 */
+	public Page<Map<String, Object>> queryAllCheckOutRoomByParams(Map<String, String> params, final PageRequest pageRequest,String username) throws Exception{
+		String houseid = params.get("houseid");
+		String roomtypeid = params.get("roomtypeid");
+		String roomno = params.get("roomno");
+		int year = DateUtil.getThisYear();
+		int month = DateUtil.getThisMonth();
+		Object[] sql_params = {year,month};
+		
+		String sql = " SELECT "+
+				"     h.housename, " +
+				"     r.houseid, " +
+				"     r.roomno, " + 
+				"	  rt.typename," +
+				"     c.customname," +
+				"     rm.monthmoney, " +
+				"     rm.pressmoney, " +
+				"     CONCAT_WS('-',c.inyear,c.inmonth,c.inday) as in_date, " +
+				"     CONCAT_WS('-',c.year,c.month,c.day) as out_date, " +
+				"     rm.roommoney, " + 
+				"     rm.year as d_year, " + 
+				"     rm.month as d_month" +
+				" FROM "+
+				"     t_room AS r, "+
+				"     t_house AS h," + 
+				"     t_room_type AS rt, " +
+				"     t_checkout AS c, " +
+				"     t_room_money_out AS rm " +
+				" WHERE " +
+				"     r.houseid = h.id " +
+				" AND r.houseid = c.houseid " +
+				" AND r.roomno = c.roomno " + 
+				" AND r.typecode = rt.typecode " + 
+				" AND r.houseid = rm.houseid " +
+				" AND r.roomno = rm.roomno ";
+//				" AND rm.year = ? " + 
+//			    " AND rm.month = ? ";
+				if (houseid != null && houseid.trim().length() > 0 ) {
+					sql = sql + " AND c.houseid in ("+houseid+")";
+				}
+				if (roomno != null && roomno.trim().length() > 0 ) {
+					sql = sql + " AND c.roomno in ("+roomno+")";
+				}
+				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
+					sql = sql + " AND rt.typecode in ('"+roomtypeid+"')";
+				}
+				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+")";
+				sql = sql + " order by c.year desc,c.month desc,c.day desc,c.created desc ";
+				
+				logger.log(Level.INFO, sql);
+				
+		return dao.find(sql, null, pageRequest);
+	}
+	/**
+	 * 退房查询明细页面
+	 * @param houseid
+	 * @param roomno
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String,Object> getCheckoutQueryPageMapById(String houseid,int roomno) throws Exception{
+		Object[] params = { houseid,roomno};
+		String sql = " SELECT "+
+				" 	h.housename, "+
+				" 	r.houseid, "+
+				" 	r.roomno, "+
+				" 	c.customname, "+
+				" 	CONCAT_WS('-', c.inyear, c.inmonth, c.inday) AS in_date, " + 
+				"   datediff(CONCAT_WS('-', c.year, c.month, c.day), CONCAT_WS('-', c.inyear, c.inmonth, c.inday)) as in_days "+
+				" FROM "+
+				" 	t_room AS r, "+
+				" 	t_house AS h, "+
+				" 	t_checkout AS c "+
+				" WHERE "+
+				" 	r.houseid = h.id "+
+				" AND r.houseid = c.houseid "+
+				" AND r.roomno = c.roomno "+
+				" AND c.houseid = ? "+
+				" AND c.roomno = ? " ;
+		
+		logger.log(Level.INFO, sql);
+		
+		return dao.findFirst(sql, params);
+	}
+	
+	/**
+	 *  通过 楼栋编号和房间号得到退房后的入住收费记录
+	 * @param params
+	 * @param pageRequest
+	 * @return
+	 * @throws Exception
+	 */
+	public Page<Map<String, Object>> queryAllCheckoutRoomMoneyMapByParams(Map<String, String> params, final PageRequest pageRequest) throws Exception{
+		String houseid = params.get("houseid");
+		String roomno = params.get("roomno");
+//		int year = DateUtil.getThisYear();
+//		int month = DateUtil.getThisMonth();
+//		Object[] sql_params = {year,month};
+		
+		String sql = " SELECT "+
+						"         ci.houseid, "+
+						"         ci.roomno, "+
+						"         rm.monthmoney, "+
+						"         rm.pressmoney, "+
+						"         CONCAT_WS('-',rm.year,rm.month,rm.day) as s_date, "+
+						"         ci.trash, "+
+						"         nc.netprice, "+
+						"         (ci.keycount * ci.keyprice) as sum_keyprice, "+
+						"         we.water, "+
+						"         we.waterprice, "+
+						"         we.elect, "+
+						"         we.electprice, "+
+						"         rm.roommoney "+
+						" FROM "+
+						"         t_checkout as ci, "+ 
+						" 		  t_waterelect_out as we," + 
+						"		  t_net_cfg_out as nc,"+
+						"         t_room_money_out as rm "+
+						" WHERE "+
+						"         ci.houseid = rm.houseid "+
+						" AND ci.roomno = rm.roomno " + 
+						" AND ci.houseid = we.houseid " +
+						" AND ci.roomno = we.roomno " +
+						" AND ci.houseid = nc.houseid " +
+						" AND ci.roomno = nc.roomno " +
+						" AND we.year = rm.year " + 
+						" AND we.month = rm.month ";
+						if (houseid != null && houseid.trim().length() > 0 ) {
+							sql = sql + " AND ci.houseid in ('"+houseid+"')";
+						}
+						if (roomno != null && roomno.trim().length() > 0 ) {
+							sql = sql + " AND ci.roomno in ("+roomno+")";
+						}
+						sql = sql + " order by rm.created asc ";
+						
+						logger.log(Level.INFO, sql);
+						
+		return dao.find(sql, null, pageRequest);
+	}
+	
 }

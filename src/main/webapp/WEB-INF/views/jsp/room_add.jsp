@@ -20,7 +20,7 @@
 		<label class="control-label" for="selectHouse">楼房</label>
 		<div class="input-group">
 			<select class="selectpicker" id="selectHouse" name="selectHouse" required>
-				<option value="" >---请选择---</option> 
+				<option value="" >请选择...</option> 
 				<c:forEach var="house" items="${houses}">  
 				  	<option value="${house.id}"> 
 						${house.housename}  

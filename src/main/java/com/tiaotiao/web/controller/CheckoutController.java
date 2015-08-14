@@ -143,4 +143,84 @@ public class CheckoutController extends BaseController {
 		model.put("params", params);
 		return "room_tocheckout";
 	}
+	
+	@RequestMapping(value = "/room_checkout_query", method = RequestMethod.GET)
+	public String roomCheckoutQuery(ModelMap model ,@RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		String username  = hsr.getUserPrincipal().getName();
+		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
+		Page<Map<String, Object>> list = checkoutService.queryAllCheckOutRoomByParams(params, page,username); 
+		model.put("p", cpage);
+		model.put("list", list);
+		List<RoomType> types = roomtypeService.selectAllRoomType();
+		model.put("types", types);
+		List<House> houses = houseService.selectAllHouse(username);
+		model.put("houses", houses);
+		params.put("page_id", "room_checkout_query");
+		model.put("params", params);
+		return "room_checkout_query";
+	}
+	@RequestMapping(value = "/room_checkout_query", method = RequestMethod.POST)
+	public String roomCheckoutQuerySearch(ModelMap model , @RequestParam Map<String, String> params,  @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		return this.roomCheckoutQuery(model, params, cpage,hsr);
+	}	
+	
+	@RequestMapping(value = "/room_checkout_query_page", method = RequestMethod.GET)
+	public String roomCheckoutQueryPage(@RequestParam Map<String, String> params,ModelMap model, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
+		String houseid = params.get("houseid");
+		int roomno = Integer.valueOf(params.get("roomno"));
+		String return_url = params.get("return_url");
+//		int year = Integer.valueOf(params.get("year"));
+//		int month = Integer.valueOf(params.get("month"));
+		Map<String,Object> query = checkoutService.getCheckoutQueryPageMapById(houseid, roomno);
+		
+		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
+		Page<Map<String, Object>> list = checkoutService.queryAllCheckoutRoomMoneyMapByParams(params, page); 
+		model.put("p", cpage);
+		model.put("list", list);
+		
+//		Object times = checkinService.getRoomMoneyTimes(houseid, roomno, year, month);
+		
+		params.put("houseid", query.get("houseid").toString());
+		params.put("housename", query.get("housename").toString());
+		params.put("roomno", query.get("roomno").toString());
+		params.put("customname", query.get("customname").toString());
+//		params.put("monthmoney", query.get("monthmoney").toString());
+//		params.put("pressmoney", query.get("pressmoney").toString());
+		params.put("in_date", query.get("in_date").toString());
+		params.put("in_days", query.get("in_days").toString());
+//		params.put("s_date", query.get("s_date").toString());
+//		params.put("s_date", query.get("s_date").toString());
+//		params.put("s_date", query.get("s_date").toString());
+//		params.put("roommoney", query.get("roommoney").toString());
+//		params.put("d_year", query.get("d_year").toString());
+//		params.put("d_month", query.get("d_month").toString());
+//		params.put("water", query.get("water").toString());
+//		params.put("waterprice", query.get("waterprice").toString());
+//		params.put("elect", query.get("elect").toString());
+//		if (Integer.valueOf(times.toString()) > 1) {
+//			WaterElect prewe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,year,month -1);
+//			params.put("pre_water", String.valueOf(prewe.getWater()));
+//			params.put("pre_elect", String.valueOf(prewe.getElect()));
+//			int usedWater = Integer.valueOf(query.get("water").toString()) - prewe.getWater();
+//			int usedElect = Integer.valueOf(query.get("elect").toString()) - prewe.getElect() ;
+//			double usedWaterPrice = usedWater * Double.valueOf(query.get("waterprice").toString());
+//			double usedElectPrice = usedElect * Double.valueOf(query.get("electprice").toString());
+//			params.put("usedwaterprice", String.valueOf(usedWaterPrice));
+//			params.put("usedelectprice", String.valueOf(usedElectPrice));
+//		}
+		
+//		params.put("electprice", query.get("electprice").toString());
+//		params.put("internet", query.get("internet").toString());
+//		params.put("ip", query.get("ip").toString());
+//		params.put("trash", query.get("trash").toString());
+//		params.put("keycount", query.get("keycount").toString());
+//		params.put("keyprice", query.get("keyprice").toString());
+////		params.put("times", times.toString());
+//		int sumkeyprice = Integer.valueOf(query.get("keycount").toString())*Integer.valueOf(query.get("keyprice").toString());
+//		params.put("sumkeyprice", String.valueOf(sumkeyprice));
+		params.put("page_id", "room_checkout_query");
+		params.put("return_url", return_url);
+		model.put("params", params);
+		return "room_checkout_query_page";
+	}
 }

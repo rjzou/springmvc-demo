@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tiaotiao.web.entity.Checkin;
+import com.tiaotiao.web.entity.Custom;
 import com.tiaotiao.web.entity.House;
 import com.tiaotiao.web.entity.NetCfg;
 import com.tiaotiao.web.entity.Room;
@@ -24,6 +25,7 @@ import com.tiaotiao.web.entity.WaterElect;
 import com.tiaotiao.web.entity.WaterElectCfg;
 import com.tiaotiao.web.service.CheckinService;
 import com.tiaotiao.web.service.CheckoutService;
+import com.tiaotiao.web.service.CustomService;
 import com.tiaotiao.web.service.HouseService;
 import com.tiaotiao.web.service.NetCfgService;
 import com.tiaotiao.web.service.RoomMoneyService;
@@ -32,6 +34,7 @@ import com.tiaotiao.web.service.RoomTypeService;
 import com.tiaotiao.web.service.WaterElectCfgService;
 import com.tiaotiao.web.service.WaterElectService;
 import com.tiaotiao.web.utils.DateUtil;
+import com.tiaotiao.web.utils.GuidUtil;
  
 @Controller
 public class CheckinController extends BaseController {
@@ -59,6 +62,9 @@ public class CheckinController extends BaseController {
 	
 	@Resource
 	private RoomMoneyService roomMoneyService;
+	
+	@Resource
+	private CustomService customService;
 	
 	@Resource
 	private NetCfgService netCfgService;
@@ -94,8 +100,11 @@ public class CheckinController extends BaseController {
 		String iphone = params.get("inputIphone");
 		String cardid = params.get("inputCardid");
 		String houseid = params.get("houseid");
+		String customid = params.get("customid");
+		if (customid == null || customid.trim().equals("")) {
+			customid = GuidUtil.guid();
+		}
 		int roomno = Integer.valueOf(params.get("roomno"));
-		
 		int monthmoney = Integer.valueOf(params.get("inputMonthMoney"));
 		int pressmoney = Integer.valueOf(params.get("inputPressMoney"));
 		int water = Integer.valueOf(params.get("inputWater"));
@@ -122,7 +131,7 @@ public class CheckinController extends BaseController {
 		params.put("keycount", "2");//参考钥匙串数量 默认
 //		params.put("inputKeyprice", "10");
 		params.put("keyprice", "10");//参考钥匙串价格
-		
+		params.put("customid", customid);
 		if (method != null && "calc".equals(method)) {
 			return roomCheckinCalc(params,model);
 		}
@@ -179,6 +188,17 @@ public class CheckinController extends BaseController {
 			rm.setDay(day);
 			rm.setCreated(System.currentTimeMillis());
 			rm.setUpdated(System.currentTimeMillis());
+			Custom custom = new Custom();
+
+			custom.setCustomname(customname);
+			custom.setId(customid);
+			custom.setIphone(iphone);
+			custom.setCardid(cardid);
+			custom.setYear(year);
+			custom.setMonth(month);
+			custom.setDay(day);
+			custom.setCreated(System.currentTimeMillis());
+			custom.setUpdated(System.currentTimeMillis());
 			
 			NetCfg nc = new NetCfg();
 			nc.setHouseid(houseid);
@@ -190,7 +210,7 @@ public class CheckinController extends BaseController {
 			nc.setDay(day);
 			nc.setCreated(System.currentTimeMillis());
 			nc.setUpdated(System.currentTimeMillis());
-			return roomCheckinSave(checkin,we,rm,nc,params,model);
+			return roomCheckinSave(checkin,we,rm,custom,nc,params,model);
 		}
 		params.put("page_id", "room_checkin");
 		model.put("params", params);
@@ -231,7 +251,7 @@ public class CheckinController extends BaseController {
 	 * @return
 	 * @throws Exception
 	 */
-	public String roomCheckinSave(Checkin checkin,WaterElect we,RoomMoney rm,NetCfg nc,@RequestParam Map<String, String> params, ModelMap model) throws Exception {
+	public String roomCheckinSave(Checkin checkin,WaterElect we,RoomMoney rm,Custom custom,NetCfg nc,@RequestParam Map<String, String> params, ModelMap model) throws Exception {
 		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		
@@ -262,6 +282,14 @@ public class CheckinController extends BaseController {
 				o = roomMoneyService.insertRoomMoney(rm);
 			}
 			
+			Custom custom_entity = customService.getCustomById(custom.getId());
+			int c = 0;
+			if (custom_entity != null) {
+				c = customService.updateCustom(custom);
+			}else{
+				c = customService.insertCustom(custom);
+			}
+			
 			NetCfg netCfg_entity = netCfgService.getNetCfgById(houseid, roomno);
 			int p = 0 ;
 			if (netCfg_entity != null) {
@@ -271,7 +299,7 @@ public class CheckinController extends BaseController {
 				p = netCfgService.insertNetCfg(nc);
 			}
 			
-			if (n > 0 && m > 0 && o > 0 && p > 0) {
+			if (n > 0 && m > 0 && o > 0 && c > 0 && p > 0) {
 				model.addAttribute("message", "入住成功,应收 "+ rm.getRoommoney() +"元,10秒钟自动返回");
 			}else{
 				model.addAttribute("message", "入住失败,10秒钟自动返回");

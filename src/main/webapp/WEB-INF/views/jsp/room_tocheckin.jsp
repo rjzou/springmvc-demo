@@ -22,9 +22,23 @@
             setTimeout("autojump()",10000);
             </script>
       </c:if> 
+      
+      <c:if test="${!empty info}">  
+            <h3><div class="alert alert-info" role="alert"> ${info}</div></h3>
+            <script type="text/javascript">
+            function autosave(){
+            	if(save()){
+            		$('form').submit();
+            	}
+            }
+            setTimeout("autosave()",10000);
+            </script>
+      </c:if> 
+      	
       <input type="hidden" id="houseid" name="houseid" value="${params.houseid}"/>
       <input type="hidden" id="roomno" name="roomno" value="${params.roomno}"/>
 	  <input type="hidden" id="method" name="method" value="${params.method}"/>
+	  <input type="hidden" id="customid" name="customid" value="${params.customid}"/>
 		<div class="form-group">
 			<label class="control-label" for="inputCustomname">客户姓名</label>
 			<input type="text" class="form-control" id="inputCustomname" name="inputCustomname" value="${params.inputCustomname}"
@@ -89,17 +103,7 @@
 			<input type="text" class="form-control" id="inputIp" name="inputIp"   value="${params.inputIp}"
 				placeholder="输入ip">
 		</div>
-		 <c:if test="${!empty info}">  
-            <h3><div class="alert alert-info" role="alert"> ${info}</div><h3>
-            <script type="text/javascript">
-            function autosave(){
-            	if(save()){
-            		$('form').submit();
-            	}
-            }
-            setTimeout("autosave()",10000);
-            </script>
-      	</c:if> 
+
       
 		<button type="submit" class="btn btn-success" onclick="return calc();">
 			<c:choose>

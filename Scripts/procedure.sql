@@ -73,8 +73,8 @@ BEGIN
 		set result = 0 ;
 		START TRANSACTION;
 		    -- 插入t_check_out表
-			insert into t_checkout(id,houseid,roomno,customname,iphone,cardid,trash,keycount,keyprice,year,month,day,coutmoney,created)
-			select v_cout_id,houseid,roomno,customname,iphone,cardid,trash,keycount,keyprice,year,month,day,v_cout_money,UNIX_TIMESTAMP(now())
+			insert into t_checkout(id,houseid,roomno,customname,iphone,cardid,trash,keycount,keyprice,inyear,inmonth,inday,year,month,day,coutmoney,created)
+			select v_cout_id,houseid,roomno,customname,iphone,cardid,trash,keycount,keyprice,year,month,day,year(now()),month(now()),day(now()),v_cout_money,UNIX_TIMESTAMP(now())
 			from t_checkin where houseid = v_houseid and roomno = v_roomno;
 			-- 插入t_room_money_out表
 			insert into t_room_money_out(coutid,houseid,roomno,monthmoney,pressmoney,roommoney,year,month,day,created)

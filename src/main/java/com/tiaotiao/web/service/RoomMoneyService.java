@@ -191,7 +191,7 @@ public class RoomMoneyService {
 					sql = sql + " AND rt.typecode in ('"+roomtypeid+"')";
 				}
 				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+") ";
-				sql = sql + " order by c.year desc,c.month desc,c.day desc ";
+				sql = sql + " order by c.year desc,c.month desc,c.day desc,c.created desc ";
 		return dao.find(sql, null, pageRequest);
 	}
 	

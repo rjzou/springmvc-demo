@@ -12,7 +12,7 @@
 <div class="row">
   <form class="navbar-form navbar-left" role="search" action="${ctx}/room_checkin_query" method="post">
    <div class="form-group">
-  <select class="selectpicker" name="selectHouse" title="请选择..." multiple>
+  <select class="selectpicker" name="selectHouse"  title="请选择..." multiple>
 	  	<c:forEach var="house" items="${houses}">  
 	  	<option value="${house.id}"  <c:if test="${fn:contains(params.houseid, house.id) == true }">selected="selected"</c:if> > 
 			${house.housename}  
@@ -32,7 +32,7 @@
   </div>
   
   <div class="form-group">
-  <select class="selectpicker" name="selectRoomtype" title="请选择..." multiple>
+  <select class="selectpicker" name="selectRoomtype"  title="请选择..." multiple>
 	  	<c:forEach var="type" items="${types}">  
 	  	<option value="${type.typecode}" <c:if test="${fn:contains(params.roomtypeid, type.typecode) == true }">selected="selected"</c:if>> 
 			${type.typename}  
@@ -59,7 +59,8 @@
 					<th>#</th>
 					<th>栋 - 房间号 - 房型</th>
 					<th>客户姓名</th>
-					<th>入住日期</th>
+					<th>入住时间</th>
+					<th>退房时间</th>
 					<th>实收月租</th>
 					<th>实收押金</th>
 					<th>操作</th>
@@ -72,10 +73,11 @@
 						<td>${item.housename } - ${item.roomno } - ${item.typename }</td>
 						<td>${item.customname }</td>
 						<td>${item.in_date }</td>
+						<td>${item.out_date }</td>
 						<td>${item.monthmoney } 元</td>
 						<td>${item.pressmoney } 元</td>
 						<td>
-							<a class="btn btn-primary btn-sm" href="${ctx}/room_checkin_query_page?houseid=${item.houseid }&roomno=${item.roomno }&year=${item.d_year }&month=${item.d_month }" role="button">查看详细</a>
+							<a class="btn btn-info btn-sm" href="${ctx}/room_checkout_query_page?houseid=${item.houseid }&roomno=${item.roomno }&year=${item.d_year }&month=${item.d_month }" role="button">详情</a>
 						</td>
 					</tr>
 				</c:forEach>

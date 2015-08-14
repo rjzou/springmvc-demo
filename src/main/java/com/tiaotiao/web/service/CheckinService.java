@@ -214,7 +214,7 @@ public class CheckinService {
 				"     c.customname," +
 				"     rm.monthmoney, " +
 				"     rm.pressmoney, " +
-				"     CONCAT_WS('-',c.year,c.month,c.day) as in_day, " +
+				"     CONCAT_WS('-',c.year,c.month,c.day) as in_date, " +
 				"     CONCAT_WS('-',rm.year,rm.month,rm.day) as s_date, " +
 				"     rm.roommoney, " + 
 				"     rm.year as d_year, " + 
@@ -231,9 +231,9 @@ public class CheckinService {
 				" AND r.roomno = c.roomno " + 
 				" AND r.typecode = rt.typecode " + 
 				" AND r.houseid = rm.houseid " +
-				" AND r.roomno = rm.roomno " + 
-				" AND rm.year = ? " + 
-			    " AND rm.month = ? ";
+				" AND r.roomno = rm.roomno ";
+//				" AND rm.year = ? " + 
+//			    " AND rm.month = ? ";
 				if (houseid != null && houseid.trim().length() > 0 ) {
 					sql = sql + " AND c.houseid in ("+houseid+")";
 				}
@@ -244,11 +244,11 @@ public class CheckinService {
 					sql = sql + " AND rt.typecode in ('"+roomtypeid+"')";
 				}
 				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+")";
-				sql = sql + " order by c.year desc,c.month desc,c.day desc ";
+				sql = sql + " order by c.year desc,c.month desc,c.day desc,c.created desc ";
 				
 				logger.log(Level.INFO, sql);
 				
-		return dao.find(sql, sql_params, pageRequest);
+		return dao.find(sql, null, pageRequest);
 	}
 	/**
 	 * 
