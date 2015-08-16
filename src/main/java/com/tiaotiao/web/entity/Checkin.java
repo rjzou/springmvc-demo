@@ -3,15 +3,7 @@ package com.tiaotiao.web.entity;
 public class Checkin {
 	private String houseid;
 	private int roomno;
-	private String customname;
-	private String iphone;
-	private String cardid;
-	private int monthmoney;
-	private int pressmoney;
-	private int water;
-	private int elect;
-	private int internet;
-	private String ip;
+	private String customid;
 	private int trash;
 	private int keycount;
 	private int keyprice;
@@ -34,63 +26,15 @@ public class Checkin {
 	public void setRoomno(int roomno) {
 		this.roomno = roomno;
 	}
-	public String getIphone() {
-		return iphone;
-	}
-	public void setIphone(String iphone) {
-		this.iphone = iphone;
-	}
 	
-	public String getCustomname() {
-		return customname;
-	}
-	public void setCustomname(String customname) {
-		this.customname = customname;
-	}
-	public String getCardid() {
-		return cardid;
-	}
-	public void setCardid(String cardid) {
-		this.cardid = cardid;
-	}
-	public int getMonthmoney() {
-		return monthmoney;
-	}
-	public void setMonthmoney(int monthmoney) {
-		this.monthmoney = monthmoney;
-	}
-	public int getPressmoney() {
-		return pressmoney;
-	}
-	public void setPressmoney(int pressmoney) {
-		this.pressmoney = pressmoney;
-	}
-	public int getWater() {
-		return water;
-	}
-	public void setWater(int water) {
-		this.water = water;
-	}
-	public int getElect() {
-		return elect;
-	}
-	public void setElect(int elect) {
-		this.elect = elect;
-	}
-	public int getInternet() {
-		return internet;
-	}
-	public void setInternet(int internet) {
-		this.internet = internet;
-	}
-	public String getIp() {
-		return ip;
-	}
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
 	public int getTrash() {
 		return trash;
+	}
+	public String getCustomid() {
+		return customid;
+	}
+	public void setCustomid(String customid) {
+		this.customid = customid;
 	}
 	public void setTrash(int trash) {
 		this.trash = trash;

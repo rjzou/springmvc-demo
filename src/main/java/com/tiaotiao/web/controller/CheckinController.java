@@ -139,41 +139,16 @@ public class CheckinController extends BaseController {
 			Checkin checkin = new Checkin();
 			checkin.setHouseid(houseid);
 			checkin.setRoomno(roomno);
-			checkin.setCustomname(customname);
-			checkin.setIphone(iphone);
-			checkin.setCardid(cardid);
-			checkin.setWater(water);
-			checkin.setElect(elect);
-//			checkin.setIp(ip);
-//			checkin.setInternet(internet);
+			checkin.setCustomid(GuidUtil.guid());
 			checkin.setTrash(trash);
 			checkin.setKeycount(keycount);
 			checkin.setKeyprice(keyprice);
-	        int year = DateUtil.getThisYear();
-	        int month = DateUtil.getThisMonth();//获取月份
-	        int day = DateUtil.getThisDay(); //获取日
-	        checkin.setYear(year);
-	        checkin.setMonth(month);
-	        checkin.setDay(day);
-			checkin.setCreated(System.currentTimeMillis());
-			checkin.setUpdated(System.currentTimeMillis());
-			
-			WaterElectCfg wec = waterElectCfgService.getWaterelectCfgById(year, month);
-			double waterprice = wec.getWaterprice();
-			double electprice = wec.getElectprice();
 			
 			WaterElect we = new WaterElect();
 			we.setHouseid(houseid);
 			we.setRoomno(roomno);
 			we.setWater(water);
-			we.setWaterprice(waterprice);
 			we.setElect(elect);
-			we.setElectprice(electprice);
-			we.setYear(year);
-			we.setMonth(month);
-			we.setDay(day);
-			we.setCreated(System.currentTimeMillis());
-			we.setUpdated(System.currentTimeMillis());
 			
 			int	sumprice = monthmoney + pressmoney + internet +trash +(keycount * keyprice);
 				
@@ -183,34 +158,18 @@ public class CheckinController extends BaseController {
 			rm.setMonthmoney(monthmoney);
 			rm.setPressmoney(pressmoney);
 			rm.setRoommoney(sumprice);
-			rm.setYear(year);
-			rm.setMonth(month);
-			rm.setDay(day);
-			rm.setCreated(System.currentTimeMillis());
-			rm.setUpdated(System.currentTimeMillis());
+			
 			Custom custom = new Custom();
-
 			custom.setCustomname(customname);
 			custom.setId(customid);
 			custom.setIphone(iphone);
 			custom.setCardid(cardid);
-			custom.setYear(year);
-			custom.setMonth(month);
-			custom.setDay(day);
-			custom.setCreated(System.currentTimeMillis());
-			custom.setUpdated(System.currentTimeMillis());
 			
 			NetCfg nc = new NetCfg();
 			nc.setHouseid(houseid);
 			nc.setRoomno(roomno);
 			nc.setIp(ip);
-			nc.setNetprice(40);
-			nc.setYear(year);
-			nc.setMonth(month);
-			nc.setDay(day);
-			nc.setCreated(System.currentTimeMillis());
-			nc.setUpdated(System.currentTimeMillis());
-			return roomCheckinSave(checkin,we,rm,custom,nc,params,model);
+			return roomCheckinSave(checkin,custom,we,rm,nc,params,model);
 		}
 		params.put("page_id", "room_checkin");
 		model.put("params", params);
@@ -251,56 +210,20 @@ public class CheckinController extends BaseController {
 	 * @return
 	 * @throws Exception
 	 */
-	public String roomCheckinSave(Checkin checkin,WaterElect we,RoomMoney rm,Custom custom,NetCfg nc,@RequestParam Map<String, String> params, ModelMap model) throws Exception {
-		String houseid = params.get("houseid");
-		int roomno = Integer.valueOf(params.get("roomno"));
+	public String roomCheckinSave(Checkin checkin,Custom custom,WaterElect waterElect,RoomMoney roomMoney,NetCfg netCfg,@RequestParam Map<String, String> params, ModelMap model) throws Exception {
+		
+		Checkin checkin_entity = checkinService.getCheckinById(checkin.getHouseid(), checkin.getRoomno());
 		
 		try {
-			Checkin checkin_entity = checkinService.getCheckinById(houseid, roomno);
 			int n = 0 ;
 			if (checkin_entity != null) {
-				n = checkinService.updateCheckin(checkin);
-				
-			}else{
-				n = checkinService.insertCheckin(checkin);
+				n = checkinService.updateCheckIn(checkin, custom, roomMoney, waterElect, netCfg);
 			}
-			WaterElect waterElect_entity = waterElectService.getWaterElectById(we.getHouseid(), we.getRoomno(), we.getYear(), we.getMonth());
-			int m = 0 ;
-			if (waterElect_entity != null) {
-				m = waterElectService.updateWaterElect(we);
-				
-			}else{
-				m = waterElectService.insertWaterElect(we);
+			else{
+				n = checkinService.insertCheckIn(checkin, custom, roomMoney, waterElect, netCfg);
 			}
-			
-			RoomMoney roomMoney_entity = roomMoneyService.getRoomMoneyById(rm.getHouseid(), rm.getRoomno(), rm.getYear(), rm.getMonth());
-			int o = 0;
-			if (roomMoney_entity != null) {
-				o = roomMoneyService.updateRoomMoney(rm);
-				
-			}else{
-				o = roomMoneyService.insertRoomMoney(rm);
-			}
-			
-			Custom custom_entity = customService.getCustomById(custom.getId());
-			int c = 0;
-			if (custom_entity != null) {
-				c = customService.updateCustom(custom);
-			}else{
-				c = customService.insertCustom(custom);
-			}
-			
-			NetCfg netCfg_entity = netCfgService.getNetCfgById(houseid, roomno);
-			int p = 0 ;
-			if (netCfg_entity != null) {
-				p = netCfgService.updateNetCfg(nc);
-				
-			}else{
-				p = netCfgService.insertNetCfg(nc);
-			}
-			
-			if (n > 0 && m > 0 && o > 0 && c > 0 && p > 0) {
-				model.addAttribute("message", "入住成功,应收 "+ rm.getRoommoney() +"元,10秒钟自动返回");
+			if (n > 0) {
+				model.addAttribute("message", "入住成功,应收 "+ roomMoney.getRoommoney() +"元,10秒钟自动返回");
 			}else{
 				model.addAttribute("message", "入住失败,10秒钟自动返回");
 			}

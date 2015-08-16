@@ -103,5 +103,78 @@ BEGIN
 END $$
 DELIMITER ;
 
+/**
+ * p_insert_checkin 插入存储过程 
+ * call p_insert_checkin();
+ */
+DELIMITER $$
+DROP PROCEDURE IF EXISTS p_insert_checkin $$
+CREATE PROCEDURE p_insert_checkin(in v_houseid varchar(45),in v_roomno int,in v_customid varchar(45),in v_customname varchar(32),in v_iphone varchar(16),in v_cardid varchar(32),in v_monthmoney int,in v_pressmoney int,in v_roommoney int,in v_water int,in v_elect int,in v_ip varchar(16),in v_trash int,in v_keycount int,in v_keyprice int)
+BEGIN
+		declare result int default 0;
+		declare v_waterprice decimal(8,2) default 0;
+		declare v_electprice decimal(8,2) default 0;
+		DECLARE EXIT HANDLER FOR SQLEXCEPTION  ROLLBACK;
+		DECLARE EXIT HANDLER FOR SQLWARNING  ROLLBACK;
+		set result = 0 ;
+		START TRANSACTION;
+		    
+		    select waterprice,electprice into v_waterprice,v_electprice from t_waterelect_cfg where year = year(now()) and month = month(now());
+		    
+			insert into t_checkin(houseid,roomno,customid,trash,keycount,keyprice,year,month,day,created) 
+				values(v_houseid,v_roomno,v_customid,v_trash,v_keycount,v_keyprice,year(now()),month(now()),day(now()),UNIX_TIMESTAMP(now()));
+				
+			insert into t_custom(id,customname,iphone,cardid,year,month,day,created) 
+				values(v_customid,v_customname,v_iphone,v_cardid,year(now()),month(now()),day(now()),UNIX_TIMESTAMP(now()));
+				
+			insert into t_room_money(houseid,roomno,monthmoney,pressmoney,roommoney,year,month,day,created) 
+				values(v_houseid,v_roomno,v_monthmoney,v_pressmoney,v_roommoney,year(now()),month(now()),day(now()),UNIX_TIMESTAMP(now()));
+			
+			insert into t_waterelect(houseid,roomno,water,waterprice,elect,electprice,year,month,day,created) 
+				values(v_houseid,v_roomno,v_water,v_waterprice,v_elect,v_electprice,year(now()),month(now()),day(now()),UNIX_TIMESTAMP(now()));
+			
+			insert into t_net_cfg(houseid,roomno,ip,usr,pwd,netprice,year,month,day,created) 
+				values(v_houseid,v_roomno,v_ip,'','',40,year(now()),month(now()),day(now()),UNIX_TIMESTAMP(now()));
+				
+			set result = 1;
+		COMMIT;
+		select result;
+END $$
+DELIMITER ;
 
 
+/**
+ * p_update_checkin 修改存储过程 
+ * call p_update_checkin();
+ */
+DELIMITER $$
+DROP PROCEDURE IF EXISTS p_update_checkin $$
+CREATE PROCEDURE p_update_checkin(in v_houseid varchar(45),in v_roomno int,in v_customid varchar(45),in v_customname varchar(32),in v_iphone varchar(16),in v_cardid varchar(32),in v_monthmoney int,in v_pressmoney int,in v_roommoney int,in v_water int,in v_elect int,in v_ip varchar(16),in v_trash int,in v_keycount int,in v_keyprice int)
+BEGIN
+		declare result int default 0;
+		
+		DECLARE EXIT HANDLER FOR SQLEXCEPTION  ROLLBACK;
+		DECLARE EXIT HANDLER FOR SQLWARNING  ROLLBACK;
+		set result = 0 ;
+		START TRANSACTION;
+		    
+		    update t_checkin set trash = v_trash,keycount = v_keycount,keyprice = v_keyprcie, updated = UNIX_TIMESTAMP(now())
+		    	where houseid = v_houseid and roomno = v_roomno;
+			
+			update t_custom set customname = v_customname,iphone = v_iphone,cardid = v_cardid,updated = UNIX_TIMESTAMP(now())
+				where id = v_customid;
+			
+			update t_room_money set monthmoney = v_monthmoney,pressmoney = v_pressmoney, roommoney = v_roommoney ,updated = UNIX_TIMESTAMP(now())
+				where houseid = v_houseid and roomno = v_roomno;
+			
+			update t_waterelect set water = v_water,elect = v_elect,updated = UNIX_TIMESTAMP(now())
+				where houseid = v_houseid and roomno = v_roomno;
+				
+			update t_net_cfg set ip = v_ip,updated = UNIX_TIMESTAMP(now())
+				where houseid = v_houseid and roomno = v_roomno;
+				
+			set result = 1;
+		COMMIT;
+		select result;
+END $$
+DELIMITER ;

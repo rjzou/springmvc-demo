@@ -11,7 +11,7 @@
  Target Server Version : 50542
  File Encoding         : utf-8
 
- Date: 08/15/2015 00:30:12 AM
+ Date: 08/16/2015 22:53:11 PM
 */
 
 SET NAMES utf8;
@@ -33,7 +33,7 @@ CREATE TABLE `persistent_logins` (
 --  Records of `persistent_logins`
 -- ----------------------------
 BEGIN;
-INSERT INTO `persistent_logins` VALUES ('zouruijin', 'ao2fvKH5Evz38HDdmNnDbA==', '5s+89gf+dfpKQM+SYWYBCg==', '2015-08-15 00:17:13'), ('zouruijin', 'RvzTxXSJIeJMpCyXD6j0Mw==', 'yn60o45IooxR1tyi7WJ98Q==', '2015-08-14 11:23:08'), ('zouruijin', 'SSeJgZhKz4ulXMmKgMJi1w==', 'f4pkHXbWceZG3TbtXFxDhQ==', '2015-08-15 00:00:32'), ('zouruijin', 'tmKTsafNpQ14FySJsw61wg==', 'CgnuVQwS1MRGOcUsQLkPGw==', '2015-08-14 17:34:40');
+INSERT INTO `persistent_logins` VALUES ('zouruijin', 'ao2fvKH5Evz38HDdmNnDbA==', '5s+89gf+dfpKQM+SYWYBCg==', '2015-08-15 00:17:13'), ('zouruijin', 'RvzTxXSJIeJMpCyXD6j0Mw==', 'yn60o45IooxR1tyi7WJ98Q==', '2015-08-14 11:23:08'), ('zouruijin', 'SSeJgZhKz4ulXMmKgMJi1w==', 'aO0/rMND5JlQ61LtAy1UyQ==', '2015-08-16 22:50:49'), ('zouruijin', 'tmKTsafNpQ14FySJsw61wg==', 'CgnuVQwS1MRGOcUsQLkPGw==', '2015-08-14 17:34:40');
 COMMIT;
 
 -- ----------------------------
@@ -43,15 +43,7 @@ DROP TABLE IF EXISTS `t_checkin`;
 CREATE TABLE `t_checkin` (
   `houseid` varchar(45) NOT NULL,
   `roomno` int(8) NOT NULL,
-  `customname` varchar(32) NOT NULL,
-  `iphone` varchar(16) NOT NULL,
-  `cardid` varchar(32) NOT NULL,
-  `monthmoney` int(8) DEFAULT '0',
-  `pressmoney` int(8) DEFAULT '0',
-  `water` int(8) DEFAULT '0',
-  `elect` int(8) DEFAULT '0',
-  `internet` int(8) DEFAULT '0',
-  `ip` varchar(16) DEFAULT NULL,
+  `customid` varchar(45) DEFAULT NULL,
   `trash` int(8) DEFAULT '0',
   `keycount` int(8) DEFAULT NULL,
   `keyprice` int(8) DEFAULT NULL,
@@ -67,7 +59,7 @@ CREATE TABLE `t_checkin` (
 --  Records of `t_checkin`
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_checkin` VALUES ('89635a0e-418a-11e5-9172-fdf195657018', '100', 'eclipse', '17722677503', '362203198611176811', '0', '0', '0', '0', '0', null, '10', '2', '10', '2015', '8', '15', '1439569545418', null), ('89635a0e-418a-11e5-9172-fdf195657018', '103', 'eclipse2', '17722671560', '362203198611176812', '0', '0', '0', '0', '0', null, '10', '2', '10', '2015', '8', '15', '1439569623716', null);
+INSERT INTO `t_checkin` VALUES ('89635a0e-418a-11e5-9172-fdf195657018', '100', 'e7c15f16-4420-11e5-8d33-c99804c20755', '10', '2', '10', '2015', '8', '16', '1439734382', null), ('89635a0e-418a-11e5-9172-fdf195657018', '103', '1f0a5b28-4421-11e5-8d33-57e68146edd9', '10', '2', '10', '2015', '8', '16', '1439734475', null), ('89635a0e-418a-11e5-9172-fdf195657018', '104', '1e77384d-4420-11e5-8d33-6b7661b5d536', '10', '2', '10', '2015', '8', '16', '1439734235', null), ('89635a0e-418a-11e5-9172-fdf195657018', '131', '959593ae-4423-11e5-ae2a-b164ef721007', '10', '2', '10', '2015', '8', '16', '1439735593', null), ('89635a0e-418a-11e5-9172-fdf195657018', '201', 'e24c66c1-4423-11e5-ae2a-8fe22c727244', '10', '2', '10', '2015', '8', '16', '1439735661', '1439736157'), ('89635a0e-418a-11e5-9172-fdf195657018', '202', '69f376e6-4425-11e5-8dbc-135e963d3b8c', '10', '2', '10', '2015', '8', '16', '1439736318', '1439736420');
 COMMIT;
 
 -- ----------------------------
@@ -124,7 +116,7 @@ CREATE TABLE `t_custom` (
 --  Records of `t_custom`
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_custom` VALUES ('1d57f743-42a1-11e5-a693-73e8fed79601', 'eclipse', '17722677503', '362203198611176811', '2015', '8', '15', '1439569545420', null), ('45fd1634-42a1-11e5-a693-f7a807b3b745', 'eclipse2', '17722671560', '362203198611176812', '2015', '8', '15', '1439569623718', null), ('4d04d1d2-42a0-11e5-a693-e1398864253a', 'anguler', '17722677503', '362203198611171122', '2015', '8', '15', '1439569201399', null);
+INSERT INTO `t_custom` VALUES ('1d57f743-42a1-11e5-a693-73e8fed79601', 'eclipse', '17722677503', '362203198611176811', '2015', '8', '15', '1439569545420', null), ('1e77384d-4420-11e5-8d33-6b7661b5d536', 'test3', '1311224507', '362203198611176825', '2015', '8', '16', '1439734235', null), ('1f0a5b28-4421-11e5-8d33-57e68146edd9', '美丽', '1311224503', '362203198611176826', '2015', '8', '16', '1439734475', null), ('45fd1634-42a1-11e5-a693-f7a807b3b745', 'eclipse2', '17722671560', '362203198611176812', '2015', '8', '15', '1439569623718', null), ('4d04d1d2-42a0-11e5-a693-e1398864253a', 'anguler', '17722677503', '362203198611171122', '2015', '8', '15', '1439569201399', null), ('69f376e6-4425-11e5-8dbc-135e963d3b8c', 'china', '1331224506', '363203198611176825', '2015', '8', '16', '1439736318', '1439736420'), ('959593ae-4423-11e5-ae2a-b164ef721007', 'test34', '1311229903', '362202298611176825', '2015', '8', '16', '1439735593', null), ('e24c66c1-4423-11e5-ae2a-8fe22c727244', '美发', '1311224504', '362213198611176826', '2015', '8', '16', '1439735661', null), ('e7c15f16-4420-11e5-8d33-c99804c20755', '美国', '1311224507', '362203198611176823', '2015', '8', '16', '1439734382', null);
 COMMIT;
 
 -- ----------------------------
@@ -170,7 +162,7 @@ CREATE TABLE `t_net_cfg` (
 --  Records of `t_net_cfg`
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_net_cfg` VALUES ('89635a0e-418a-11e5-9172-fdf195657018', '100', '', null, null, '40', '2015', '8', '15', '1439569545420', null), ('89635a0e-418a-11e5-9172-fdf195657018', '103', '', null, null, '40', '2015', '8', '15', '1439569623718', null);
+INSERT INTO `t_net_cfg` VALUES ('89635a0e-418a-11e5-9172-fdf195657018', '100', '', '', '', '40', '2015', '8', '16', '1439734382', null), ('89635a0e-418a-11e5-9172-fdf195657018', '103', '', '', '', '40', '2015', '8', '16', '1439734475', null), ('89635a0e-418a-11e5-9172-fdf195657018', '104', '', '', '', '40', '2015', '8', '16', '1439734235', null), ('89635a0e-418a-11e5-9172-fdf195657018', '131', '', '', '', '40', '2015', '8', '16', '1439735593', null), ('89635a0e-418a-11e5-9172-fdf195657018', '201', '', '', '', '40', '2015', '8', '16', '1439735661', null), ('89635a0e-418a-11e5-9172-fdf195657018', '202', '', '', '', '40', '2015', '8', '16', '1439736318', '1439736420');
 COMMIT;
 
 -- ----------------------------
@@ -235,7 +227,7 @@ CREATE TABLE `t_room_money` (
   `roommoney` decimal(8,2) NOT NULL,
   `year` int(8) NOT NULL,
   `month` int(8) NOT NULL,
-  `day` int(8) NOT NULL,
+  `day` int(8) DEFAULT NULL,
   `created` bigint(32) NOT NULL,
   `updated` bigint(32) DEFAULT NULL,
   PRIMARY KEY (`houseid`,`roomno`,`year`,`month`)
@@ -245,7 +237,7 @@ CREATE TABLE `t_room_money` (
 --  Records of `t_room_money`
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_room_money` VALUES ('89635a0e-418a-11e5-9172-fdf195657018', '100', '90', '50', '210.00', '2015', '8', '15', '1439569545420', null), ('89635a0e-418a-11e5-9172-fdf195657018', '103', '220', '150', '440.00', '2015', '8', '15', '1439569623718', null);
+INSERT INTO `t_room_money` VALUES ('89635a0e-418a-11e5-9172-fdf195657018', '100', '90', '50', '210.00', '2015', '8', '16', '1439734382', null), ('89635a0e-418a-11e5-9172-fdf195657018', '103', '220', '150', '440.00', '2015', '8', '16', '1439734475', null), ('89635a0e-418a-11e5-9172-fdf195657018', '104', '180', '100', '350.00', '2015', '8', '16', '1439734235', null), ('89635a0e-418a-11e5-9172-fdf195657018', '131', '320', '200', '590.00', '2015', '8', '16', '1439735593', null), ('89635a0e-418a-11e5-9172-fdf195657018', '201', '200', '100', '370.00', '2015', '8', '16', '1439735661', null), ('89635a0e-418a-11e5-9172-fdf195657018', '202', '200', '100', '370.00', '2015', '8', '16', '1439736318', '1439736420');
 COMMIT;
 
 -- ----------------------------
@@ -316,7 +308,7 @@ CREATE TABLE `t_waterelect` (
 --  Records of `t_waterelect`
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_waterelect` VALUES ('89635a0e-418a-11e5-9172-fdf195657018', '100', '1', '4.50', '1', '1.50', '2015', '8', '15', '1439569545420', null), ('89635a0e-418a-11e5-9172-fdf195657018', '103', '2', '4.50', '2', '1.50', '2015', '8', '15', '1439569623718', null);
+INSERT INTO `t_waterelect` VALUES ('89635a0e-418a-11e5-9172-fdf195657018', '100', '10', '4.50', '10', '1.50', '2015', '8', '16', '1439734382', null), ('89635a0e-418a-11e5-9172-fdf195657018', '103', '1', '4.50', '1', '1.50', '2015', '8', '16', '1439734475', null), ('89635a0e-418a-11e5-9172-fdf195657018', '104', '1', '4.50', '1', '1.50', '2015', '8', '16', '1439734235', null), ('89635a0e-418a-11e5-9172-fdf195657018', '131', '1', '4.50', '1', '1.50', '2015', '8', '16', '1439735593', null), ('89635a0e-418a-11e5-9172-fdf195657018', '201', '1', '4.50', '1', '1.50', '2015', '8', '16', '1439735661', null), ('89635a0e-418a-11e5-9172-fdf195657018', '202', '1', '4.50', '1', '1.50', '2015', '8', '16', '1439736318', '1439736420');
 COMMIT;
 
 -- ----------------------------
@@ -455,6 +447,49 @@ DROP VIEW IF EXISTS `v_waterelect_last`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_waterelect_last` AS select `t_waterelect`.`houseid` AS `houseid`,`t_waterelect`.`roomno` AS `roomno`,max(`t_waterelect`.`year`) AS `last_year`,max(`t_waterelect`.`month`) AS `last_month`,`t_waterelect`.`day` AS `lastday` from `t_waterelect` group by `t_waterelect`.`houseid`,`t_waterelect`.`roomno`;
 
 -- ----------------------------
+--  Procedure structure for `p_checkin`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `p_checkin`;
+delimiter ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_checkin`(in v_houseid varchar(45),in v_roomno int,in v_customid varchar(45),in v_customname varchar(32),in v_iphone varchar(16),in v_cardid varchar(32),in v_monthmoney int,in v_pressmoney int,in v_roommoney int,in v_water int,in v_elect int,in v_ip varchar(16),in v_trash int,in v_keycount int,in v_keyprice int)
+BEGIN
+		declare result int default 0;
+		declare v_waterprice decimal(8,2) default 0;
+		declare v_electprice decimal(8,2) default 0;
+		DECLARE EXIT HANDLER FOR SQLEXCEPTION  ROLLBACK;
+		DECLARE EXIT HANDLER FOR SQLWARNING  ROLLBACK;
+		set result = 0 ;
+		START TRANSACTION;
+		    
+		    select waterprice,electprice into v_waterprice,v_electprice from t_waterelect_cfg where year = year(now()) and month = month(now());
+		    
+			insert into t_checkin(houseid,roomno,customid,trash,keycount,keyprice,year,month,day,created) 
+				values(v_houseid,v_roomno,v_customid,v_trash,v_keycount,v_keyprice,year(now()),month(now()),day(now()),UNIX_TIMESTAMP(now()));
+				
+			insert into t_custom(id,customname,iphone,cardid,year,month,day,created) 
+				values(v_customid,v_customname,v_iphone,v_cardid,year(now()),month(now()),day(now()),UNIX_TIMESTAMP(now()));
+				
+			insert into t_room_money(houseid,roomno,monthmoney,pressmoney,roommoney,year,month,day,created) 
+				values(v_houseid,v_roomno,v_monthmoney,v_pressmoney,v_roommoney,year(now()),month(now()),day(now()),UNIX_TIMESTAMP(now()));
+			
+			insert into t_waterelect(houseid,roomno,water,waterprice,elect,electprice,year,month,day,created) 
+				values(v_houseid,v_roomno,v_water,v_waterprice,v_elect,v_electprice,year(now()),month(now()),day(now()),UNIX_TIMESTAMP(now()));
+			
+			insert into t_net_cfg(houseid,roomno,ip,usr,pwd,netprice,year,month,day,created) 
+				values(v_houseid,v_roomno,v_ip,'','',40,year(now()),month(now()),day(now()),UNIX_TIMESTAMP(now()));
+			
+		
+			
+		
+				
+			set result = 1;
+		COMMIT;
+		select result;
+END
+ ;;
+delimiter ;
+
+-- ----------------------------
 --  Procedure structure for `p_check_out`
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `p_check_out`;
@@ -521,6 +556,45 @@ END
 delimiter ;
 
 -- ----------------------------
+--  Procedure structure for `p_insert_checkin`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `p_insert_checkin`;
+delimiter ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_insert_checkin`(in v_houseid varchar(45),in v_roomno int,in v_customid varchar(45),in v_customname varchar(32),in v_iphone varchar(16),in v_cardid varchar(32),in v_monthmoney int,in v_pressmoney int,in v_roommoney int,in v_water int,in v_elect int,in v_ip varchar(16),in v_trash int,in v_keycount int,in v_keyprice int)
+BEGIN
+		declare result int default 0;
+		declare v_waterprice decimal(8,2) default 0;
+		declare v_electprice decimal(8,2) default 0;
+		DECLARE EXIT HANDLER FOR SQLEXCEPTION  ROLLBACK;
+		DECLARE EXIT HANDLER FOR SQLWARNING  ROLLBACK;
+		set result = 0 ;
+		START TRANSACTION;
+		    
+		    select waterprice,electprice into v_waterprice,v_electprice from t_waterelect_cfg where year = year(now()) and month = month(now());
+		    
+			insert into t_checkin(houseid,roomno,customid,trash,keycount,keyprice,year,month,day,created) 
+				values(v_houseid,v_roomno,v_customid,v_trash,v_keycount,v_keyprice,year(now()),month(now()),day(now()),UNIX_TIMESTAMP(now()));
+				
+			insert into t_custom(id,customname,iphone,cardid,year,month,day,created) 
+				values(v_customid,v_customname,v_iphone,v_cardid,year(now()),month(now()),day(now()),UNIX_TIMESTAMP(now()));
+				
+			insert into t_room_money(houseid,roomno,monthmoney,pressmoney,roommoney,year,month,day,created) 
+				values(v_houseid,v_roomno,v_monthmoney,v_pressmoney,v_roommoney,year(now()),month(now()),day(now()),UNIX_TIMESTAMP(now()));
+			
+			insert into t_waterelect(houseid,roomno,water,waterprice,elect,electprice,year,month,day,created) 
+				values(v_houseid,v_roomno,v_water,v_waterprice,v_elect,v_electprice,year(now()),month(now()),day(now()),UNIX_TIMESTAMP(now()));
+			
+			insert into t_net_cfg(houseid,roomno,ip,usr,pwd,netprice,year,month,day,created) 
+				values(v_houseid,v_roomno,v_ip,'','',40,year(now()),month(now()),day(now()),UNIX_TIMESTAMP(now()));
+				
+			set result = 1;
+		COMMIT;
+		select result;
+END
+ ;;
+delimiter ;
+
+-- ----------------------------
 --  Procedure structure for `p_insert_houses`
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `p_insert_houses`;
@@ -534,6 +608,42 @@ BEGIN
 		START TRANSACTION;
 			insert into t_house(id,housename,description,created) values(v_id,v_housename,v_description,UNIX_TIMESTAMP(now()));
 			insert into user_houses(username,houseid) values(v_username,v_id);
+			set result = 1;
+		COMMIT;
+		select result;
+END
+ ;;
+delimiter ;
+
+-- ----------------------------
+--  Procedure structure for `p_update_checkin`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `p_update_checkin`;
+delimiter ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_update_checkin`(in v_houseid varchar(45),in v_roomno int,in v_customid varchar(45),in v_customname varchar(32),in v_iphone varchar(16),in v_cardid varchar(32),in v_monthmoney int,in v_pressmoney int,in v_roommoney int,in v_water int,in v_elect int,in v_ip varchar(16),in v_trash int,in v_keycount int,in v_keyprice int)
+BEGIN
+		declare result int default 0;
+		
+		DECLARE EXIT HANDLER FOR SQLEXCEPTION  ROLLBACK;
+		DECLARE EXIT HANDLER FOR SQLWARNING  ROLLBACK;
+		set result = 0 ;
+		START TRANSACTION;
+		    
+		    update t_checkin set trash = v_trash,keycount = v_keycount,keyprice = v_keyprice,updated = UNIX_TIMESTAMP(now())
+		    	where houseid = v_houseid and roomno = v_roomno;
+			
+			update t_custom set customname = v_customname,iphone = v_iphone,cardid = v_cardid,updated = UNIX_TIMESTAMP(now())
+				where id = v_customid;
+			
+			update t_room_money set monthmoney = v_monthmoney,pressmoney = v_pressmoney, roommoney = v_roommoney ,updated = UNIX_TIMESTAMP(now())
+				where houseid = v_houseid and roomno = v_roomno;
+
+			update t_waterelect set water = v_water,elect = v_elect,updated = UNIX_TIMESTAMP(now())
+				where houseid = v_houseid and roomno = v_roomno;
+
+			update t_net_cfg set ip = v_ip,updated = UNIX_TIMESTAMP(now())
+				where houseid = v_houseid and roomno = v_roomno;
+				
 			set result = 1;
 		COMMIT;
 		select result;
