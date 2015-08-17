@@ -65,7 +65,7 @@ group by houseid,roomno;
  */
 DELIMITER $$
 DROP PROCEDURE IF EXISTS p_check_out $$
-CREATE PROCEDURE p_check_out(v_cout_id varchar(45),in v_houseid varchar(45),in v_roomno int,in v_cout_money decimal(8,2))
+CREATE PROCEDURE p_check_out(in v_cout_id varchar(45),in v_houseid varchar(45),in v_roomno int,in v_cout_money decimal(8,2))
 BEGIN
 		declare result int default 0;
 		DECLARE EXIT HANDLER FOR SQLEXCEPTION  ROLLBACK;

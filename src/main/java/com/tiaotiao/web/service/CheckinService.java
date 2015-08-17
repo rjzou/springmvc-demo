@@ -414,11 +414,11 @@ public class CheckinService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Object[] getRoomTongJi() throws Exception{
+	public Object[] getRoomTongJi(String username) throws Exception{
 		Connection conn = dao.getConn(false);
-//		Object[] params = { h.getId(),username,h.getHousename(),h.getDescription()};
-		String pro_sql = " {CALL p_get_room_tongji()} ";
-		Object[] result = dao.execProc(pro_sql, conn);
+		Object[] params = { username };
+		String pro_sql = " {CALL p_get_room_tongji(?)} ";
+		Object[] result = dao.execProc(pro_sql, conn, params);
 		return result;
 	}
 	

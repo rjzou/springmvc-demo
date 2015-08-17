@@ -152,6 +152,7 @@ public class MainService {
 //				" 		) "+
 //				" 		AND rm.month <> 9 "; 
 				sql = sql + " and rm.month <>  " + month;
+				sql = sql + " and rm.month <  " + month;
 				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+")";
 				sql = sql + " order by rm.day   ";
 		logger.log(Level.INFO, sql);

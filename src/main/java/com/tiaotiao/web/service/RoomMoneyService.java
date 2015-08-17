@@ -295,7 +295,7 @@ public class RoomMoneyService {
 					" AND c.roomno = ? "+
 					" AND we.year = ? "+ 
 					" AND we.month = ? ";
-				
+		logger.log(Level.INFO, sql);
 		return dao.findFirst(sql, params);
 	}
 }
