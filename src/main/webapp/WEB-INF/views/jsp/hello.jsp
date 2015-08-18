@@ -6,53 +6,75 @@
 <head>
 <title>Maven + Spring MVC</title>
  
-<spring:url value="http://ethaizone.github.io/Bootstrap-Confirmation/assets/css/bootstrap.css" var="bootstrapCss" />
-<link href="${bootstrapCss}" rel="stylesheet" />
+	<script type="text/javascript" src="${ctx}/resources/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="${ctx}/resources/js/bootstrap3-typeahead.min.js"></script>
+    
 
- <link href="http://ethaizone.github.io/Bootstrap-Confirmation/assets/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="http://ethaizone.github.io/Bootstrap-Confirmation/assets/css/docs.css" rel="stylesheet">
-    <link href="http://ethaizone.github.io/Bootstrap-Confirmation/assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+
+<style type="text/css">
+.bs-example{
+	font-family: sans-serif;
+	position: relative;
+	margin: 100px;
+}
+.typeahead, .tt-query, .tt-hint {
+	border: 2px solid #CCCCCC;
+	border-radius: 8px;
+	font-size: 24px;
+	height: 30px;
+	line-height: 30px;
+	outline: medium none;
+	padding: 8px 12px;
+	width: 396px;
+}
+.typeahead {
+	background-color: #FFFFFF;
+}
+.typeahead:focus {
+	border: 2px solid #0097CF;
+}
+.tt-query {
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+.tt-hint {
+	color: #999999;
+}
+.tt-dropdown-menu {
+	background-color: #FFFFFF;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 8px;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	margin-top: 12px;
+	padding: 8px 0;
+	width: 422px;
+}
+.tt-suggestion {
+	font-size: 24px;
+	line-height: 24px;
+	padding: 3px 20px;
+}
+.tt-suggestion.tt-is-under-cursor {
+	background-color: #0097CF;
+	color: #FFFFFF;
+}
+.tt-suggestion p {
+	margin: 0;
+}
+</style>
 </head>
  
- 
+<div class="bs-example">
+        <input type="text" id="abcd" class="typeahead tt-query" autocomplete="off" spellcheck="false">
+    </div>
+    
+     <script type="text/javascript">
+$(document).ready(function(){
+	$('#abcd').typeahead({
+		name: 'accounts',
+		local: ['Audi', 'BMW', 'Bugatti', 'Ferrari', 'Ford', 'Lamborghini', 'Mercedes Benz', 'Porsche', 'Rolls-Royce', 'Volkswagen']
+	});
+});  
+</script>
 <body>
-<h4>Four directions</h4>
-          <div class="bs-docs-example tooltip-demo">
-            <ul class="bs-docs-tooltip-examples">
-              <li><a class="btn" data-toggle="confirmation" data-placement="left">Confirmation on left</a></li>
-              <li><a class="btn" data-toggle="confirmation" data-placement="top">Confirmation on top</a></li>
-              <li><a class="btn" data-toggle="confirmation" data-placement="bottom">Confirmation on bottom</a></li>
-              <li><a class="btn" data-toggle="confirmation" data-placement="right">Confirmation on right</a></li>
-            </ul>
-          </div>
-
-          <h4>Singleton <span class="label label-important">New feature!</span></h4>
-          <div class="bs-docs-example tooltip-demo">
-            <ul class="bs-docs-tooltip-examples">
-              <li><a class="btn" data-toggle="confirmation-singleton" data-placement="left">Confirmation on left</a></li>
-              <li><a class="btn" data-toggle="confirmation-singleton" data-placement="top">Confirmation on top</a></li>
-              <li><a class="btn" data-toggle="confirmation-singleton" data-placement="bottom">Confirmation on bottom</a></li>
-              <li><a class="btn" data-toggle="confirmation-singleton" data-placement="right">Confirmation on right</a></li>
-            </ul>
-          </div>
-
-          <h4>Popout <span class="label label-important">New feature!</span></h4>
-          <div class="bs-docs-example tooltip-demo">
-            <ul class="bs-docs-tooltip-examples">
-              <li><a class="btn" data-toggle="confirmation-popout" data-placement="left">Confirmation on left</a></li>
-              <li><a class="btn" data-toggle="confirmation-popout" data-placement="top">Confirmation on top</a></li>
-              <li><a class="btn" data-toggle="confirmation-popout" data-placement="bottom">Confirmation on bottom</a></li>
-              <li><a class="btn" data-toggle="confirmation-popout" data-placement="right">Confirmation on right</a></li>
-            </ul>
-          </div>
-<script src="http://ethaizone.github.io/Bootstrap-Confirmation/assets/js/jquery.js"></script>
-<script src="http://ethaizone.github.io/Bootstrap-Confirmation/assets/js/bootstrap-transition.js"></script>
-  <script src="http://ethaizone.github.io/Bootstrap-Confirmation/assets/js/bootstrap-tooltip.js"></script>
-
-<script src="http://ethaizone.github.io/Bootstrap-Confirmation/assets/js/holder/holder.js"></script>
-    <script src="http://ethaizone.github.io/Bootstrap-Confirmation/assets/js/google-code-prettify/prettify.js"></script>
-
-<script src="http://ethaizone.github.io/Bootstrap-Confirmation/assets/js/application.js"></script>
-<script src="http://ethaizone.github.io/Bootstrap-Confirmation/bootstrap-confirmation.js"></script>
 </body>
 </html>

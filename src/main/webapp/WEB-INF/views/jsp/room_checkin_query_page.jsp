@@ -18,7 +18,7 @@
             function autojump(){
             	location.href="${ctx}/room_checkout";
             }
-            setTimeout("autojump()",100000);
+            setTimeout("autojump()",10000);
             </script>
       </c:if>
       <c:if test="${!empty danger}">  
@@ -27,31 +27,34 @@
             function autojump(){
             	location.href="${ctx}/room_checkout";
             }
-            setTimeout("autojump()",100000);
+            setTimeout("autojump()",10000);
             </script>
       </c:if>  
-      <div class="form-group">
-		<a class="btn btn-default" href="${ctx}/room_checkin_query" role="button">返回</a>
-	  </div>
-      <table class="table table-bordered">
-        <tr>
-            <th class="col-sm-2">楼房</th>
-            <td>${params.housename}</td>
-        </tr>
-          <tr>
-            <th class="col-sm-2">房间号</th>
-            <td>${params.roomno}</td>
-        </tr>
-  		  <tr>
-            <th class="col-sm-2">入住姓名</th>
-            <td>${params.customname}</td>
-        </tr>
-        <tr>
-            <th class="col-sm-2">入住日期</th>
-            <td><span class="label label-success">${params.in_date}</span> 已经入住 <span class="label label-success">${params.in_days}</span> 天</td>
-        </tr>
-		</table>
-		
+        <div class="panel panel-default">
+		  <!-- Default panel contents -->
+		  <div class="panel-heading">入住资料</div>
+		   <!-- Table -->
+			<div class="table-responsive">
+		       <table class="table table-bordered">
+		        <tr>
+		            <th class="col-sm-2">楼房</th>
+		            <td>${params.housename}</td>
+		        </tr>
+		          <tr>
+		            <th class="col-sm-2">房间号</th>
+		            <td>${params.roomno}</td>
+		        </tr>
+		  		  <tr>
+		            <th class="col-sm-2">入住姓名</th>
+		            <td>${params.customname}</td>
+		        </tr>
+		        <tr>
+		            <th class="col-sm-2">入住日期</th>
+		            <td><span class="label label-success">${params.in_date}</span> 已经入住 <span class="label label-success">${params.in_days}</span> 天</td>
+		        </tr>
+				</table>
+			</div>
+		</div>
 		<div class="panel panel-default">
 		  <!-- Default panel contents -->
 		  <div class="panel-heading">收租记录</div>

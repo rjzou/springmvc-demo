@@ -7,8 +7,9 @@
 <meta name="theme" content="basic_theme" />
 <link rel="stylesheet"
 	href="${ctx}/resources/css/bootstrap-select.css">
-<script
+<script  type="text/javascript"
 	src="${ctx}/resources/js/bootstrap-select.js"></script>
+
 </head>
 <body>
 <div class="row">
@@ -41,7 +42,7 @@
 	  <input type="hidden" id="customid" name="customid" value="${params.customid}"/>
 		<div class="form-group">
 			<label class="control-label" for="inputCustomname">客户姓名</label>
-			<input type="text" class="form-control" id="inputCustomname" name="inputCustomname" value="${params.inputCustomname}"
+			<input type="text" class="form-control typeahead" id="inputCustomname" name="inputCustomname" value="${params.inputCustomname}"
 				placeholder="输入客户姓名" required>
 		</div>
 		<div class="form-group">
@@ -139,7 +140,6 @@ function intenetHandler(o){
 		$(o).attr("checked","checked");
 		$("#inputInternet").val('${params.internet}');
 	}
-	
 }
 </script>
 </body>

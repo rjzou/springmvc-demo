@@ -1,5 +1,6 @@
 package com.tiaotiao.web.controller;
 
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -117,7 +118,7 @@ public class CustomController extends BaseController {
 			model.put("offline_room_list", offline_room_list);
 		}
 		model.put("p", cpage);
-		
+		params.put("return_url", URLEncoder.encode("custom_query_page?id=" + id, "UTF-8"));
 		params.put("page_id", "custom_query");
 		model.put("params", params);
 		return "custom_query_page";

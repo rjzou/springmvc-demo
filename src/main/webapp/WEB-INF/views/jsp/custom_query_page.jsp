@@ -9,25 +9,31 @@
 <body>
 <div class="row">
 	<form role="form" method="post" action="#">
-	  
-      <table class="table table-bordered">
-        <tr>
-            <th class="col-sm-2">客户名称</th>
-            <td>${params.customname}</td>
-        </tr>
-          <tr>
-            <th class="col-sm-2">手机</th>
-            <td>${params.iphone}</td>
-        </tr>
-  		  <tr>
-            <th class="col-sm-2">身份证</th>
-            <td>${params.cardid}</td>
-        </tr>
-        <tr>
-            <th class="col-sm-2">时间</th>
-            <td>${params.year}/${params.month}/${params.day}</td>
-        </tr>
-		</table>
+	  <div class="panel panel-default">
+		  <!-- Default panel contents -->
+		  <div class="panel-heading">客户资料</div>
+		   <!-- Table -->
+			<div class="table-responsive">
+		      	<table class="table table-bordered">
+			        <tr>
+			            <th class="col-sm-2">客户名称</th>
+			            <td>${params.customname}</td>
+			        </tr>
+			          <tr>
+			            <th class="col-sm-2">手机</th>
+			            <td>${params.iphone}</td>
+			        </tr>
+			  		  <tr>
+			            <th class="col-sm-2">身份证</th>
+			            <td>${params.cardid}</td>
+			        </tr>
+			        <tr>
+			            <th class="col-sm-2">时间</th>
+			            <td>${params.year}/${params.month}/${params.day}</td>
+			        </tr>
+				</table>
+			</div>
+		</div>
 		 		<c:if test="${params.custom_room eq 'online'}">  
 					<div class="panel panel-default">
 					  <!-- Default panel contents -->
@@ -53,8 +59,8 @@
 				            <td>${item.in_days }</td>
 				            <td>${item.sum_roommoney }</span></td>
 				           	<td>
-										<a class="btn btn-primary btn-sm" href="${ctx}/room_checkin_query_page?houseid=${item.houseid }&roomno=${item.roomno }" role="button">详情</a>
-									</td>
+								<a class="btn btn-primary btn-sm" href="${ctx}/room_checkin_query_page?houseid=${item.houseid }&roomno=${item.roomno }&return_url=${ctx}/${params.return_url}" role="button">详情</a>
+							</td>
 			        	</tr>
 			        	</c:forEach>
 			        	</tbody>
