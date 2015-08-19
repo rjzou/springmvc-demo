@@ -15,4 +15,5 @@
 	<import resource="classpath:spring/db.xml" />
 	<context:property-placeholder location="classpath:config/jdbc.properties" />
 	
+	
 </beans>

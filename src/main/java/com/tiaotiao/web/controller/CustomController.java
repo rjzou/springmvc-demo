@@ -1,13 +1,15 @@
 package com.tiaotiao.web.controller;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -15,16 +17,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tiaotiao.web.entity.Checkin;
 import com.tiaotiao.web.entity.Custom;
-import com.tiaotiao.web.entity.House;
-import com.tiaotiao.web.entity.NetCfg;
-import com.tiaotiao.web.entity.Room;
-import com.tiaotiao.web.entity.RoomMoney;
-import com.tiaotiao.web.entity.RoomType;
-import com.tiaotiao.web.entity.WaterElect;
-import com.tiaotiao.web.entity.WaterElectCfg;
 import com.tiaotiao.web.service.CheckinService;
 import com.tiaotiao.web.service.CheckoutService;
 import com.tiaotiao.web.service.CustomService;
@@ -35,9 +31,6 @@ import com.tiaotiao.web.service.RoomService;
 import com.tiaotiao.web.service.RoomTypeService;
 import com.tiaotiao.web.service.WaterElectCfgService;
 import com.tiaotiao.web.service.WaterElectService;
-import com.tiaotiao.web.utils.DateUtil;
-import com.tiaotiao.web.utils.GuidUtil;
-import com.tiaotiao.web.utils.MyStringUtil;
  
 @Controller
 public class CustomController extends BaseController {
@@ -72,7 +65,7 @@ public class CustomController extends BaseController {
 	@Resource
 	private NetCfgService netCfgService;
 	
-	
+	private Logger logger = Logger.getLogger(CheckinService.class.getName());
 	/*
 	 * 客户查询
 	 */
@@ -122,5 +115,31 @@ public class CustomController extends BaseController {
 		params.put("page_id", "custom_query");
 		model.put("params", params);
 		return "custom_query_page";
+	}
+	@RequestMapping(value = "/json/getCustomJson", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Custom> testJson( String customname) {
+		System.out.println("testJson");
+		logger.log(Level.INFO, "customname :" + customname);
+		Custom custom = new Custom();
+		custom.setCustomname("lfd");
+		custom.setIphone("12345678");
+		custom.setCardid("362203198611175786");
+		
+		Custom custom2 = new Custom();
+		custom2.setCustomname("zouruijin");
+		custom2.setIphone("12345678");
+		custom2.setCardid("362203198611175786");
+		
+		
+		Custom custom3 = new Custom();
+		custom3.setCustomname("zourinet");
+		custom3.setIphone("12345678");
+		custom3.setCardid("362203198611175786");
+		List<Custom> list = new ArrayList<Custom>();
+		list.add(custom2);
+		list.add(custom);
+		list.add(custom3);
+		return list;
 	}
 }

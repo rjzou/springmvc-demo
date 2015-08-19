@@ -5,11 +5,11 @@
 <html lang="en">
 <head>
 <meta name="theme" content="basic_theme" />
-<link rel="stylesheet"
-	href="${ctx}/resources/css/bootstrap-select.css">
-<script  type="text/javascript"
-	src="${ctx}/resources/js/bootstrap-select.js"></script>
-
+<link rel="stylesheet" href="${ctx}/resources/css/bootstrap-select.css">
+<link rel="stylesheet" href="${ctx}/resources/css/typeahead.css">
+<script  type="text/javascript" src="${ctx}/resources/js/bootstrap-select.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/typeahead.bundle.js"></script>
+ <script type="text/javascript" src="${ctx}/resources/js/handlebars.js"></script>
 </head>
 <body>
 <div class="row">
@@ -26,24 +26,16 @@
       
       <c:if test="${!empty info}">  
             <h3><div class="alert alert-info" role="alert"> ${info}</div></h3>
-            <script type="text/javascript">
-            function autosave(){
-            	if(save()){
-            		$('form').submit();
-            	}
-            }
-            setTimeout("autosave()",10000);
-            </script>
       </c:if> 
       	
       <input type="hidden" id="houseid" name="houseid" value="${params.houseid}"/>
       <input type="hidden" id="roomno" name="roomno" value="${params.roomno}"/>
 	  <input type="hidden" id="method" name="method" value="${params.method}"/>
 	  <input type="hidden" id="customid" name="customid" value="${params.customid}"/>
-		<div class="form-group">
+		<div class="form-group scrollable-dropdown-menu">
 			<label class="control-label" for="inputCustomname">客户姓名</label>
 			<input type="text" class="form-control typeahead" id="inputCustomname" name="inputCustomname" value="${params.inputCustomname}"
-				placeholder="输入客户姓名" required>
+				placeholder="输入客户姓名"  autocomplete="off" spellcheck="false" required>
 		</div>
 		<div class="form-group">
 			<label class="control-label" for="inputIphone">客户手机</label>
@@ -142,5 +134,49 @@ function intenetHandler(o){
 	}
 }
 </script>
+<script type="text/javascript">
+    	/*** 2.Ajax数据预读示例 ***/
+
+    	// 远程数据源
+    	var prefetch_provinces = new Bloodhound({
+    	    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('customname'),
+    	    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    	    // 预获取并缓存
+    	    prefetch: '${ctx}/json/getCustomJson',
+    	    remote:{
+    	        url: '${ctx}/json/getCustomJson?customname=%QUERY',
+    	        wildcard: '%QUERY'
+    	      }
+    	});
+
+    	prefetch_provinces.initialize();
+    	var input_typeahead = $('.scrollable-dropdown-menu .typeahead');
+    	input_typeahead.typeahead({
+    	    hint: true,
+    	    highlight: true,
+    	    minLength: 1
+    	  },
+    	  {
+    	    name: 'provinces',
+    	    displayKey: 'customname',
+    	    source: prefetch_provinces.ttAdapter(),
+    	    templates: {
+    	        empty: [
+    	            '<div class="empty-message">',
+    	            '没有找到相关数据',
+    	            '</div>'
+    	        ].join('\n'),
+    	        suggestion: Handlebars.compile('<div><strong>{{customname}}</strong> / {{iphone}} / {{cardid}}</div>')
+    	    }
+    	  });
+    	
+    	input_typeahead.bind('typeahead:select', function(ev, suggestion) {
+  		    //console.log('Selection: ' + suggestion.customname);
+  		    $("#inputIphone").val(suggestion.iphone);
+  			$("#inputCardid").val(suggestion.cardid);
+  		});
+    	
+  	
+	</script>
 </body>
 </html>

@@ -32,6 +32,7 @@
         	<mvc:exclude-mapping path="/resources/**"/>  
         	<mvc:exclude-mapping path="/login"/>
         	<mvc:exclude-mapping path="/auth/**"/>
+        	<mvc:exclude-mapping path="/json/**"/>
             <bean class="com.tiaotiao.web.interceptor.SessionInterceptor"></bean>    
         </mvc:interceptor>    
     </mvc:interceptors>
