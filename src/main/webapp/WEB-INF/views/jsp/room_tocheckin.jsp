@@ -138,15 +138,15 @@ function intenetHandler(o){
     	/*** 2.Ajax数据预读示例 ***/
 
     	// 远程数据源
+    	// remote:{
+    	//        url: '${ctx}/json/getCustomJson?customname=%QUERY',
+    	//       wildcard: '%QUERY'
+    	//      }
     	var prefetch_provinces = new Bloodhound({
     	    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('customname'),
     	    queryTokenizer: Bloodhound.tokenizers.whitespace,
     	    // 预获取并缓存
-    	    prefetch: '${ctx}/json/getCustomJson',
-    	    remote:{
-    	        url: '${ctx}/json/getCustomJson?customname=%QUERY',
-    	        wildcard: '%QUERY'
-    	      }
+    	    prefetch: '${ctx}/json/getCustomJson'
     	});
 
     	prefetch_provinces.initialize();

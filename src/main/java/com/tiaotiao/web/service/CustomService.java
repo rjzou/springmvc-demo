@@ -1,5 +1,6 @@
 package com.tiaotiao.web.service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,6 +72,16 @@ public class CustomService {
 		return dao.findFirst(Custom.class,sql, params);
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Custom> getCustomList() throws Exception{
+		String sql = "select customname,iphone,cardid,year,month,day,created,updated from t_custom ";
+		logger.log(Level.INFO, sql);
+		return dao.find(Custom.class,sql);
+	}
 	/**
 	 * 
 	 * @param customname

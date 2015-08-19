@@ -118,28 +118,30 @@ public class CustomController extends BaseController {
 	}
 	@RequestMapping(value = "/json/getCustomJson", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Custom> testJson( String customname) {
+	public List<Custom> testJson( String customname) throws Exception {
 		System.out.println("testJson");
 		logger.log(Level.INFO, "customname :" + customname);
-		Custom custom = new Custom();
-		custom.setCustomname("lfd");
-		custom.setIphone("12345678");
-		custom.setCardid("362203198611175786");
 		
-		Custom custom2 = new Custom();
-		custom2.setCustomname("zouruijin");
-		custom2.setIphone("12345678");
-		custom2.setCardid("362203198611175786");
-		
-		
-		Custom custom3 = new Custom();
-		custom3.setCustomname("zourinet");
-		custom3.setIphone("12345678");
-		custom3.setCardid("362203198611175786");
-		List<Custom> list = new ArrayList<Custom>();
-		list.add(custom2);
-		list.add(custom);
-		list.add(custom3);
+		List<Custom> list = customService.getCustomList();
+//		Custom custom = new Custom();
+//		custom.setCustomname("lfd");
+//		custom.setIphone("12345678");
+//		custom.setCardid("362203198611175786");
+//		
+//		Custom custom2 = new Custom();
+//		custom2.setCustomname("zouruijin");
+//		custom2.setIphone("12345678");
+//		custom2.setCardid("362203198611175786");
+//		
+//		
+//		Custom custom3 = new Custom();
+//		custom3.setCustomname("zourinet");
+//		custom3.setIphone("12345678");
+//		custom3.setCardid("362203198611175786");
+//		List<Custom> list = new ArrayList<Custom>();
+//		list.add(custom2);
+//		list.add(custom);
+//		list.add(custom3);
 		return list;
 	}
 }
