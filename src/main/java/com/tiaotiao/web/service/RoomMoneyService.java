@@ -258,7 +258,7 @@ public class RoomMoneyService {
 	public Map<String,Object> getRoomMoneyCheckinMapById(String houseid,int roomno) throws Exception{
 		int year = DateUtil.getThisYear();
 		int pre_month = DateUtil.getThisMonth() -1 ;
-		Object[] params = { houseid,roomno,year,pre_month};
+		Object[] params = { houseid,roomno};
 		String sql = " SELECT "+
 					"     h.housename, "+
 					"     c.houseid, "+
@@ -281,20 +281,25 @@ public class RoomMoneyService {
 					"     t_custom as cus, "+
 					"     t_house as h, "+
 					"     t_waterelect as we , "+ 
-					"  	  t_room_money as rm"+
+					"  	  t_room_money as rm, "+
+					"  	  v_room_money_last AS rml "+
 					" WHERE "+
 					"     c.houseid = h.id "+
 					" AND c.houseid = we.houseid "+
 					" AND c.roomno = we.roomno " + 
 					" AND c.houseid = rm.houseid " + 
 					" AND c.roomno = rm.roomno " + 
+					" AND rm.houseid = rml.houseid " + 
+					" AND rm.roomno = rml.roomno " + 
+					" AND rm.year = rml.last_year " + 
+					" AND rm.month = rml.last_month " + 
 					" AND c.customid = cus.id " + 
 					" AND we.year = rm.year " + 
 					" AND we.month = rm.month " + 
 					" AND c.houseid = ? "+
-					" AND c.roomno = ? "+
-					" AND we.year = ? "+ 
-					" AND we.month = ? ";
+					" AND c.roomno = ? ";
+//					" AND we.year = ? "+ 
+//					" AND we.month = ? ";
 		logger.log(Level.INFO, sql);
 		return dao.findFirst(sql, params);
 	}

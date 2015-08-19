@@ -113,23 +113,24 @@ public class RoomMoneyController extends BaseController {
 		params.put("elect", String.valueOf(checkin.get("elect")));
 		params.put("trash", String.valueOf(checkin.get("trash")));//卫生费
 		params.put("needinternet", "0"); //default
-		params.put("netprice", "0"); //default
+		params.put("netprice", String.valueOf(checkin.get("netprice"))); //default
 		
-		int cur_year = DateUtil.getThisYear();
-		int cur_month = DateUtil.getThisMonth();
-		WaterElect prewe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month -1);
-		WaterElect curwe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month);
-		if (curwe == null) {
+		int year = DateUtil.getThisYear();
+		int month = DateUtil.getThisMonth();// 获取月份
+//		WaterElect prewe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month -1);
+//		WaterElect curwe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month);
+		WaterElect we = waterElectService.getWaterElectById(houseid, roomno,year,month);
+		if (we == null) {
 			model.addAttribute("danger", "本月该房间还没有抄水电表，请先抄水电表,10秒钟自动跳转抄水表!");
 		}else{
-			int usedWater = curwe.getWater() - prewe.getWater();
-			int usedElect = curwe.getElect() - prewe.getElect();
-			double usedWaterPrice = usedWater * curwe.getWaterprice();
-			double usedElectPrice = usedElect * curwe.getElectprice();
-			params.put("curwater", String.valueOf(curwe.getWater()));
-			params.put("waterprice", String.valueOf(curwe.getWaterprice()));
-			params.put("curelect", String.valueOf(curwe.getElect()));
-			params.put("electprice", String.valueOf(curwe.getElectprice()));
+			int usedWater = we.getWater() - Integer.valueOf(checkin.get("water").toString());
+			int usedElect = we.getElect() - Integer.valueOf(checkin.get("elect").toString());
+			double usedWaterPrice = usedWater * we.getWaterprice();
+			double usedElectPrice = usedElect * we.getElectprice();
+			params.put("curwater", String.valueOf(we.getWater()));
+			params.put("waterprice", String.valueOf(we.getWaterprice()));
+			params.put("curelect", String.valueOf(we.getElect()));
+			params.put("electprice", String.valueOf(we.getElectprice()));
 			params.put("usedwaterprice", String.valueOf(usedWaterPrice));
 			params.put("usedelectprice", String.valueOf(usedElectPrice));
 			double roommoney = Integer.valueOf(checkin.get("monthmoney").toString()) + 

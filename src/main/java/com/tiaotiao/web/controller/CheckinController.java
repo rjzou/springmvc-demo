@@ -208,7 +208,7 @@ public class CheckinController extends BaseController {
 		int sumprice = 0;
 		try {
 			sumprice = monthmoney + pressmoney + internet +trash +(keycount * keyprice);
-			model.addAttribute("info", "应收  "+sumprice+"元,10秒钟将自动入住");
+			model.addAttribute("info", "应收  "+sumprice+"元");
 		} catch (Exception e) {
 			model.addAttribute("message", "计算失败,错误信息:"+e.getMessage());
 		}

@@ -133,16 +133,16 @@ function intenetHandler(o){
 	}
 	else{
 		$(o).attr("checked","checked");
-		$("#netprice").val(40);
+		$("#netprice").val('${params.netprice}');
 	}
 	inputChange();
 }
 function inputChange(){
 	var v_monthmoney = parseFloat($("#monthmoney").val());
-	var v_usedwaterprice = parseFloat(${params.usedwaterprice});
-	var v_usedelectprice = parseFloat(${params.usedelectprice});
+	var v_usedwaterprice = parseFloat('${params.usedwaterprice}');
+	var v_usedelectprice = parseFloat('${params.usedelectprice}');
 	var v_netprice = parseFloat($("#netprice").val());
-	var v_trash = parseFloat(${params.trash});
+	var v_trash = parseFloat('${params.trash}');
 	$("#lmonthmoney").text(v_monthmoney);
 	$("#lnetprice").text(v_netprice);
 	var v_roommoney = (v_monthmoney + v_usedwaterprice + v_usedelectprice + v_netprice + v_trash).toFixed(1);
