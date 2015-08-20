@@ -92,7 +92,7 @@ public class RoomMoneyController extends BaseController {
 		return this.printIndex(model, params, cpage,hsr);
 	}
 	
-	@RequestMapping(value = "/room_to_money", method = RequestMethod.GET)
+	@RequestMapping(value = "/room_tomoney", method = RequestMethod.GET)
 	public String roomToMoney(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
 		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
@@ -149,7 +149,7 @@ public class RoomMoneyController extends BaseController {
 		}
 		params.put("page_id", "room_money");
 		model.put("params", params);
-		return "room_to_money";
+		return "room_tomoney";
 	}
 	
 	@RequestMapping(value = "/room_money_add", method = RequestMethod.POST)
@@ -211,45 +211,44 @@ public class RoomMoneyController extends BaseController {
 			if (n > 0 && m > 0) {
 				model.addAttribute("message", "收房租保存成功,10秒钟自动返回");
 			}else{
-				model.addAttribute("message", "收房租保存失败,10秒钟自动返回");
+				model.addAttribute("error", "收房租保存失败,10秒钟自动返回");
 			}
 		} catch (Exception e) {
-			model.addAttribute("message", "收房租保存失败,10秒钟自动返回,错误信息:"+e.getMessage());
+			model.addAttribute("error", "收房租保存失败,10秒钟自动返回,错误信息:"+e.getMessage());
 		}
-		Map<String,Object> checkin = checkinService.getCheckinMapById(houseid,roomno);
-		params.put("houseid", String.valueOf(checkin.get("houseid")));
-		params.put("roomno", String.valueOf(checkin.get("roomno")));
-		params.put("housename", String.valueOf(checkin.get("housename")));
-		params.put("customname", String.valueOf(checkin.get("customname")));
-		params.put("iphone", String.valueOf(checkin.get("iphone")));
-		params.put("cardid", String.valueOf(checkin.get("cardid")));
-		params.put("monthmoney", String.valueOf(checkin.get("monthmoney")));
-		params.put("pressmoney", String.valueOf(checkin.get("pressmoney")));
-		params.put("year", String.valueOf(checkin.get("year")));
-		params.put("month", String.valueOf(checkin.get("month")));
-		params.put("day", String.valueOf(checkin.get("day")));
-		params.put("water", String.valueOf(checkin.get("water")));
-		params.put("elect", String.valueOf(checkin.get("elect")));
-		params.put("internet", String.valueOf(checkin.get("internet")));//网费
-		params.put("trash", String.valueOf(checkin.get("trash")));//卫生费
-		params.put("roommoney", String.valueOf(roommoney));
-		int cur_year = DateUtil.getThisYear();
-		int cur_month = DateUtil.getThisMonth();
-		WaterElect prewe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month -1);
-		WaterElect curwe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month);
-		int usedWater = curwe.getWater() - prewe.getWater();
-		int usedElect = curwe.getElect() - prewe.getElect();
-		double usedWaterPrice = usedWater * curwe.getWaterprice();
-		double usedElectPrice = usedElect * curwe.getElectprice();
-		params.put("curwater", String.valueOf(curwe.getWater()));
-		params.put("waterprice", String.valueOf(curwe.getWaterprice()));
-		params.put("curelect", String.valueOf(curwe.getElect()));
-		params.put("electprice", String.valueOf(curwe.getElectprice()));
-		params.put("usedwaterprice", String.valueOf(usedWaterPrice));
-		params.put("usedelectprice", String.valueOf(usedElectPrice));
+//		Map<String,Object> checkin = checkinService.getCheckinMapById(houseid,roomno);
+//		params.put("houseid", String.valueOf(checkin.get("houseid")));
+//		params.put("roomno", String.valueOf(checkin.get("roomno")));
+//		params.put("housename", String.valueOf(checkin.get("housename")));
+//		params.put("customname", String.valueOf(checkin.get("customname")));
+//		params.put("iphone", String.valueOf(checkin.get("iphone")));
+//		params.put("cardid", String.valueOf(checkin.get("cardid")));
+//		params.put("monthmoney", String.valueOf(checkin.get("monthmoney")));
+//		params.put("pressmoney", String.valueOf(checkin.get("pressmoney")));
+//		params.put("year", String.valueOf(checkin.get("year")));
+//		params.put("month", String.valueOf(checkin.get("month")));
+//		params.put("day", String.valueOf(checkin.get("day")));
+//		params.put("water", String.valueOf(checkin.get("water")));
+//		params.put("elect", String.valueOf(checkin.get("elect")));
+//		params.put("internet", String.valueOf(checkin.get("internet")));//网费
+//		params.put("trash", String.valueOf(checkin.get("trash")));//卫生费
+//		params.put("roommoney", String.valueOf(roommoney));
+//		int cur_year = DateUtil.getThisYear();
+//		int cur_month = DateUtil.getThisMonth();
+//		WaterElect we = waterelectService.getWaterElectById(houseid, roomno,year,month);
+//		int usedWater = curwe.getWater() - prewe.getWater();
+//		int usedElect = curwe.getElect() - prewe.getElect();
+//		double usedWaterPrice = usedWater * curwe.getWaterprice();
+//		double usedElectPrice = usedElect * curwe.getElectprice();
+//		params.put("curwater", String.valueOf(curwe.getWater()));
+//		params.put("waterprice", String.valueOf(curwe.getWaterprice()));
+//		params.put("curelect", String.valueOf(curwe.getElect()));
+//		params.put("electprice", String.valueOf(curwe.getElectprice()));
+//		params.put("usedwaterprice", String.valueOf(usedWaterPrice));
+//		params.put("usedelectprice", String.valueOf(usedElectPrice));
 		params.put("page_id", "room_money");
 		model.put("params", params);
-		return "room_to_money";
+		return "room_tomoney_page";
 	}
 	/**
 	 * 收租查询	

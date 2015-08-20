@@ -5,14 +5,13 @@
 <html lang="en">
 <head>
 <meta name="theme" content="basic_theme" />
-<link rel="stylesheet"
-	href="${ctx_cdn}/resources/css/bootstrap-select.css">
-<script
-	src="${ctx_cdn}/resources/js/bootstrap-select.js"></script>
+<link rel="stylesheet" href="${ctx_cdn}/resources/css/bootstrap-select.css">
+<script src="${ctx_cdn}/resources/js/bootstrap-select.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/validator.min.js"></script>
 </head>
 <body>
 <div class="row">
-	<form role="form" method="post" action="${ctx}/room_waterelect_save">
+	<form role="form" method="post" action="${ctx}/room_waterelect_save" data-toggle="validator">
 	  <c:if test="${!empty message}">  
             <div class="alert alert-success" role="alert">${message}</div>
             <script type="text/javascript">
@@ -58,16 +57,15 @@
 			<label class="control-label" for="inputWater">水读数</label> 
 			<input
 				type="number" class="form-control" id="inputWater" name="inputWater" value="${params.inputWater}"
-				placeholder="输入水读数" required>
+				placeholder="输入水读数"  min="0" step="1" pattern="^[0-9]{1,}$" maxlength="10" required>
 		</div>
 
 		<div class="form-group">
 			<label class="control-label" for="inputElect">电读数</label>
 			<input type="number" class="form-control" id="inputElect" name="inputElect" value="${params.inputElect}"
-				placeholder="输入电读数" required>
+				placeholder="输入电读数"  min="0" step="1" pattern="^[0-9]{1,}$" maxlength="10" required>
 		</div>
-			<input type="hidden" name="${_csrf.parameterName}"
-				value="${_csrf.token}" />
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		<button type="submit" class="btn btn-primary">保存抄表</button>
 		<a class="btn btn-default" href="${ctx}/room_waterelect" role="button">返回</a>
 	</form>

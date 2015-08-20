@@ -9,11 +9,12 @@
 <link rel="stylesheet" href="${ctx_cdn}/resources/css/typeahead.css">
 <script  type="text/javascript" src="${ctx_cdn}/resources/js/bootstrap-select.js"></script>
 <script type="text/javascript" src="${ctx_cdn}/resources/js/typeahead.bundle.js"></script>
- <script type="text/javascript" src="${ctx_cdn}/resources/js/handlebars.js"></script>
+<script type="text/javascript" src="${ctx_cdn}/resources/js/handlebars.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/validator.min.js"></script>
 </head>
 <body>
 <div class="row">
-	<form role="form" method="post" action="${ctx}/room_checkin_add">
+	<form role="form" method="post" action="${ctx}/room_checkin_add" data-toggle="validator">
 	  <c:if test="${!empty message}">  
             <div class="alert alert-success" role="alert">${message}</div>
             <script type="text/javascript">
@@ -36,42 +37,42 @@
 		<div class="form-group scrollable-dropdown-menu">
 			<label class="control-label" for="inputCustomname">客户姓名</label>
 			<input type="text" class="form-control typeahead" id="inputCustomname" name="inputCustomname" value="${params.inputCustomname}"
-				placeholder="输入客户姓名"  autocomplete="off" spellcheck="false" required>
+				placeholder="输入客户姓名"  autocomplete="off" spellcheck="false" required />
 		</div>
 		<div class="form-group">
 			<label class="control-label" for="inputIphone">客户手机</label>
-			<input type="text" class="form-control" id="inputIphone" name="inputIphone"   value="${params.inputIphone}"
-				placeholder="输入客户手机" required>
+			<input type="text" class="form-control" id="inputIphone" name="inputIphone" value="${params.inputIphone}"
+				placeholder="输入客户手机" required />
 		</div>
 		<div class="form-group">
 			<label class="control-label" for="inputCardid">身份证</label>
-			<input type="text" class="form-control" id="inputCardid" name="inputCardid"    value="${params.inputCardid}"
-				placeholder="输入身份证">
+			<input type="text" class="form-control" id="inputCardid" name="inputCardid" value="${params.inputCardid}"
+				placeholder="输入身份证" required />
 		</div>
 		<div class="form-group">
 			<label class="control-label" for="inputMonthMoney">实收月租(参考月租<span class="label label-success"> ${params.monthmoney}</span> 元)</label>
-			<input type="number" class="form-control" id="inputMonthMoney" name="inputMonthMoney"  value="${params.inputMonthMoney}"
-				placeholder="输入实收月租" required>
+			<input type="number" class="form-control" id="inputMonthMoney" name="inputMonthMoney"  value="${params.inputMonthMoney}"  min="0" step="1" pattern="^[0-9]{1,}$" maxlength="10"
+				placeholder="输入实收月租" required />
 		</div>
 		<div class="form-group">
 			<label class="control-label" for="inputPressMoney">实收押金(参考押金<span class="label label-success"> ${params.pressmoney}</span> 元)</label>
-			<input type="number" class="form-control" id="inputPressMoney" name="inputPressMoney"  value="${params.inputPressMoney}"
-				placeholder="输入实收押金" required>
+			<input type="number" class="form-control" id="inputPressMoney" name="inputPressMoney"  value="${params.inputPressMoney}"  min="0" step="1" pattern="^[0-9]{1,}$" maxlength="10"
+				placeholder="输入实收押金" required />
 		</div>
 		<div class="form-group">
 			<label class="control-label" for="inputWater">水读数</label>
-			<input type="number" class="form-control" id="inputWater" name="inputWater" value="${params.inputWater}"
-				placeholder="输入水读数" required>
+			<input type="number" class="form-control" id="inputWater" name="inputWater" value="${params.inputWater}"  min="0" step="1" pattern="^[0-9]{1,}$" maxlength="10"
+				placeholder="输入水读数" required />
 		</div>
 		<div class="form-group">
 			<label class="control-label" for="inputElect">电读数</label>
-			<input type="number" class="form-control" id="inputElect" name="inputElect" value="${params.inputElect}"
-				placeholder="输入电读数" required>
+			<input type="number" class="form-control" id="inputElect" name="inputElect" value="${params.inputElect}"  min="0" step="1" pattern="^[0-9]{1,}$" maxlength="10"
+				placeholder="输入电读数" required />
 		</div>
 		<div class="form-group">
 			<label class="control-label" for="inputTrash">实收卫生费(参考卫生费 <span class="label label-success">${params.trash}</span> 元)</label>
-			<input type="number" class="form-control" id="inputTrash" name="inputTrash"  value="${params.inputTrash}"
-				placeholder="输入卫生费" required>
+			<input type="number" class="form-control" id="inputTrash" name="inputTrash"  value="${params.inputTrash}"  min="0" step="1" pattern="^[0-9]{1,}$" maxlength="10"
+				placeholder="输入卫生费" required />
 		</div>
 		<div class="form-group">
 			<label class="control-label" for="inputInternet">实收网费(参考网费 <span class="label label-success">${params.internet}</span> 元)</label>
@@ -79,17 +80,17 @@
         <input type="checkbox" name="needInternet" id="needInternet" value="0"  <c:if test="${!empty params.needinternet}"> checked="checked"</c:if>  onclick="intenetHandler(this);">
         <span class="label label-info">需要网络</span>
       </label>
-			<input type="number" class="form-control" id="inputInternet" name="inputInternet"  value="${params.inputInternet}"
+			<input type="number" class="form-control" id="inputInternet" name="inputInternet"  value="${params.inputInternet}"   min="0" step="1"  pattern="^[0-9]{1,}$" maxlength="10"
 				placeholder="输入网费">
 		</div>
 		<div class="form-group">
 			<label class="control-label" for="inputKeycount">钥匙(参考钥匙串 <span class="label label-success">${params.keycount}</span> 个)</label>
-			<input type="number" class="form-control" id="inputKeycount" name="inputKeycount"  value="${params.inputKeycount}"
+			<input type="number" class="form-control" id="inputKeycount" name="inputKeycount"  value="${params.inputKeycount}"   min="0" step="1" max="10" pattern="^[0-9]{1,}$" maxlength="2"
 				placeholder="输入钥匙数量">
 		</div>
 		<div class="form-group">
 			<label class="control-label" for="inputKeyprice">钥匙串押金(参考钥匙串押金 <span class="label label-success">${params.keyprice}</span> 元)</label>
-			<input type="number" class="form-control" id="inputKeyprice" name="inputKeyprice"  value="${params.inputKeyprice}"
+			<input type="number" class="form-control" id="inputKeyprice" name="inputKeyprice"  value="${params.inputKeyprice}"   min="0" step="1"  pattern="^[0-9]{1,}$" maxlength="2"
 				placeholder="输入钥匙价格">
 		</div>
 		<div class="form-group">

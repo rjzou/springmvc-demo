@@ -5,10 +5,11 @@
 <html lang="en">
 <head>
 <meta name="theme" content="basic_theme" />
+<script type="text/javascript" src="${ctx}/resources/js/validator.min.js"></script>
 </head>
 <body>
 <div class="row">
-	<form role="form" id="form1" method="post" action="${ctx}/room_checkout_add">
+	<form role="form" id="form1" method="post" action="${ctx}/room_checkout_add" data-toggle="validator">
 	  <c:if test="${!empty message}">  
             <div class="alert alert-success" role="alert">${message}</div>
             <script type="text/javascript">
@@ -45,7 +46,7 @@
             <td><span class="label label-success">${params.pre_s_date}</span></td>
         </tr>
         <tr>
-            <th class="col-sm-2">本月已住天数</th>
+            <th class="col-sm-2">已住天数</th>
             <td><span class="label label-success">${params.in_days}</span> 天</td>
         </tr>
         <tr>
@@ -65,8 +66,8 @@
 				    </c:when>
 				    <c:otherwise>
 				        
-				        <div class="col-xs-2">
-				        <input  type="number" id="curwater" name="curwater" class="form-control  input-sm" value="${params.curwater}"  oninput="inputChange();"/>
+				        <div class="col-xs-4 form-group">
+				        <input  type="number" class="form-control" id="curwater" name="curwater" class="form-control  input-sm" value="${params.curwater}"   min="0" step="1"  pattern="^[0-9]{1,}$" maxlength="10" required  oninput="inputChange();"/>
 				        </div>
 				         <strong>-${params.water} * ${params.waterprice} 
 				         = </strong>
@@ -84,8 +85,8 @@
 				       <span class="label label-danger">没有抄电表</span>
 				    </c:when>
 				    <c:otherwise>
-				        <div class="col-xs-2">
-				        <input  type="number" id="curelect" class="form-control  input-sm" name="curelect" value="${params.curelect}" oninput="inputChange();"/>
+				        <div class="col-xs-4" form-group">
+				        <input  type="number" class="form-control" id="curelect" class="form-control  input-sm" name="curelect" value="${params.curelect}"   min="0" step="1"  pattern="^[0-9]{1,}$" maxlength="10" required  oninput="inputChange();"/>
 				        </div>
 				        <strong>
 				        -${params.elect}  *  ${params.electprice} 
@@ -106,15 +107,15 @@
          <tr>
             <th class="col-sm-2">钥匙押金(元)</th>
             <td>
-            	标配${params.keycount} 个 * ${params.keyprice} 元/个 = <span class="label label-success">${params.sumkeyprice}</span>
+            	标配 ${params.keycount} 个 * ${params.keyprice} 元/个 = <span class="label label-success">${params.sumkeyprice}</span>
             </td>
         </tr>
           <tr>
             <th class="col-sm-2">归还(个)</th>
             <td>
             	
-            	<div class="col-xs-2">
-            		<input  type="number" id="keycount" name="keycount" class="form-control  input-sm" value="${params.keycount}"  oninput="inputChange();"/>
+            	<div class="col-xs-4" form-group">
+            		<input  type="number" class="form-control" id="keycount" name="keycount" class="form-control  input-sm" value="${params.keycount}"   min="0" step="1"  pattern="^[0-9]{1,}$" maxlength="10" required  oninput="inputChange();"/>
             	</div>
             </td>
         </tr>
@@ -148,7 +149,7 @@
 	<br/>
 	<p>
 		<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-  		从收租算起不足一个星期，房租费按30元/天计算;超过一个星期房租费不予退还;
+  		从收租日起不足一个星期，房租费按30元/天计算;超过一个星期房租费不予退还;
   	</p>
 </div>
 <script src="${ctx_cdn}/resources/js/bootstrap-confirmation.js"></script>
@@ -167,8 +168,14 @@ $(function() {
 function inputChange(){
 	var v_monthmoney = parseFloat('${params.monthmoney}');
 	var v_pressmoney = parseFloat('${params.pressmoney}');
-	var v_curwater = parseFloat($('#curwater').val());
-	var v_curelect = parseFloat($('#curelect').val());
+	var v_curwater = 0;
+	if($('#curwater').val() != ''){
+		v_curwater = parseFloat($('#curwater').val());
+	}
+	var v_curelect = 0;
+	if($('#curelect').val() != ''){
+		v_curelect = parseFloat($('#curelect').val());
+	}
 	var v_water = parseFloat('${params.water}');
 	var v_elect = parseFloat('${params.elect}');
 	var v_waterprice =  parseFloat('${params.waterprice}');

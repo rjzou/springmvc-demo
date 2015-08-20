@@ -5,17 +5,18 @@
 <html lang="en">
 <head>
 <meta name="theme" content="basic_theme" />
+<script type="text/javascript" src="${ctx}/resources/js/validator.min.js"></script>
 </head>
 <body>
 <div class="row">
-	<form role="form" id="form1" method="post" action="${ctx}/room_money_add">
+	<form role="form" id="form1" method="post" action="${ctx}/room_money_add" data-toggle="validator">
 	  <c:if test="${!empty message}">  
             <div class="alert alert-success" role="alert">${message}</div>
             <script type="text/javascript">
             function autojump(){
             	location.href="${ctx}/room_money";
             }
-            setTimeout("autojump()",100000);
+            setTimeout("autojump()",10000);
             </script>
       </c:if>
       <c:if test="${!empty danger}">  
@@ -42,7 +43,13 @@
         </tr>
   		<tr>
             <th class="col-sm-2">房租(元)</th>
-            <td><input oninput="inputChange();" type="number" id="monthmoney" name="monthmoney" value="${params.monthmoney}"/><span class="label label-warning">涨房租或者减房租进行修改</span></td>
+            <td>
+             <div class="form-group">
+	            <input oninput="inputChange();" type="number" class="form-control" id="monthmoney" name="monthmoney" value="${params.monthmoney}" min="0" step="1"  pattern="^[0-9]{1,}$" maxlength="10" required />
+	         </div>   
+	            <span class="label label-warning">涨房租或者减房租进行修改</span>
+  
+            </td>
         </tr>
          <tr>
             <th class="col-sm-2">用水费(元)</th>
@@ -73,7 +80,9 @@
           <tr>
             <th class="col-sm-2">网费(元)</th>
             <td>
-            <input type="number" oninput="inputChange();" id="netprice" name="netprice" value="${params.netprice}"/>
+             <div class="form-group">
+            <input type="number" class="form-control" oninput="inputChange();" id="netprice" name="netprice"  min="0" step="1"  pattern="^[0-9]{1,}$" maxlength="10" required value="${params.netprice}"/>
+            </div>   
              <input type="checkbox" name="needInternet" id="needInternet" value="${params.needinternet}"  <c:if test="${params.needinternet == '1'}"> checked="checked"</c:if>  onclick="intenetHandler(this);">
         	<span class="label label-info">需要网络</span>
             </td>
@@ -138,10 +147,18 @@ function intenetHandler(o){
 	inputChange();
 }
 function inputChange(){
-	var v_monthmoney = parseFloat($("#monthmoney").val());
+	var v_monthmoney = 0;
+	if($("#monthmoney").val() != ''){
+		v_monthmoney = parseFloat($("#monthmoney").val());
+	}
+	
 	var v_usedwaterprice = parseFloat('${params.usedwaterprice}');
 	var v_usedelectprice = parseFloat('${params.usedelectprice}');
-	var v_netprice = parseFloat($("#netprice").val());
+	var v_netprice = 0
+	if($("#netprice").val() != ''){
+		v_netprice = parseFloat($("#netprice").val());
+	}
+	
 	var v_trash = parseFloat('${params.trash}');
 	$("#lmonthmoney").text(v_monthmoney);
 	$("#lnetprice").text(v_netprice.toFixed(1));

@@ -5,10 +5,11 @@
 <html lang="en">
 <head>
 <meta name="theme" content="basic_theme" />
+<script type="text/javascript" src="${ctx}/resources/js/validator.min.js"></script>
 </head>
 <body>
 <div class="row">
-	<form role="form" method="post" action="${ctx}/house_edit">
+	<form role="form" method="post" action="${ctx}/house_edit" data-toggle="validator">
 	  <c:if test="${!empty message}">  
             <div class="alert alert-success" role="alert">${message}</div>
       </c:if> 

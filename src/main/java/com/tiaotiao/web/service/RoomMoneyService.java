@@ -50,8 +50,8 @@ public class RoomMoneyService {
 	 * @throws Exception
 	 */
 	public int updateRoomMoney(RoomMoney rm) throws Exception{
-		Object[] params = { rm.getMonthmoney(),rm.getPressmoney() , rm.getRoommoney(),rm.getYear(), rm.getMonth(), rm.getUpdated() ,rm.getHouseid(), rm.getRoomno()};
-		String sql = "update t_room_money set monthmoney = ?,pressmoney= ? , roommoney = ?,year = ?,month = ?,updated =? where houseid=? and roomno =? ";
+		Object[] params = { rm.getMonthmoney(),rm.getPressmoney() , rm.getRoommoney(), rm.getUpdated() ,rm.getHouseid(), rm.getRoomno(),rm.getYear(), rm.getMonth()};
+		String sql = "update t_room_money set monthmoney = ?,pressmoney= ? , roommoney = ?,updated =? where houseid=? and roomno =? and year = ? and month = ? ";
 		int n = dao.update(sql, params);
 		return n;
 	}
@@ -135,6 +135,7 @@ public class RoomMoneyService {
 //					" 		) "+
 //					" 		AND rm.month <> 9 ";
 				sql = sql + " and rm.month <>  " + month;
+				sql = sql + " and rm.month <  " + month;
 				if (houseid != null && houseid.trim().length() > 0 ) {
 					sql = sql + " AND r.houseid in ("+houseid+")";
 				}
