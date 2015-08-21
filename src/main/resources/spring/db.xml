@@ -12,9 +12,9 @@
 		<property name="username" value="${master.username}"/>
         <property name="password" value="${master.password}"/>
 		<property name="initialSize" value="5"></property>
-		<property name="maxActive" value="30"></property>
+		<property name="maxActive" value="300"></property>
 		<property name="minIdle" value="5"></property>
-		<property name="maxIdle" value="10"></property>
+		<property name="maxIdle" value="100"></property>
 		<!-- 最大等待连接时间  30 秒  -->
 		<property name="maxWait" value="30000"></property>
 		<!-- 空闲连接测试 如果验证失败，该连接将会被从连接池中删除掉 -->
