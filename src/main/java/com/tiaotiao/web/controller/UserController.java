@@ -4,7 +4,11 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.security.authentication.RememberMeAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +38,14 @@ public class UserController {
 	
 	@RequestMapping(value = "/user_password", method = RequestMethod.GET)
 	public String userToPassword(ModelMap model, @RequestParam Map<String, String> params, HttpServletRequest request) throws Exception {
+		
+		if (isRememberMeAuthenticated()) {
+			//send login for update
+			setRememberMeTargetUrlToSession(request);
+			model.put("loginUpdate", true);
+			return "login";
+		} 
+		
 		String username  = request.getUserPrincipal().getName();
 		params.put("username", username);
 		model.put("params", params);
@@ -69,4 +81,27 @@ public class UserController {
 		return "user_password";
 	}
 	
+	/**
+	 * If the login in from remember me cookie, refer
+	 * org.springframework.security.authentication.AuthenticationTrustResolverImpl
+	 */
+	private boolean isRememberMeAuthenticated() {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null) {
+			return false;
+		}
+
+		return RememberMeAuthenticationToken.class.isAssignableFrom(authentication.getClass());
+	}
+	
+	/**
+	 * save targetURL in session
+	 */
+	private void setRememberMeTargetUrlToSession(HttpServletRequest request){
+		HttpSession session = request.getSession(false);
+		if(session!=null){
+			session.setAttribute("targetUrl", "/user_password");
+		}
+	}
 }
