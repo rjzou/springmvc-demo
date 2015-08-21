@@ -43,11 +43,14 @@
         <input type="text" id="username" name="username" class="form-control" placeholder="输入用户名" required autofocus>
         <label for="password" class="sr-only">输入密码</label>
         <input type="password" id="password" name="password" class="form-control" placeholder="输入密码" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" name="remember-me" /> 记住我
-          </label>
-        </div>
+        <!-- if this is login for update, ignore remember me check -->
+		<c:if test="${empty loginUpdate}">
+	        <div class="checkbox">
+	          <label>
+	            <input type="checkbox" name="remember-me" /> 记住我
+	          </label>
+	        </div>
+        </c:if>
         <button class="btn btn-lg btn-primary btn-block" type="submit">登入</button>
         	<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />

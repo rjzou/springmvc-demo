@@ -15,7 +15,7 @@ public class JobController {
            
     @Scheduled(cron = "0,5,10,15,20 * * * * *")//间隔的时间设置
     void test1(){
-    	logger.log(Level.INFO, "start");
+//    	logger.log(Level.INFO, "start");
         if (isJob.equals("false")) {
             return;
         }
@@ -24,7 +24,7 @@ public class JobController {
     }
     @Scheduled(cron = "*/10 * * * * ?")
     void test2(){
-    	logger.log(Level.INFO, "start2" + isJob);
+//    	logger.log(Level.INFO, "start2" + isJob);
         if (isJob.equals("false")) {
             return;
         }
