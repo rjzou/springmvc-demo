@@ -15,12 +15,12 @@
     <title>出租房智能管理系统V1.0</title>
 
     <!-- Bootstrap core CSS -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.5/custom/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.5/custom/bootstrap.min.css?Ver=20150821">
     <!-- Custom styles for this template -->
-    <link href="${ctx_cdn}/resources/css/dashboard.css" rel="stylesheet">
+    <link href="${ctx_cdn}/resources/css/dashboard.css?Ver=20150821" rel="stylesheet">
 
- 	<script type="text/javascript" src="${ctx_cdn}/resources/js/jquery-1.11.3.min.js"></script>
-  	<script type="text/javascript" src="${ctx_cdn}/resources/js/bootstrap.min.js"></script>
+ 	<script type="text/javascript" src="${ctx_cdn}/resources/js/jquery-1.11.3.min.js?Ver=20150821"></script>
+  	<script type="text/javascript" src="${ctx_cdn}/resources/js/bootstrap.min.js?Ver=20150821"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>

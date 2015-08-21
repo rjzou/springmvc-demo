@@ -46,7 +46,7 @@
 		<a class="btn btn-default" href="${ctx}/room" role="button">返回</a>
 	</form>
 </div>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.3/bootstrap-confirmation.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.3/bootstrap-confirmation.min.js?Ver=20150821"></script>
 <script type="text/javascript">
 $(function() {
 	$('[data-toggle="confirmation"]').confirmation({

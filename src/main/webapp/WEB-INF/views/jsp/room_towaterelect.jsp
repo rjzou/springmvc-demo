@@ -5,9 +5,6 @@
 <html lang="en">
 <head>
 <meta name="theme" content="basic_theme" />
-<link rel="stylesheet" href="${ctx_cdn}/resources/css/bootstrap-select.css">
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
-
 <script type="text/javascript" src="${ctx}/resources/js/validator.min.js"></script>
 </head>
 <body>

@@ -5,12 +5,12 @@
 <html lang="en">
 <head>
 <meta name="theme" content="basic_theme" />
-<link rel="stylesheet" href="${ctx_cdn}/resources/css/bootstrap-select.css">
-<link rel="stylesheet" href="${ctx_cdn}/resources/css/typeahead.css">
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
-<script type="text/javascript" src="${ctx_cdn}/resources/js/typeahead.bundle.js"></script>
-<script type="text/javascript" src="${ctx_cdn}/resources/js/handlebars.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.9.0/validator.min.js"></script>
+<link rel="stylesheet" href="${ctx_cdn}/resources/css/bootstrap-select.css?Ver=20150821">
+<link rel="stylesheet" href="${ctx_cdn}/resources/css/typeahead.css?Ver=20150821">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js?Ver=20150821"></script>
+<script type="text/javascript" src="${ctx_cdn}/resources/js/typeahead.bundle.js?Ver=20150821"></script>
+<script type="text/javascript" src="${ctx_cdn}/resources/js/handlebars.js?Ver=20150821"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.9.0/validator.min.js?Ver=20150821"></script>
 </head>
 <body>
 <div class="row">

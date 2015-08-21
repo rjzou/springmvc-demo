@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
 <meta name="theme" content="basic_theme" />
-<script type="text/javascript" src="${ctx}/resources/js/validator.min.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/validator.min.js?Ver=20150821"></script>
 </head>
 <body>
 <div class="row">

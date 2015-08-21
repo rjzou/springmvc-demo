@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
 <meta name="theme" content="basic_theme" />
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.9.0/validator.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.9.0/validator.min.js?Ver=20150821"></script>
 </head>
 <body>
 <div class="row">

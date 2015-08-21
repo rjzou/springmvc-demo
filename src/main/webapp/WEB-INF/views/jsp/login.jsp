@@ -17,10 +17,10 @@
     <title>登录</title>
 
     <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.5/custom/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.5/custom/bootstrap.min.css?Ver=20150821">
 
     <!-- Custom styles for this template -->
-    <link href="${ctx_cdn}/resources/css/signin.css" rel="stylesheet">
+    <link href="${ctx_cdn}/resources/css/signin.css?Ver=20150821" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>

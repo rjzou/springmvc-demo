@@ -1,4 +1,8 @@
 /**
+ * 2015-08-21 21:25 已更新服务器
+ */
+
+/**
  * p_get_room_checkout_tongji 统计  在住x间, 今天退房x间, 今天入住x间  
  * call p_get_room_checkout_tongji
  */
