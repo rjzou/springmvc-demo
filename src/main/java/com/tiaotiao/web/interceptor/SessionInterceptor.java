@@ -1,5 +1,7 @@
 package com.tiaotiao.web.interceptor;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,11 +40,12 @@ public class SessionInterceptor implements HandlerInterceptor {
     }
 	/**
 	 * save targetURL in session
+	 * @throws UnsupportedEncodingException 
 	 */
-	private void setRememberMeTargetUrlToSession(HttpServletRequest request){
+	private void setRememberMeTargetUrlToSession(HttpServletRequest request) throws UnsupportedEncodingException{
 		HttpSession session = request.getSession(false);
 		if(session!=null){
-			session.setAttribute("targetUrl", request.getServletPath());
+			session.setAttribute("targetUrl", URLEncoder.encode(request.getServletPath() + "?" + request.getQueryString(), "UTF-8"));
 		}
 	}
 	

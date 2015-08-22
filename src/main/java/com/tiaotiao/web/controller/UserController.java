@@ -1,5 +1,7 @@
 package com.tiaotiao.web.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -97,11 +99,12 @@ public class UserController {
 	
 	/**
 	 * save targetURL in session
+	 * @throws UnsupportedEncodingException 
 	 */
-	private void setRememberMeTargetUrlToSession(HttpServletRequest request){
+	private void setRememberMeTargetUrlToSession(HttpServletRequest request) throws UnsupportedEncodingException{
 		HttpSession session = request.getSession(false);
 		if(session!=null){
-			session.setAttribute("targetUrl", "/user_password");
+			session.setAttribute("targetUrl", URLEncoder.encode("/user_password", "UTF-8"));
 		}
 	}
 }
