@@ -17,10 +17,10 @@
 	              <thead>
 	                <tr>
 	                  <th>#</th>
-	                  <th>楼栋 / 房间号 / 房型</th>
+	                  <th>楼栋/房间号/房型</th>
 	                  <th>客户姓名</th>
 	                  <th>上次抄表时间</th>
-	                  <th>上次水 / 电读数</th>
+	                  <th>上次水电读数</th>
 	                  <th>本月应抄表日</th>
 	                  <th>操作</th>
 	                </tr>
@@ -63,13 +63,11 @@
 	              <thead>
 	                <tr>
 	                  <th>#</th>
-	                  <th>楼栋 / 房间号 / 房型</th>
+	                  <th>楼栋/房间号/房型</th>
 	                  <th>客户姓名</th>
-	                  <th>上月实收月租</th>
-	                  <th>上月实收押金</th>
-	                  <th>上月收租日期</th>
+	                  <th>上月收租时间</th>
 	                  <th>上月实收费用</th>
-	                  <th>本月应收日</th>
+	                  <th>本月应收租日</th>
 	                  <th>操作</th>
 	                </tr>
 	              </thead>
@@ -86,8 +84,6 @@
 								<td>${status.count }</td>
 								<td>${item.housename }/${item.roomno }/${item.typename }</td>
 								<td>${item.customname }</td>
-								<td>${item.monthmoney }</td>
-								<td>${item.pressmoney }</td>
 								<td>${item.pre_s_date }</td>
 								<td>${item.roommoney }</td>
 								<td>${item.cin_day }</td>
