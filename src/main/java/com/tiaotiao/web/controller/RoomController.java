@@ -75,13 +75,13 @@ public class RoomController extends BaseController {
 	}	
  
 	@RequestMapping(value = "/room_add", method = RequestMethod.POST)
-	public String roomAdd(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
+	public String roomAdd(@RequestParam Map<String, String> params, ModelMap model,HttpServletRequest hsr) throws Exception {
 		String houseid = params.get("selectHouse");
-		int roomno = Integer.valueOf(params.get("inputRoom"));
-		int monthmoney = Integer.valueOf(params.get("inputMonthMoney"));
-		int pressmoney = Integer.valueOf(params.get("inputPressMoney"));
+		int roomno = Integer.valueOf(params.get("roomno"));
+		int monthmoney = Integer.valueOf(params.get("monthmoney"));
+		int pressmoney = Integer.valueOf(params.get("pressmoney"));
 		String typecode = params.get("optionsRoomtypes");
-		String description = params.get("inputDescription");
+		String description = params.get("description");
 		Room room = new Room();
 		room.setHouseid(houseid);
 		room.setRoomno(roomno);
@@ -91,22 +91,36 @@ public class RoomController extends BaseController {
 		room.setDescription(description);
 		room.setCreated(System.currentTimeMillis());
 		try {
-			int n = roomService.insertRoom(room);
-			if (n > 0) {
-				model.addAttribute("message", "保存成功");
-			}else{
-				model.addAttribute("message", "保存失败");
+			Room entity = roomService.getRoomById(houseid,roomno);
+			int n = 0 ;
+			if (entity != null) {
+				n = roomService.updateRoom(room,houseid,roomno);
+				if (n > 0) {
+					model.addAttribute("message", "保存成功");
+				}else{
+					model.addAttribute("message", "房间信息保存失败");
+				}
+			}
+			else{
+				n = roomService.insertRoom(room);
+				if (n > 0) {
+					model.addAttribute("message", "保存成功");
+				}else{
+					model.addAttribute("message", "保存失败");
+				}
 			}
 		} catch (Exception e) {
-			if (e.getMessage().toLowerCase().indexOf("primary") > 0) {
-				model.addAttribute("message", "保存失败,已经存在的房间号,请重新输入");
-			}else{
 				model.addAttribute("message", "保存失败,错误信息:"+e.getMessage());
-			}
 		}
+		String username  = hsr.getUserPrincipal().getName();
+		List<House> houses = houseService.selectAllHouse(username);	
+		params.put("houseid", houseid);
+		model.put("houses", houses);
+		params.put("typecode", typecode);
+		params.put("continue_add", "true");
 		params.put("page_id", "room");
 		model.put("params", params);
-		return "room_add";
+		return "room_edit";
 	}
 	
 	@RequestMapping(value = "/room_toedit", method = RequestMethod.GET)
@@ -115,7 +129,7 @@ public class RoomController extends BaseController {
 		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		//System.out.println(houseid);
-		Room room = roomService.selectRoomById(houseid, roomno);
+		Room room = roomService.getRoomById(houseid, roomno);
 		params.put("monthmoney", String.valueOf(room.getMonthmoney()));
 		params.put("pressmoney", String.valueOf(room.getPressmoney()));
 		params.put("typecode", room.getTypecode());

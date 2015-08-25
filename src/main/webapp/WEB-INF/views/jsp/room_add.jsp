@@ -30,20 +30,20 @@
 		</div>
 
 		<div class="form-group">
-			<label class="control-label" for="inputRoom">房间号</label> 
+			<label class="control-label" for="roomno">房间号</label> 
 			<input
-				type="number" class="form-control" id="inputRoom" name="inputRoom" value="${params.inputRoom}"
+				type="number" class="form-control" id="roomno" name="roomno" value="${params.roomno}"
 				placeholder="输入房间号" required>
 		</div>
 
 		<div class="form-group">
-			<label class="control-label" for="inputMonthMoney">参考月租</label>
-			<input type="number" class="form-control" id="inputMonthMoney" name="inputMonthMoney" value="${params.inputMonthMoney}"
+			<label class="control-label" for="monthmoney">参考月租</label>
+			<input type="number" class="form-control" id="monthmoney" name="monthmoney" value="${params.monthmoney}"
 				placeholder="输入参考月租" required>
 		</div>
 		<div class="form-group">
-			<label class="control-label" for="inputPressMoney">参考押金</label>
-			<input type="number" class="form-control" id="inputPressMoney" name="inputPressMoney" value="${params.inputPressMoney}"
+			<label class="control-label" for="pressmoney">参考押金</label>
+			<input type="number" class="form-control" id="pressmoney" name="pressmoney" value="${params.pressmoney}"
 				placeholder="输入参考押金" required>
 		</div>
 		<div class="radio">
@@ -61,8 +61,8 @@
 	      </label>
 	    </div>
 		<div class="form-group">
-			<label class="control-label" for="inputDescription">备注</label>
-			<input type="text" class="form-control" id="inputDescription" name="inputDescription" value="${params.inputDescription}"
+			<label class="control-label" for="description">备注</label>
+			<input type="text" class="form-control" id="description" name="description" value="${params.description}"
 				placeholder="备注">
 		</div>
 			<input type="hidden" name="${_csrf.parameterName}"

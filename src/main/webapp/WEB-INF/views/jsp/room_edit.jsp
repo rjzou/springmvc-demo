@@ -62,12 +62,15 @@
 	      </label>
 	    </div>
 		<div class="form-group">
-			<label class="control-label" for="inputDescription">备注</label>
-			<input type="text" class="form-control" id="inputDescription" name="inputDescription"  value="${params.description}"
+			<label class="control-label" for="description">备注</label>
+			<input type="text" class="form-control" id="description" name="description"  value="${params.description}"
 				placeholder="备注">
 		</div>
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		<button type="submit" class="btn btn-primary">保存</button>
+		  <c:if test="${!empty params.continue_add}">  
+			<a class="btn btn-info" href="${ctx}/room_toadd" role="button">继续新增</a>
+		 </c:if> 
 		<a class="btn btn-default" href="${ctx}/room" role="button">返回</a>
 	</form>
 </div>
