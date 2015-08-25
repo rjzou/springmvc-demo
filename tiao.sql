@@ -7,7 +7,7 @@ Source Host           : localhost:8889
 Source Database       : tiao
 
 Target Server Type    : MYSQL
-Target Server Version : 50541
+Target Server Version : 50541 
 File Encoding         : 65001
 
 Date: 2015-08-25 14:11:23
