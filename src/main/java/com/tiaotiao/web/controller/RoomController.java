@@ -117,10 +117,9 @@ public class RoomController extends BaseController {
 		params.put("houseid", houseid);
 		model.put("houses", houses);
 		params.put("typecode", typecode);
-		params.put("continue_add", "true");
 		params.put("page_id", "room");
 		model.put("params", params);
-		return "room_edit";
+		return "room_add";
 	}
 	
 	@RequestMapping(value = "/room_toedit", method = RequestMethod.GET)
@@ -186,7 +185,7 @@ public class RoomController extends BaseController {
 	
 	@RequestMapping(value = "/room_todel", method = RequestMethod.GET)
 	public String roomToDel(ModelMap model, @RequestParam Map<String, String> params) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		Map<String,Object> map = roomService.getRoomMapById(houseid, roomno);
 		params.put("housename", map.get("housename").toString());
@@ -201,7 +200,7 @@ public class RoomController extends BaseController {
 	}
 	@RequestMapping(value = "/room_del", method = RequestMethod.POST)
 	public String roomDel(ModelMap model, @RequestParam Map<String, String> params) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		Object checkin_count = checkinService.getCheckinCountByHouseidAndRoomno(houseid, roomno);
 		Object checkout_count = checkoutService.getCheckoutCountByHouseidAndRoomno(houseid, roomno);
@@ -214,13 +213,13 @@ public class RoomController extends BaseController {
 		params.put("description", map.get("description").toString());
 		model.put("params", params);
 		if (Integer.valueOf(checkin_count.toString()) >0 || Integer.valueOf(checkout_count.toString()) > 0) {
-			model.addAttribute("message", "还存在业务数据关系，不能删除");
+			model.addAttribute("error", "还存在业务数据关系，不能删除");
 			return "room_del";
 		}
-		int n = houseService.deleteHouse(houseid);
+		int n = roomService.deleteRoom(houseid, roomno);
 		if (n > 0) {
 			model.addAttribute("message", "删除房间数据成功");
 		}
-		return "room";
+		return "room_del_page";
 	}
 }

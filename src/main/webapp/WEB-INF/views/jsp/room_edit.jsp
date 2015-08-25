@@ -60,6 +60,10 @@
 	        <input type="radio" name="optionsRoomtypes" id="optionsRadios2" value="liangfangyiting" required <c:if test="${params.typecode eq 'liangfangyiting' }">checked</c:if>>
 	        两房一厅
 	      </label>
+	        <label>
+	        <input type="radio" name="optionsRoomtypes" id="optionsRadios4" value="dianpu" required <c:if test="${params.typecode eq 'dianpu' }">checked</c:if>>
+	       店铺
+	      </label>
 	    </div>
 		<div class="form-group">
 			<label class="control-label" for="description">备注</label>
@@ -68,9 +72,6 @@
 		</div>
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		<button type="submit" class="btn btn-primary">保存</button>
-		  <c:if test="${!empty params.continue_add}">  
-			<a class="btn btn-info" href="${ctx}/room_toadd" role="button">继续新增</a>
-		 </c:if> 
 		<a class="btn btn-default" href="${ctx}/room" role="button">返回</a>
 	</form>
 </div>

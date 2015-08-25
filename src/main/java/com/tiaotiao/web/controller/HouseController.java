@@ -123,7 +123,7 @@ public class HouseController extends BaseController {
 	@RequestMapping(value = "/house_del", method = RequestMethod.POST)
 	public String houseDel(String id,ModelMap model, @RequestParam Map<String, String> params) throws Exception {
 		params.put("id", id);
-		int houseid = Integer.valueOf(id);
+		String houseid = id;
 		Object checkin_count = checkinService.getCheckinCountByHouseid(houseid);
 		Object checkout_count = checkoutService.getCheckoutCountByHouseid(houseid);
 		House house = houseService.getHouseById(id);
@@ -131,7 +131,7 @@ public class HouseController extends BaseController {
 		params.put("description", house.getDescription());
 		model.put("params", params);
 		if (Integer.valueOf(checkin_count.toString()) >0 || Integer.valueOf(checkout_count.toString()) > 0) {
-			model.addAttribute("message", "还存在业务数据关系，不能删除");
+			model.addAttribute("error", "还存在业务数据关系，不能删除");
 			return "house_del";
 		}
 		int n = houseService.deleteHouse(houseid);
@@ -139,7 +139,7 @@ public class HouseController extends BaseController {
 			model.addAttribute("message", "删除楼栋数据成功");
 		}
 		
-		return "house";
+		return "house_del_page";
 	}
 	@RequestMapping(value = "/house_edit", method = RequestMethod.POST)
 	public String houseEdit(@RequestParam Map<String, String> params, ModelMap model) throws Exception {

@@ -382,7 +382,7 @@ public class CheckinService {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Object getCheckinCountByHouseid(int houseid) throws SQLException{
+	public Object getCheckinCountByHouseid(String houseid) throws SQLException{
 		Object[] params = { houseid};
 		String sql =" select count(1) as cnt from t_checkin as c "+
 					" where c.houseid = ? "; 
@@ -398,7 +398,7 @@ public class CheckinService {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Object getCheckinCountByHouseidAndRoomno(int houseid,int roomno) throws SQLException{
+	public Object getCheckinCountByHouseidAndRoomno(String houseid,int roomno) throws SQLException{
 		Object[] params = { houseid,roomno};
 		String sql =" select count(1) as cnt from t_checkin as c "+
 					" where c.houseid = ? " + 

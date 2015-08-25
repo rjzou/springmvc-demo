@@ -21,7 +21,7 @@
 			<select class="selectpicker" id="selectHouse" name="selectHouse" required>
 				<option value="" >请选择...</option> 
 				<c:forEach var="house" items="${houses}">  
-				  	<option value="${house.id}"> 
+				  	<option value="${house.id}" <c:if test="${house.id == params.houseid}">selected="selected"</c:if>  > 
 						${house.housename}  
 						</option> 
 				</c:forEach>
@@ -47,17 +47,21 @@
 				placeholder="输入参考押金" required>
 		</div>
 		<div class="radio">
-	      <label>
-	        <input type="radio" name="optionsRoomtypes" id="optionsRadios1" value="danjian" checked required>
+	       <label>
+	        <input type="radio" name="optionsRoomtypes" id="optionsRadios1" value="danjian"  required <c:if test="${params.typecode eq 'danjian' }">checked</c:if>>
 	        单间
 	      </label>
 	      <label>
-	        <input type="radio" name="optionsRoomtypes" id="optionsRadios2" value="yifangyiting" required>
+	        <input type="radio" name="optionsRoomtypes" id="optionsRadios2" value="yifangyiting" required <c:if test="${params.typecode eq 'yifangyiting' }">checked</c:if>>
 	        一房一厅
 	      </label>
 	      <label>
-	        <input type="radio" name="optionsRoomtypes" id="optionsRadios2" value="liangfangyiting" required>
+	        <input type="radio" name="optionsRoomtypes" id="optionsRadios3" value="liangfangyiting" required <c:if test="${params.typecode eq 'liangfangyiting' }">checked</c:if>>
 	        两房一厅
+	      </label>
+	       <label>
+	        <input type="radio" name="optionsRoomtypes" id="optionsRadios4" value="dianpu" required <c:if test="${params.typecode eq 'dianpu' }">checked</c:if>>
+	       店铺
 	      </label>
 	    </div>
 		<div class="form-group">
@@ -68,6 +72,7 @@
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
 		<button type="submit" class="btn btn-primary">保存</button>
+		<a class="btn btn-info" href="${ctx}/room_toadd" role="button">继续新增</a>
 		<a class="btn btn-default" href="${ctx}/room" role="button">返回</a>
 	</form>
 </div>
