@@ -52,6 +52,20 @@ public class RoomService {
 		int n = dao.update(sql, params);
 		return n;
 	}
+	
+	/**
+	 * 通过id 删除room数据
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteRoom(String houseid ,int roomno) throws Exception{
+		Object[] params = { houseid , roomno };
+		String sql = "delete from t_room where houseid=? and roomno = ? ";
+		int n = dao.update(sql, params);
+		return n;
+	}
+	
 	/**
 	 * 得到所有房间数据
 	 * @param params
@@ -139,7 +153,7 @@ public class RoomService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Room selectRoomById(String houseid,int roomno) throws Exception{
+	public Room getRoomById(String houseid,int roomno) throws Exception{
 		Object[] params = { houseid,roomno};
 		String sql = "select houseid,roomno,monthmoney,pressmoney,typecode,description,created from t_room where houseid = ? and roomno = ? ";
 		return dao.findFirst(Room.class,sql, params);
@@ -151,7 +165,7 @@ public class RoomService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<String,Object> getRoomMapById(int houseid,int roomno) throws Exception{
+	public Map<String,Object> getRoomMapById(String houseid,int roomno) throws Exception{
 		Object[] params = { houseid,roomno};
 		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.typecode,rt.typename,r.description,r.created from t_room as r,t_house as h,t_room_type as rt "
 				+ " where r.houseid = h.id and r.typecode = rt.typecode and  houseid = ? and roomno = ? ";

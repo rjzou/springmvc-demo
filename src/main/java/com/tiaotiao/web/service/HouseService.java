@@ -63,7 +63,7 @@ public class HouseService {
 	 * @return
 	 * @throws Exception
 	 */
-	public int deleteHouse(int id) throws Exception{
+	public int deleteHouse(String id) throws Exception{
 		Object[] params = { id };
 		String sql = "delete from t_house where id=? ";
 		int n = dao.update(sql, params);

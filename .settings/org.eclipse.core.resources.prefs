@@ -1,4 +1,7 @@
 eclipse.preferences.version=1
+encoding//Scripts/Version1.0.sql=UTF-8
+encoding//Scripts/Version1.1.sql=UTF-8
+encoding//Scripts/Version1.2.sql=UTF-8
 encoding//Scripts/procedure.sql=UTF-8
 encoding//src/main/java=utf-8
 encoding//src/test/java=utf-8

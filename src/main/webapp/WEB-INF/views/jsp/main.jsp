@@ -88,7 +88,7 @@
 								<td>${item.roommoney }</td>
 								<td>${item.cin_day }</td>
 								<td>
-									<a class="btn btn-primary btn-sm" href="${ctx}/room_to_money?houseid=${item.houseid }&roomno=${item.roomno }" role="button">收房租</a>
+									<a class="btn btn-primary btn-sm" href="${ctx}/room_tomoney?houseid=${item.houseid }&roomno=${item.roomno }" role="button">收房租</a>
 								</td>
 							</tr>
 						</c:forEach>

@@ -50,7 +50,7 @@
 <script type="text/javascript">
 $(function() {
 	$('[data-toggle="confirmation"]').confirmation({
-		title:"确定要删除该楼栋信息吗?",
+		title:"确定要删除该房间信息吗?",
 		btnOkClass:'btn btn-sm btn-success',
 		btnOkLabel:"确认",
 		btnCancelLabel:"取消",

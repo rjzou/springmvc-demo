@@ -75,13 +75,13 @@ public class RoomController extends BaseController {
 	}	
  
 	@RequestMapping(value = "/room_add", method = RequestMethod.POST)
-	public String roomAdd(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
+	public String roomAdd(@RequestParam Map<String, String> params, ModelMap model,HttpServletRequest hsr) throws Exception {
 		String houseid = params.get("selectHouse");
-		int roomno = Integer.valueOf(params.get("inputRoom"));
-		int monthmoney = Integer.valueOf(params.get("inputMonthMoney"));
-		int pressmoney = Integer.valueOf(params.get("inputPressMoney"));
+		int roomno = Integer.valueOf(params.get("roomno"));
+		int monthmoney = Integer.valueOf(params.get("monthmoney"));
+		int pressmoney = Integer.valueOf(params.get("pressmoney"));
 		String typecode = params.get("optionsRoomtypes");
-		String description = params.get("inputDescription");
+		String description = params.get("description");
 		Room room = new Room();
 		room.setHouseid(houseid);
 		room.setRoomno(roomno);
@@ -91,19 +91,32 @@ public class RoomController extends BaseController {
 		room.setDescription(description);
 		room.setCreated(System.currentTimeMillis());
 		try {
-			int n = roomService.insertRoom(room);
-			if (n > 0) {
-				model.addAttribute("message", "保存成功");
-			}else{
-				model.addAttribute("message", "保存失败");
+			Room entity = roomService.getRoomById(houseid,roomno);
+			int n = 0 ;
+			if (entity != null) {
+				n = roomService.updateRoom(room,houseid,roomno);
+				if (n > 0) {
+					model.addAttribute("message", "保存成功");
+				}else{
+					model.addAttribute("message", "房间信息保存失败");
+				}
+			}
+			else{
+				n = roomService.insertRoom(room);
+				if (n > 0) {
+					model.addAttribute("message", "保存成功");
+				}else{
+					model.addAttribute("message", "保存失败");
+				}
 			}
 		} catch (Exception e) {
-			if (e.getMessage().toLowerCase().indexOf("primary") > 0) {
-				model.addAttribute("message", "保存失败,已经存在的房间号,请重新输入");
-			}else{
 				model.addAttribute("message", "保存失败,错误信息:"+e.getMessage());
-			}
 		}
+		String username  = hsr.getUserPrincipal().getName();
+		List<House> houses = houseService.selectAllHouse(username);	
+		params.put("houseid", houseid);
+		model.put("houses", houses);
+		params.put("typecode", typecode);
 		params.put("page_id", "room");
 		model.put("params", params);
 		return "room_add";
@@ -115,7 +128,7 @@ public class RoomController extends BaseController {
 		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		//System.out.println(houseid);
-		Room room = roomService.selectRoomById(houseid, roomno);
+		Room room = roomService.getRoomById(houseid, roomno);
 		params.put("monthmoney", String.valueOf(room.getMonthmoney()));
 		params.put("pressmoney", String.valueOf(room.getPressmoney()));
 		params.put("typecode", room.getTypecode());
@@ -172,7 +185,7 @@ public class RoomController extends BaseController {
 	
 	@RequestMapping(value = "/room_todel", method = RequestMethod.GET)
 	public String roomToDel(ModelMap model, @RequestParam Map<String, String> params) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		Map<String,Object> map = roomService.getRoomMapById(houseid, roomno);
 		params.put("housename", map.get("housename").toString());
@@ -187,7 +200,7 @@ public class RoomController extends BaseController {
 	}
 	@RequestMapping(value = "/room_del", method = RequestMethod.POST)
 	public String roomDel(ModelMap model, @RequestParam Map<String, String> params) throws Exception {
-		int houseid = Integer.valueOf(params.get("houseid"));
+		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		Object checkin_count = checkinService.getCheckinCountByHouseidAndRoomno(houseid, roomno);
 		Object checkout_count = checkoutService.getCheckoutCountByHouseidAndRoomno(houseid, roomno);
@@ -200,13 +213,13 @@ public class RoomController extends BaseController {
 		params.put("description", map.get("description").toString());
 		model.put("params", params);
 		if (Integer.valueOf(checkin_count.toString()) >0 || Integer.valueOf(checkout_count.toString()) > 0) {
-			model.addAttribute("message", "还存在业务数据关系，不能删除");
+			model.addAttribute("error", "还存在业务数据关系，不能删除");
 			return "room_del";
 		}
-		int n = houseService.deleteHouse(houseid);
+		int n = roomService.deleteRoom(houseid, roomno);
 		if (n > 0) {
 			model.addAttribute("message", "删除房间数据成功");
 		}
-		return "room";
+		return "room_del_page";
 	}
 }

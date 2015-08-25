@@ -134,7 +134,7 @@ public class CheckinController extends BaseController {
 		int keycount = Integer.valueOf(params.get("inputKeycount"));
 		int keyprice = Integer.valueOf(params.get("inputKeyprice"));
 		String method = String.valueOf(params.get("method"));
-		Room room = roomService.selectRoomById(houseid, roomno);
+		Room room = roomService.getRoomById(houseid, roomno);
 		params.put("monthmoney", String.valueOf(room.getMonthmoney()));
 		params.put("pressmoney", String.valueOf(room.getPressmoney()));
 //		params.put("inputMonthMoney", String.valueOf(room.getMonthmoney()));
@@ -262,7 +262,7 @@ public class CheckinController extends BaseController {
 		params.put("houseid", params.get("houseid"));
 		params.put("roomno", params.get("roomno"));
 		params.put("method", "calc");
-		Room room = roomService.selectRoomById(houseid, roomno);
+		Room room = roomService.getRoomById(houseid, roomno);
 		params.put("monthmoney", String.valueOf(room.getMonthmoney()));
 		params.put("pressmoney", String.valueOf(room.getPressmoney()));
 		params.put("inputMonthMoney", String.valueOf(room.getMonthmoney()));

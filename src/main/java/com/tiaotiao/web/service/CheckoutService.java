@@ -248,7 +248,7 @@ public class CheckoutService {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Object getCheckoutCountByHouseid(int houseid) throws SQLException{
+	public Object getCheckoutCountByHouseid(String houseid) throws SQLException{
 		Object[] params = { houseid};
 		String sql =" select count(1) as cnt from t_checkout as c "+
 					" where c.houseid = ? "; 
@@ -262,7 +262,7 @@ public class CheckoutService {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Object getCheckoutCountByHouseidAndRoomno(int houseid,int roomno) throws SQLException{
+	public Object getCheckoutCountByHouseidAndRoomno(String houseid,int roomno) throws SQLException{
 		Object[] params = { houseid , roomno };
 		String sql =" select count(1) as cnt from t_checkout as c "+
 					" where c.houseid = ? "
