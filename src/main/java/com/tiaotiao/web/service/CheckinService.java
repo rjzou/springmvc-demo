@@ -289,16 +289,20 @@ public class CheckinService {
 				" 	r.roomno, "+
 				" 	cus.customname, "+
 				" 	CONCAT_WS('-', c.year, c.month, c.day) AS in_date, " + 
-				"   datediff(now(), CONCAT_WS('-', c.year, c.month, c.day)) as in_days "+
+				"   datediff(now(), CONCAT_WS('-', c.year, c.month, c.day)) as in_days, "+
+				"   nc.ip "+
 				" FROM "+
 				" 	t_room AS r, "+
 				" 	t_house AS h, "+
 				" 	t_checkin AS c, "+
+				" 	t_net_cfg AS nc, "+
 				" 	t_custom AS cus "+
 				" WHERE "+
 				" 	r.houseid = h.id "+
 				" AND r.houseid = c.houseid "+
 				" AND r.roomno = c.roomno "+
+				" AND c.houseid = nc.houseid "+
+				" AND c.roomno = nc.roomno "+
 				" AND c.customid = cus.id "+
 				" AND c.houseid = ? "+
 				" AND c.roomno = ? " ;

@@ -49,6 +49,12 @@
 		            <th class="col-sm-2">入住日期</th>
 		            <td><span class="label label-success">${params.in_date}</span> 已经入住 <span class="label label-success">${params.in_days}</span> 天</td>
 		        </tr>
+		        <c:if test="${!empty params.ip}">
+		          	<tr>
+			            <th class="col-sm-2">网络IP</th>
+			            <td>${params.ip}</td>
+		        	</tr>
+		        </c:if>
 				</table>
 			</div>
 		</div>
