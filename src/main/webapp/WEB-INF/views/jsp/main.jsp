@@ -10,7 +10,7 @@
   <body>
           <div class="panel panel-info">
 			  <!-- Default panel contents -->
-			  <div class="panel-heading">本月抄水表(只最新显示5条)</div>
+			  <div class="panel-heading">本月应抄水表(只最新显示5条)</div>
 			  <!-- Table -->
 			  <div class="table-responsive">
 				  <table class="table table-striped  table-condensed">
