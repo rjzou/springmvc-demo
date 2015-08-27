@@ -16,7 +16,8 @@
 
     <!-- Bootstrap core CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css?Ver=20150821">
-    
+    <!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
     <!-- Custom styles for this template -->
     <link href="${ctx_cdn}/resources/css/dashboard.css?Ver=20150821" rel="stylesheet">
 
