@@ -82,6 +82,13 @@ public class CustomService {
 		logger.log(Level.INFO, sql);
 		return dao.find(Custom.class,sql);
 	}
+	
+	public List<Custom> getCustomList(String username) throws Exception{
+		Object[] params = { "%"+ username + "%"};
+		String sql = "select id,customname,iphone,cardid,year,month,day,created,updated from t_custom where customname like ? ";
+		logger.log(Level.INFO, sql);
+		return dao.find(Custom.class , sql , params);
+	}
 	/**
 	 * 
 	 * @param customname

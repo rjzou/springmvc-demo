@@ -118,9 +118,9 @@ public class CustomController extends BaseController {
 	}
 	@RequestMapping(value = "/json/getCustomJson", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Custom> testJson( String customname) throws Exception {
-		System.out.println("testJson");
-		logger.log(Level.INFO, "customname :" + customname);
+	public List<Custom> getCustomJson() throws Exception {
+		System.out.println("getCustomJson testJson");
+		//logger.log(Level.INFO, "customname :" + customname);
 		
 		List<Custom> list = customService.getCustomList();
 //		Custom custom = new Custom();
@@ -144,4 +144,16 @@ public class CustomController extends BaseController {
 //		list.add(custom3);
 		return list;
 	}
+	
+	@RequestMapping(value = "/json/queryCustomJson", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Custom> queryCustomJson( String customname) throws Exception {
+		System.out.println(" queryCustomJson testJson");
+		logger.log(Level.INFO, "customname :" + customname);
+		
+		List<Custom> list = customService.getCustomList(customname);
+
+		return list;
+	}
+	
 }
