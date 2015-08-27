@@ -332,7 +332,7 @@ public class CheckinController extends BaseController {
 //		params.put("pressmoney", query.get("pressmoney").toString());
 		params.put("in_date", query.get("in_date").toString());
 		params.put("in_days", query.get("in_days").toString());
-		params.put("ip", query.get("ip").toString());
+		params.put("ip", query.get("ip") == null ? null : query.get("ip").toString());
 //		params.put("s_date", query.get("s_date").toString());
 //		params.put("s_date", query.get("s_date").toString());
 //		params.put("roommoney", query.get("roommoney").toString());
