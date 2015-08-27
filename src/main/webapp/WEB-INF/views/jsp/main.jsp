@@ -6,7 +6,7 @@
   <head>
     <meta name="theme" content="basic_theme" />
   </head>
-
+ 
   <body>
           <div class="panel panel-info">
 			  <!-- Default panel contents -->
