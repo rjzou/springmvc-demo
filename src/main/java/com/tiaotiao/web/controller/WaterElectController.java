@@ -76,7 +76,10 @@ public class WaterElectController extends BaseController {
 		model.put("p", cpage);
 		model.put("list", list);
 		model.put("params", params);
+		//左侧菜单显示控制
 		params.put("page_id", "room_waterelect");
+		params.put("page_group", "common_group");
+		
 		return "room_waterelect";
 	}
 	
@@ -97,7 +100,10 @@ public class WaterElectController extends BaseController {
 		params.put("pre_s_date", String.valueOf(checkin.get("pre_s_date")));
 		params.put("water", String.valueOf(checkin.get("water")));
 		params.put("elect", String.valueOf(checkin.get("elect")));
+		//左侧菜单显示控制
 		params.put("page_id", "room_waterelect");
+		params.put("page_group", "common_group");
+		
 		model.put("params", params);
 		return "room_towaterelect";
 	}	
@@ -155,7 +161,9 @@ public class WaterElectController extends BaseController {
 		} catch (Exception e) {
 			model.addAttribute("message", "保存失败,10秒钟自动返回,错误信息:"+e.getMessage());
 		}
+		//左侧菜单显示控制
 		params.put("page_id", "room_waterelect");
+		params.put("page_group", "common_group");
 		model.put("params", params);
 		return "room_towaterelect";
 	}

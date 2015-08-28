@@ -9,8 +9,26 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js?Ver=20150821"></script>
 </head>
 <body>
-<div class="row">
-  <form class="navbar-form navbar-left" role="search">
+	<!-- content-wrapper -->
+	<div class="col-md-10 content-wrapper">
+		<div class="row">
+			<div class="col-md-4 ">
+				<ul class="breadcrumb">
+					<li><i class="fa fa-home"></i><a href="#">首页</a></li>
+					<li class="active">抄水表</li>
+				</ul>
+			</div>
+		</div>
+		<!-- main -->
+		<div class="content">
+			<div class="main-content">
+				<!-- WIDGET TICKET TABLE -->
+					<div class="widget-content">
+						<!-- INLINE FORM -->
+						<div class="widget-content">
+
+
+								<form class="form-inline" role="search">
 <div class="form-group">
   <select class="selectpicker" name="selectHouse"  title="请选择..." multiple>
 	  	<c:forEach var="house" items="${houses}">  
@@ -44,11 +62,12 @@
   
     <input type="text" class="form-control" placeholder="Search"   id="roomno" name="roomno" value="${params.roomno}"/>
   </div>
-  <button type="submit" class="btn btn-default" onclick="return to_search();">查询</button>
+  <button type="submit" class="btn btn-primary" onclick="return to_search();">查询</button>
 </form>
-</div><!-- /.row -->
-	<div class="table-responsive">
-		<table class="table table-striped">
+						</div>
+						<!-- /.row -->
+						<div class="table-responsive">
+							<table class="table table-striped">
 			<thead>
 				<tr>
 					<th>#</th>
@@ -80,7 +99,14 @@
 				</c:forEach>
 			</tbody>
 		</table>
-	</div>
-	<pagebar:pagebar total="${list.totalPages}" current="${list.number + 1}" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<pagebar:pagebar total="${list.totalPages}"
+				current="${list.number + 1}" />
+
+		</div>
+		<!-- /main -->
 </body>
 </html>

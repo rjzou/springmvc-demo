@@ -55,7 +55,10 @@ public class RoomController extends BaseController {
 		model.put("types", types);
 		model.put("p", cpage);
 		model.put("list", list);
+		//左侧菜单显示控制
 		params.put("page_id", "room");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("houses", houses);
 		model.put("params", params);
 		return "room";
@@ -68,7 +71,11 @@ public class RoomController extends BaseController {
 	public String toRoomAdd(ModelMap model, @RequestParam Map<String, String> params,HttpServletRequest hsr) throws Exception {
 		String username  = hsr.getUserPrincipal().getName();
 		List<House> houses = houseService.selectAllHouse(username);
+		//左侧菜单显示控制
 		params.put("page_id", "room");
+		params.put("page_group", "sys_config_group");
+		
+		
 		model.put("houses", houses);
 		model.put("params", params);
 		return "room_add";
@@ -117,7 +124,10 @@ public class RoomController extends BaseController {
 		params.put("houseid", houseid);
 		model.put("houses", houses);
 		params.put("typecode", typecode);
+		//左侧菜单显示控制
 		params.put("page_id", "room");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("params", params);
 		return "room_add";
 	}
@@ -135,7 +145,10 @@ public class RoomController extends BaseController {
 		params.put("description", room.getDescription());
 		List<House> houses = houseService.selectAllHouse(username);
 		model.put("houses", houses);
+		//左侧菜单显示控制
 		params.put("page_id", "room");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("params", params);
 		return "room_edit";
 	}
@@ -178,7 +191,10 @@ public class RoomController extends BaseController {
 		params.put("pressmoney", String.valueOf(pressmoney));
 		params.put("typecode", typecode);
 		params.put("description", description);
+		//左侧菜单显示控制
 		params.put("page_id", "room");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("params", params);
 		return "room_edit";
 	}
@@ -194,7 +210,10 @@ public class RoomController extends BaseController {
 		params.put("pressmoney", map.get("pressmoney").toString());
 		params.put("typename", map.get("typename").toString());
 		params.put("description", map.get("description").toString());
+		//左侧菜单显示控制
 		params.put("page_id", "house");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("params", params);
 		return "room_del";
 	}

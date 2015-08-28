@@ -11,8 +11,25 @@
 
 </head>
 <body>
-<div class="row">
-	<form role="form" method="post" action="${ctx}/waterelectcfg_add">
+	<!-- content-wrapper -->
+	<div class="col-md-10 content-wrapper">
+		<div class="row">
+			<div class="col-md-4 ">
+				<ul class="breadcrumb">
+					<li><i class="fa fa-home"></i><a href="#">首页</a></li>
+					<li class="active">收房租</li>
+				</ul>
+			</div>
+		</div>
+		<!-- main -->
+		<div class="content">
+			<div class="main-content">
+				<!-- WIDGET TICKET TABLE -->
+					<div class="widget-content">
+						<!-- INLINE FORM -->
+						<div class="widget-content">
+
+							<form role="form" method="post" action="${ctx}/waterelectcfg_add">
 	  <c:if test="${!empty message}">  
             <div class="alert alert-success" role="alert">${message}</div>
       </c:if> 
@@ -41,8 +58,14 @@
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
 		<button type="submit" class="btn btn-primary">生成数据并保存</button>
-		<a class="btn btn-default" href="${ctx}/waterelectcfg" role="button">返回</a>
+		<a class="btn btn-warning" href="${ctx}/waterelectcfg" role="button">返回</a>
 	</form>
-</div>
+						</div>
+
+					</div>
+					</div>
+					</div>
+					</div>
+					
 </body>
 </html>

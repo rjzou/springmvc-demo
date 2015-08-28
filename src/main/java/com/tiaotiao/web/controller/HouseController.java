@@ -44,7 +44,10 @@ public class HouseController extends BaseController {
 		model.put("p", cpage);
 		model.put("list", list);
 		model.put("params", params);
+		//左侧菜单显示控制
 		params.put("page_id", "house");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("params", params);
 		return "house";
 	}
@@ -55,7 +58,10 @@ public class HouseController extends BaseController {
 	}
 	@RequestMapping(value = "/house_toadd", method = RequestMethod.GET)
 	public String toHouseAdd(ModelMap model , @RequestParam Map<String, String> params) throws Exception {
+		//左侧菜单显示控制
 		params.put("page_id", "house");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("params", params);
 		return "house_add";
 	}
@@ -94,7 +100,10 @@ public class HouseController extends BaseController {
 			model.addAttribute("message", "保存失败,错误信息:"+e.getMessage());
 		}
 		params.put("id", id);
+		//左侧菜单显示控制
 		params.put("page_id", "house");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("params", params);
 		return "house_add";
 	}
@@ -105,7 +114,10 @@ public class HouseController extends BaseController {
 		House house = houseService.getHouseById(id);
 		params.put("housename", house.getHousename());
 		params.put("description", house.getDescription());
+		//左侧菜单显示控制
 		params.put("page_id", "house");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("params", params);
 		return "house_edit";
 	}
@@ -116,7 +128,10 @@ public class HouseController extends BaseController {
 		House house = houseService.getHouseById(id);
 		params.put("housename", house.getHousename());
 		params.put("description", house.getDescription());
+		//左侧菜单显示控制
 		params.put("page_id", "house");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("params", params);
 		return "house_del";
 	}
@@ -165,7 +180,10 @@ public class HouseController extends BaseController {
 				model.addAttribute("error", "保存失败,错误信息:"+e.getMessage());
 			}
 		}
+		//左侧菜单显示控制
 		params.put("page_id", "house");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("params", params);
 		return "house_add";
 	}

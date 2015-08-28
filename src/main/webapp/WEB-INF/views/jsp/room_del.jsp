@@ -7,8 +7,25 @@
 <meta name="theme" content="basic_theme" />
 </head>
 <body>
-<div class="row">
-	<form role="form" id="form1" method="post" action="${ctx}/room_del">
+	<!-- content-wrapper -->
+	<div class="col-md-10 content-wrapper">
+		<div class="row">
+			<div class="col-md-4 ">
+				<ul class="breadcrumb">
+					<li><i class="fa fa-home"></i><a href="#">首页</a></li>
+					<li class="active">收房租</li>
+				</ul>
+			</div>
+		</div>
+		<!-- main -->
+		<div class="content">
+			<div class="main-content">
+				<!-- WIDGET TICKET TABLE -->
+					<div class="widget-content">
+						<!-- INLINE FORM -->
+						<div class="widget-content">
+
+							<form role="form" id="form1" method="post" action="${ctx}/room_del">
 	  <c:if test="${!empty message}">  
             <div class="alert alert-success" role="alert">${message}</div>
       </c:if> 
@@ -43,10 +60,15 @@
         	<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
 		<button type="submit" class="btn btn-primary" data-toggle="confirmation" data-placement="top" data-popout="true" <c:if test="${!empty danger}">disabled</c:if> >确认删除</button>
-		<a class="btn btn-default" href="${ctx}/room" role="button">返回</a>
+		<a class="btn btn-warning" href="${ctx}/room" role="button">返回</a>
 	</form>
-</div>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.3/bootstrap-confirmation.min.js?Ver=20150821"></script>
+						</div>
+
+					</div>
+					</div>
+					</div>
+					</div>
+					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.3/bootstrap-confirmation.min.js?Ver=20150821"></script>
 <script type="text/javascript">
 $(function() {
 	$('[data-toggle="confirmation"]').confirmation({

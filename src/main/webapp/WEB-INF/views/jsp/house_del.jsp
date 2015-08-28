@@ -30,7 +30,7 @@
         	<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
 		<button type="submit" class="btn btn-primary" data-toggle="confirmation" data-placement="top" data-popout="true" <c:if test="${!empty danger}">disabled</c:if> >确认删除</button>
-		<a class="btn btn-default" href="${ctx}/house" role="button">返回</a>
+		<a class="btn btn-warning" href="${ctx}/house" role="button">返回</a>
 	</form>
 </div>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.3/bootstrap-confirmation.min.js"></script>

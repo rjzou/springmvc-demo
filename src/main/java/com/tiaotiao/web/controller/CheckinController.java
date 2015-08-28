@@ -100,7 +100,10 @@ public class CheckinController extends BaseController {
 		params.put("empty_room_count", room_tongji[0].toString());
 		params.put("today_checkin_room_count", room_tongji[1].toString());
 		params.put("today_checkout_room_count", room_tongji[2].toString());
+		//左侧菜单显示控制
 		params.put("page_id", "room_checkin");
+		params.put("page_group", "common_group");
+		
 		model.put("params", params);
 		return "room_checkin";
 	}
@@ -187,7 +190,10 @@ public class CheckinController extends BaseController {
 			nc.setIp(ip);
 			return roomCheckinSave(checkin,custom,we,rm,nc,params,model);
 		}
+		//左侧菜单显示控制
 		params.put("page_id", "room_checkin");
+		params.put("page_group", "common_group");
+		
 		model.put("params", params);
 		return "room_tocheckin";
 	}
@@ -299,7 +305,10 @@ public class CheckinController extends BaseController {
 		model.put("types", types);
 		List<House> houses = houseService.selectAllHouse(username);
 		model.put("houses", houses);
+		//左侧菜单显示控制
 		params.put("page_id", "room_checkin_query");
+		params.put("page_group", "sys_query_group");
+		
 		model.put("params", params);
 		return "room_checkin_query";
 	}
@@ -362,7 +371,10 @@ public class CheckinController extends BaseController {
 ////		params.put("times", times.toString());
 //		int sumkeyprice = Integer.valueOf(query.get("keycount").toString())*Integer.valueOf(query.get("keyprice").toString());
 //		params.put("sumkeyprice", String.valueOf(sumkeyprice));
+		//左侧菜单显示控制
 		params.put("page_id", "room_checkin_query");
+		params.put("page_group", "sys_query_group");
+		
 		params.put("return_url", return_url);
 		model.put("params", params);
 		return "room_checkin_query_page";

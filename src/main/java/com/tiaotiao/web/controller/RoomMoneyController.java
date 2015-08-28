@@ -83,7 +83,10 @@ public class RoomMoneyController extends BaseController {
 		model.put("types", types);
 		List<House> houses = houseService.selectAllHouse(username);
 		model.put("houses", houses);
+		//左侧菜单显示控制
 		params.put("page_id", "room_money");
+		params.put("page_group", "common_group");
+		
 		model.put("params", params);
 		return "room_money";
 	}
@@ -147,7 +150,10 @@ public class RoomMoneyController extends BaseController {
 			}
 			params.put("roommoney", String.valueOf(roommoney));
 		}
+		//左侧菜单显示控制
 		params.put("page_id", "room_money");
+		params.put("page_group", "common_group");
+		
 		model.put("params", params);
 		return "room_tomoney";
 	}
@@ -246,7 +252,10 @@ public class RoomMoneyController extends BaseController {
 //		params.put("electprice", String.valueOf(curwe.getElectprice()));
 //		params.put("usedwaterprice", String.valueOf(usedWaterPrice));
 //		params.put("usedelectprice", String.valueOf(usedElectPrice));
+		//左侧菜单显示控制
 		params.put("page_id", "room_money");
+		params.put("page_group", "common_group");
+		
 		model.put("params", params);
 		return "room_tomoney_page";
 	}
@@ -274,7 +283,11 @@ public class RoomMoneyController extends BaseController {
 		List<House> houses = houseService.selectAllHouse(username);
 		model.put("houses", houses);
 		model.put("params", params);
+		//左侧菜单显示控制
 		params.put("page_id", "room_money_query");
+		params.put("page_group", "sys_query_group");
+		
+		
 		return "room_money_query";
 	}
 	@RequestMapping(value = "/room_money_query", method = RequestMethod.POST)
@@ -329,7 +342,10 @@ public class RoomMoneyController extends BaseController {
 		params.put("times", times.toString());
 		int sumkeyprice = Integer.valueOf(query.get("keycount").toString())*Integer.valueOf(query.get("keyprice").toString());
 		params.put("sumkeyprice", String.valueOf(sumkeyprice));
+		//左侧菜单显示控制
 		params.put("page_id", "room_money_query");
+		params.put("page_group", "sys_query_group");
+		
 		model.put("params", params);
 		return "room_money_query_page";
 	}

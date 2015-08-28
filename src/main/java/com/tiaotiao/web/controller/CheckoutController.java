@@ -76,8 +76,10 @@ public class CheckoutController extends BaseController {
 		params.put("full_room_count", room_tongji[0].toString());
 		params.put("today_checkout_room_count", room_tongji[1].toString());
 		params.put("today_checkin_room_count", room_tongji[2].toString());
-		
+		//左侧菜单显示控制
 		params.put("page_id", "room_checkout");
+		params.put("page_group", "common_group");
+		
 		model.put("params", params);
 		return "room_checkout";
 	}
@@ -103,7 +105,10 @@ public class CheckoutController extends BaseController {
 		} catch (Exception e) {
 				model.addAttribute("error", "操作退房失败,10秒钟自动返回,错误信息:"+e.getMessage());
 		}
+		//左侧菜单显示控制
 		params.put("page_id", "room_checkout");
+		params.put("page_group", "common_group");
+		
 		model.put("params", params);
 		return "room_tocheckout_page";
 	}
@@ -171,7 +176,9 @@ public class CheckoutController extends BaseController {
 			params.put("backmonthmoney", String.valueOf(monthmoney));
 			params.put("sumbackmoney", String.valueOf(backpressmoney + monthmoney));
 		}
+		//左侧菜单显示控制
 		params.put("page_id", "room_checkout");
+		params.put("page_group", "common_group");
 		model.put("params", params);
 		return "room_tocheckout";
 	}
@@ -199,7 +206,10 @@ public class CheckoutController extends BaseController {
 		model.put("types", types);
 		List<House> houses = houseService.selectAllHouse(username);
 		model.put("houses", houses);
+		//左侧菜单显示控制
 		params.put("page_id", "room_checkout_query");
+		params.put("page_group", "sys_query_group");
+		
 		model.put("params", params);
 		return "room_checkout_query";
 	}
@@ -263,7 +273,10 @@ public class CheckoutController extends BaseController {
 ////		params.put("times", times.toString());
 //		int sumkeyprice = Integer.valueOf(query.get("keycount").toString())*Integer.valueOf(query.get("keyprice").toString());
 //		params.put("sumkeyprice", String.valueOf(sumkeyprice));
+		//左侧菜单显示控制
 		params.put("page_id", "room_checkout_query");
+		params.put("page_group", "sys_query_group");
+		
 		params.put("return_url", return_url);
 		model.put("params", params);
 		return "room_checkout_query_page";

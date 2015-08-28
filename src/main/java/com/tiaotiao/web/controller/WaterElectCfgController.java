@@ -59,7 +59,10 @@ public class WaterElectCfgController extends BaseController {
 		Page<Map<String, Object>> list = waterelectCfgService.getWaterelectCfgListByParams(params, page); 
 		model.put("p", cpage);
 		model.put("list", list);
+		//左侧菜单显示控制
 		params.put("page_id", "waterelectcfg");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("params", params);
 		return "waterelectcfg";
 	}
@@ -77,7 +80,10 @@ public class WaterElectCfgController extends BaseController {
 		Page<Map<String, Object>> list = waterelectCfgService.getWaterelectCfgListByParams(params, page); 
 		model.put("p", cpage);
 		model.put("list", list);
+		//左侧菜单显示控制
 		params.put("page_id", "waterelectcfg");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("params", params);
 		return "waterelectcfg";
 	}
@@ -99,7 +105,10 @@ public class WaterElectCfgController extends BaseController {
 		params.put("electprice", String.valueOf(wec.getElectprice())); 
 		params.put("inputWaterPrice", String.valueOf(wec.getWaterprice()));
 		params.put("inputElectPrice", String.valueOf(wec.getElectprice()));
+		//左侧菜单显示控制
 		params.put("page_id", "waterelectcfg");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("params", params);
 		return "waterelectcfg_add";
 	}	
@@ -120,7 +129,10 @@ public class WaterElectCfgController extends BaseController {
 		params.put("electprice", String.valueOf(wec.getElectprice()));
 		params.put("inputWaterPrice", String.valueOf(wec.getWaterprice()));
 		params.put("inputElectPrice", String.valueOf(wec.getElectprice()));
+		//左侧菜单显示控制
 		params.put("page_id", "waterelectcfg");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("params", params);
 		return "waterelectcfg_edit";
 	}	
@@ -157,7 +169,10 @@ public class WaterElectCfgController extends BaseController {
 			model.addAttribute("message", "保存失败,10秒钟自动返回,错误信息:"+e.getMessage());
 		}
 		params.put("year", params.get("selectYear"));
+		//左侧菜单显示控制
 		params.put("page_id", "waterelectcfg");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("params", params);
 		return "waterelectcfg_add";
 	}
@@ -190,7 +205,10 @@ public class WaterElectCfgController extends BaseController {
 		} catch (Exception e) {
 			model.addAttribute("message", "修改失败,10秒钟自动返回,错误信息:" + e.getMessage());
 		}
+		//左侧菜单显示控制
 		params.put("page_id", "waterelectcfg");
+		params.put("page_group", "sys_config_group");
+		
 		model.put("params", params);
 		return "waterelectcfg_edit";
 	}

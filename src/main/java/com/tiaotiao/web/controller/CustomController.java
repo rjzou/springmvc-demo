@@ -79,7 +79,10 @@ public class CustomController extends BaseController {
 		Page<Map<String, Object>> list = customService.queryAllCustomByParams(customname,iphone, page,username); 
 		model.put("p", cpage);
 		model.put("list", list);
+		//左侧菜单显示控制
 		params.put("page_id", "custom_query");
+		params.put("page_group", "sys_query_group");
+		
 		model.put("params", params);
 		return "custom_query";
 	}
@@ -112,7 +115,10 @@ public class CustomController extends BaseController {
 		}
 		model.put("p", cpage);
 		params.put("return_url", URLEncoder.encode("custom_query_page?id=" + id, "UTF-8"));
+		//左侧菜单显示控制
 		params.put("page_id", "custom_query");
+		params.put("page_group", "sys_query_group");
+		
 		model.put("params", params);
 		return "custom_query_page";
 	}

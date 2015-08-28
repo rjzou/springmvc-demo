@@ -32,6 +32,9 @@ public class MainController {
 		//待办收房租
 		Page<Map<String, Object>> room_money_list = mainService.getMainRoomMoneyMapByParams(params, page,username); 
 		model.put("room_money_list", room_money_list);
+		//左侧菜单显示控制
+		params.put("page_id", "main");
+		params.put("page_group", "mytask_group");
 		
 		model.put("params", params);
 		return "main";

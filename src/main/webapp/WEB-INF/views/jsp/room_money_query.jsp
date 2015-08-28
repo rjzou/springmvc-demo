@@ -9,8 +9,25 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js?Ver=20150821"></script>
 </head>
 <body>
-<div class="row">
-  <form class="navbar-form navbar-left" role="search" action="${ctx}/room_money_query" method="post">
+	<!-- content-wrapper -->
+	<div class="col-md-10 content-wrapper">
+		<div class="row">
+			<div class="col-md-4 ">
+				<ul class="breadcrumb">
+					<li><i class="fa fa-home"></i><a href="#">首页</a></li>
+					<li class="active">收租查询</li>
+				</ul>
+			</div>
+		</div>
+		<!-- main -->
+		<div class="content">
+			<div class="main-content">
+				<!-- WIDGET TICKET TABLE -->
+					<div class="widget-content">
+						<!-- INLINE FORM -->
+						<div class="widget-content">
+
+								<form class="form-inline" role="search" action="${ctx}/room_money_query" method="post">
    <div class="form-group">
   <select class="selectpicker" name="selectHouse"  title="请选择..." multiple>
 	  	<c:forEach var="house" items="${houses}">  
@@ -47,13 +64,14 @@
   </div>
   	<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
-  <button type="submit" class="btn btn-default" onclick="return to_search();">查询</button>
+  <button type="submit" class="btn btn-primary" onclick="return to_search();">查询</button>
   <p class="text-left">
   </p>
 </form>
-</div><!-- /.row -->
-	<div class="table-responsive">
-		<table class="table table-striped">
+						</div>
+						<!-- /.row -->
+						<div class="table-responsive">
+							<table class="table table-striped">
 			<thead>
 				<tr>
 					<th>#</th>
@@ -79,13 +97,20 @@
 						<td>${item.pressmoney } 元</td>
 						<td>${item.roommoney } 元</td>
 						<td>
-							<a class="btn btn-primary btn-sm" href="${ctx}/room_money_query_page?houseid=${item.houseid }&roomno=${item.roomno }&year=${item.d_year }&month=${item.d_month }" role="button">详情</a>
+							<a class="btn btn-info btn-sm" href="${ctx}/room_money_query_page?houseid=${item.houseid }&roomno=${item.roomno }&year=${item.d_year }&month=${item.d_month }" role="button">详情</a>
 						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
-	</div>
-	<pagebar:pagebar total="${list.totalPages}" current="${list.number + 1}" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<pagebar:pagebar total="${list.totalPages}"
+				current="${list.number + 1}" />
+
+		</div>
+		<!-- /main -->
 </body>
 </html>

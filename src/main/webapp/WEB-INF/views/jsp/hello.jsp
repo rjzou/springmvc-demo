@@ -8,7 +8,7 @@
 <!--<![endif]-->
 
 <head>
-	<title>Dashboard | KingAdmin - Admin Dashboard</title>
+	<title>出租房智能管理系统V1.0</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -46,7 +46,7 @@
 			<div class="container">
 				<div class="row">
 					<!-- logo -->
-					<div class="col-md-2 logo">
+					<div class="col-md-2 logo"> 
 						<a href="index.html"><img src="${ctx}/resources/images/kingadmin-logo-white.png" alt="KingAdmin - Admin Dashboard" /></a>
 						<h1 class="sr-only">KingAdmin Admin Dashboard</h1>
 					</div>
@@ -420,67 +420,6 @@
 						<div class="sidebar-minified js-toggle-minified">
 							<i class="fa fa-angle-left"></i>
 						</div>
-						<!-- sidebar content -->
-						<div class="sidebar-content">
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h5><i class="fa fa-lightbulb-o"></i> Tips</h5>
-								</div>
-								<div class="panel-body">
-									<p>You can do live search to the widget at search box located at top bar. It's very useful if your dashboard is full of widget.</p>
-								</div>
-							</div>
-							<h5 class="label label-default"><i class="fa fa-info-circle"></i> Server Info</h5>
-							<ul class="list-unstyled list-info-sidebar bottom-30px">
-								<li class="data-row">
-									<div class="data-name">Disk Space Usage</div>
-									<div class="data-value">
-										274.43 / 2 GB
-										<div class="progress progress-xs">
-											<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%">
-												<span class="sr-only">10%</span>
-											</div>
-										</div>
-									</div>
-								</li>
-								<li class="data-row">
-									<div class="data-name">Monthly Bandwidth Transfer</div>
-									<div class="data-value">
-										230 / 500 GB
-										<div class="progress progress-xs">
-											<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="46" aria-valuemin="0" aria-valuemax="100" style="width: 46%">
-												<span class="sr-only">46%</span>
-											</div>
-										</div>
-									</div>
-								</li>
-								<li class="data-row">
-									<span class="data-name">Database Disk Space</span>
-									<span class="data-value">219.45 MB</span>
-								</li>
-								<li class="data-row">
-									<span class="data-name">Operating System</span>
-									<span class="data-value">Linux</span>
-								</li>
-								<li class="data-row">
-									<span class="data-name">Apache Version</span>
-									<span class="data-value">2.4.6</span>
-								</li>
-								<li class="data-row">
-									<span class="data-name">PHP Version</span>
-									<span class="data-value">5.3.27</span>
-								</li>
-								<li class="data-row">
-									<span class="data-name">MySQL Version</span>
-									<span class="data-value">5.5.34-cll</span>
-								</li>
-								<li class="data-row">
-									<span class="data-name">Architecture</span>
-									<span class="data-value">x86_64</span>
-								</li>
-							</ul>
-						</div>
-						<!-- end sidebar content -->
 					</div>
 					<!-- end left sidebar -->
 					<!-- top general alert -->
@@ -498,35 +437,10 @@
 									<li class="active">Dashboard</li>
 								</ul>
 							</div>
-							<div class="col-md-8 ">
-								<div class="top-content">
-									<ul class="list-inline mini-stat">
-										<li>
-											<h5>LIKES <span class="stat-value stat-color-orange"><i class="fa fa-plus-circle"></i> 81,450</span></h5>
-											<span id="mini-bar-chart1" class="mini-bar-chart"></span>
-										</li>
-										<li>
-											<h5>SUBSCRIBERS <span class="stat-value stat-color-blue"><i class="fa fa-plus-circle"></i> 150,743</span></h5>
-											<span id="mini-bar-chart2" class="mini-bar-chart"></span>
-										</li>
-										<li>
-											<h5>CUSTOMERS <span class="stat-value stat-color-seagreen"><i class="fa fa-plus-circle"></i> 43,748</span></h5>
-											<span id="mini-bar-chart3" class="mini-bar-chart"></span>
-										</li>
-									</ul>
-								</div>
-							</div>
 						</div>
 						<!-- main -->
 						<div class="content">
-							<div class="main-header">
-								<h2>DASHBOARD</h2>
-								<em>the first priority information</em>
-							</div>
 							<div class="main-content">
-								
-
-								
 								<!-- WIDGET TICKET TABLE -->
 								<div class="widget widget-table">
 									<div class="widget-header">
@@ -536,89 +450,59 @@
 											<a href="#" title="Expand/Collapse" class="btn-borderless btn-toggle-expand"><i class="fa fa-chevron-up"></i></a>
 											<a href="#" title="Remove" class="btn-borderless btn-remove"><i class="fa fa-times"></i></a>
 										</div>
-										<div class="widget-header-toolbar">
-											<div class="label label-danger"><i class="fa fa-warning"></i> 2 Critical Messages</div>
-										</div>
 									</div>
 									<div class="widget-content">
-										<table id="ticket-table" class="table table-sorting">
-											<thead>
-												<tr>
-													<th>Number</th>
-													<th>Date</th>
-													<th>Category</th>
-													<th>Name</th>
-													<th>Title</th>
-													<th>Priority</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td><a href="#">[#18765]</a></td>
-													<td>Nov 21, 2013 15:45</td>
-													<td>Front-End Site</td>
-													<td>Smith</td>
-													<td><a href="#">Product Review Problem</a></td>
-													<td><span class="label label-high">#4 - High</span></td>
-												</tr>
-												<tr>
-													<td><a href="#">[#18766]</a></td>
-													<td>Nov 21, 2013 16:12</td>
-													<td>Technical Support</td>
-													<td>Sean</td>
-													<td><a href="#">Can't Download the Guide Doc</a></td>
-													<td><span class="label label-medium">#5 - Medium</span></td>
-												</tr>
-												<tr>
-													<td><a href="#">[#18767]</a></td>
-													<td>Nov 21, 2013 16:43</td>
-													<td>General Info</td>
-													<td>Jane Doe</td>
-													<td><a href="#">Regarding Customer Support</a></td>
-													<td><span class="label label-medium">#5 - Medium</span></td>
-												</tr>
-												<tr>
-													<td><a href="#">[#18768]</a></td>
-													<td>Nov 22, 2013 08:24</td>
-													<td>General Info</td>
-													<td>Smith</td>
-													<td><a href="#">Can't Change My Address</a></td>
-													<td><span class="label label-urgent">#3 - Urgent</span></td>
-												</tr>
-												<tr>
-													<td><a href="#">[#18769]</a></td>
-													<td>Nov 22, 2013 08:30</td>
-													<td>Sales</td>
-													<td>Smith</td>
-													<td><a href="#">Review Tab Malfunction</a></td>
-													<td><span class="label label-low">#6 - Low</span></td>
-												</tr>
-												<tr>
-													<td><a href="#">[#18770]</a></td>
-													<td>Nov 22, 2013 08:47</td>
-													<td>Front-End Site</td>
-													<td>John Doe</td>
-													<td><a href="#">Broken Link</a></td>
-													<td><span class="label label-emergency">#2 - Emergency</span></td>
-												</tr>
-												<tr>
-													<td><a href="#">[#18771]</a></td>
-													<td>Nov 23, 2013 14:08</td>
-													<td>Sales</td>
-													<td>Jack</td>
-													<td><a href="#">Need Info About My Order Status</a></td>
-													<td><span class="label label-critical">#1 - Critical</span></td>
-												</tr>
-												<tr>
-													<td><a href="#">[#18772]</a></td>
-													<td>Nov 23, 2013 17:45</td>
-													<td>Techincal Support</td>
-													<td>Darren</td>
-													<td><a href="#">Bouncing Email</a></td>
-													<td><span class="label label-critical">#1 - Critical</span></td>
-												</tr>
-											</tbody>
-										</table>
+										<!-- Table -->
+			  <div class="table-responsive">
+				  <table class="table table-striped  table-condensed">
+	              <thead>
+	                <tr>
+	                  <th>#</th>
+	                  <th>楼栋/房间号/房型</th>
+	                  <th>客户姓名</th>
+	                  <th>上月收租时间</th>
+	                  <th>上月实收费用</th>
+	                  <th>本月应收租日</th>
+	                  <th>操作</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	              <tr>
+								<td>1</td>
+								<td>新房/401/单间</td>
+								<td>401租客</td>
+								<td>2015-7-15</td>
+								<td>340.00</td>
+								<td>26</td>
+								<td>
+									<a class="btn btn-primary btn-sm" href="/myboss/room_tomoney?houseid=b8dadd82-44c7-11e5-b983-e3f00749665c&roomno=401" role="button">收房租</a>
+								</td>
+							</tr>
+						<tr>
+								<td>2</td>
+								<td>新房/305/单间</td>
+								<td>305租客</td>
+								<td>2015-7-24</td>
+								<td>653.70</td>
+								<td>24</td>
+								<td>
+									<a class="btn btn-primary btn-sm" href="/myboss/room_tomoney?houseid=b8dadd82-44c7-11e5-b983-e3f00749665c&roomno=305" role="button">收房租</a>
+								</td>
+							</tr>
+						<tr>
+								<td>3</td>
+								<td>新房/605/单间</td>
+								<td>605租客</td>
+								<td>2015-7-30</td>
+								<td>465.00</td>
+								<td>30</td>
+								<td>
+									<a class="btn btn-primary btn-sm" href="/myboss/room_tomoney?houseid=b8dadd82-44c7-11e5-b983-e3f00749665c&roomno=605" role="button">收房租</a>
+								</td>
+							</tr>
+						</tbody>
+	            </table>
+            </div>
 									</div>
 								</div>
 								<!-- END WIDGET TICKET TABLE -->
@@ -650,17 +534,17 @@
 			<section class="del-section del-section-skin">
 				<h5 class="del-switcher-header">Choose Skins:</h5>
 				<ul>
-					<li><a href="#" title="Slate Gray" class="switch-skin slategray" data-skin="assets/css/skins/slategray.css">Slate Gray</a></li>
-					<li><a href="#" title="Dark Blue" class="switch-skin darkblue" data-skin="assets/css/skins/darkblue.css">Dark Blue</a></li>
-					<li><a href="#" title="Dark Brown" class="switch-skin darkbrown" data-skin="assets/css/skins/darkbrown.css">Dark Brown</a></li>
-					<li><a href="#" title="Light Green" class="switch-skin lightgreen" data-skin="assets/css/skins/lightgreen.css">Light Green</a></li>
-					<li><a href="#" title="Orange" class="switch-skin orange" data-skin="assets/css/skins/orange.css">Orange</a></li>
-					<li><a href="#" title="Red" class="switch-skin red" data-skin="assets/css/skins/red.css">Red</a></li>
-					<li><a href="#" title="Teal" class="switch-skin teal" data-skin="assets/css/skins/teal.css">Teal</a></li>
-					<li><a href="#" title="Yellow" class="switch-skin yellow" data-skin="assets/css/skins/yellow.css">Yellow</a></li>
+					<li><a href="#" title="Slate Gray" class="switch-skin slategray" data-skin="${ctx}/resources/css/skins/slategray.css">Slate Gray</a></li>
+					<li><a href="#" title="Dark Blue" class="switch-skin darkblue" data-skin="${ctx}/resources/css/skins/darkblue.css">Dark Blue</a></li>
+					<li><a href="#" title="Dark Brown" class="switch-skin darkbrown" data-skin="${ctx}/resources/css/skins/darkbrown.css">Dark Brown</a></li>
+					<li><a href="#" title="Light Green" class="switch-skin lightgreen" data-skin="${ctx}/resources/css/skins/lightgreen.css">Light Green</a></li>
+					<li><a href="#" title="Orange" class="switch-skin orange" data-skin="${ctx}/resources/css/skins/orange.css">Orange</a></li>
+					<li><a href="#" title="Red" class="switch-skin red" data-skin="${ctx}/resources/css/skins/red.css">Red</a></li>
+					<li><a href="#" title="Teal" class="switch-skin teal" data-skin="${ctx}/resources/css/skins/teal.css">Teal</a></li>
+					<li><a href="#" title="Yellow" class="switch-skin yellow" data-skin="${ctx}/resources/css/skins/yellow.css">Yellow</a></li>
 				</ul>
-				<button type="button" class="switch-skin-full fulldark" data-skin="assets/css/skins/fulldark.css">Full Dark</button>
-				<button type="button" class="switch-skin-full fullbright" data-skin="assets/css/skins/fullbright.css">Full Bright</button>
+				<button type="button" class="switch-skin-full fulldark" data-skin="${ctx}/resources/css/skins/fulldark.css">Full Dark</button>
+				<button type="button" class="switch-skin-full fullbright" data-skin="${ctx}/resources/css/skins/fullbright.css">Full Bright</button>
 			</section>
 			<label class="fancy-checkbox">
 				<input type="checkbox" id="fixed-top-nav"><span>Fixed Top Navigation</span>

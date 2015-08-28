@@ -49,7 +49,7 @@ jQuery(document).ready(function($) {
 	// check if skin has already applied before
 	var skin = localStorage.getItem('skin');
 	var skinLogo = localStorage.getItem('skinLogo');
-	var skinLogoDefault = 'assets/img/kingadmin-logo-white.png';
+	var skinLogoDefault = 'resources/images/kingadmin-logo-white.png';
 
 	if(skin != null) {
 		$('head').append('<link rel="stylesheet" href="' + skin + '" type="text/css" />');
@@ -75,7 +75,7 @@ jQuery(document).ready(function($) {
 		$('head').append('<link rel="stylesheet" href="' + $(this).attr('data-skin') + '" type="text/css" />');
 
 		if($(this).hasClass('fullbright')) {
-			skinLogo = 'assets/img/kingadmin-logo.png';
+			skinLogo = 'resources/images/kingadmin-logo.png';
 		}else {
 			skinLogo = skinLogoDefault;
 		}
@@ -114,7 +114,7 @@ jQuery(document).ready(function($) {
 				$(this).remove();
 		});
 
-		$('.logo img').attr('src', 'assets/img/kingadmin-logo-white.png');
+		$('.logo img').attr('src', 'resources/images/kingadmin-logo-white.png');
 
 		localStorage.removeItem('skin');
 		localStorage.setItem('skinLogo', skinLogoDefault);
