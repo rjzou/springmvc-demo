@@ -10,17 +10,18 @@
   <body>
           <div class="panel panel-info">
 			  <!-- Default panel contents -->
-			  <div class="panel-heading">抄水表</div>
+			  <div class="panel-heading">本月抄水表(只最新显示5条)</div>
 			  <!-- Table -->
 			  <div class="table-responsive">
 				  <table class="table table-striped  table-condensed">
 	              <thead>
 	                <tr>
 	                  <th>#</th>
-	                  <th>楼栋/房间号/房型</th>
+	                  <th>楼栋 / 房间号 / 房型</th>
 	                  <th>客户姓名</th>
 	                  <th>上次抄表时间</th>
-	                  <th>上次水/电读数</th>
+	                  <th>上次水 / 电读数</th>
+	                  <th>本月应抄表日</th>
 	                  <th>操作</th>
 	                </tr>
 	              </thead>
@@ -39,6 +40,7 @@
 									<td>${item.customname }</td>
 									<td>${item.pre_s_date }</td>
 									<td>${item.water }/${item.elect }</td>
+									<td>${item.cin_day }</td>
 									<td>
 										<a class="btn btn-primary btn-sm" href="${ctx}/room_towaterelect?houseid=${item.houseid }&roomno=${item.roomno }" role="button">抄表</a>
 									</td>
@@ -54,20 +56,20 @@
 
          <div class="panel panel-info">
 			  <!-- Default panel contents -->
-			  <div class="panel-heading">收房租</div>
+			  <div class="panel-heading">本月应收租(只最新显示5条)</div>
 			  <!-- Table -->
 			  <div class="table-responsive">
 				  <table class="table table-striped  table-condensed">
 	              <thead>
 	                <tr>
 	                  <th>#</th>
-	                  <th>楼栋/房间号/房型</th>
+	                  <th>楼栋 / 房间号 / 房型</th>
 	                  <th>客户姓名</th>
 	                  <th>上月实收月租</th>
 	                  <th>上月实收押金</th>
 	                  <th>上月收租日期</th>
 	                  <th>上月实收费用</th>
-	                  <th>本月应收日期</th>
+	                  <th>本月应收日</th>
 	                  <th>操作</th>
 	                </tr>
 	              </thead>

@@ -3,9 +3,7 @@ package com.tiaotiao.web.entity;
 public class Checkout {
 	private String houseid;
 	private int roomno;
-	private String username;
-	private String iphone;
-	private String userid;
+	private String customid;
 	private int monthmoney;
 	private int pressmoney;
 	private int water;
@@ -36,23 +34,13 @@ public class Checkout {
 	public void setRoomno(int roomno) {
 		this.roomno = roomno;
 	}
-	public String getUsername() {
-		return username;
+	
+	
+	public String getCustomid() {
+		return customid;
 	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public String getIphone() {
-		return iphone;
-	}
-	public void setIphone(String iphone) {
-		this.iphone = iphone;
-	}
-	public String getUserid() {
-		return userid;
-	}
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public void setCustomid(String customid) {
+		this.customid = customid;
 	}
 	public int getMonthmoney() {
 		return monthmoney;

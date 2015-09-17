@@ -118,9 +118,9 @@ public class CheckinService {
 				" 	h.housename, "+
 				" 	c.houseid, "+
 				" 	c.roomno, "+
-				" 	c.customname, "+
-				" 	c.iphone, "+
-				" 	c.cardid, "+
+				" 	cus.customname, "+
+				" 	cus.iphone, "+
+				" 	cus.cardid, "+
 				" 	rm.monthmoney, "+
 				" 	rm.pressmoney, "+
 				" 	rm.roommoney, "+
@@ -139,6 +139,7 @@ public class CheckinService {
 				" 	c.created "+
 				" FROM "+
 				" 	t_checkin AS c, "+
+				" 	t_custom AS cus, "+
 				"   t_net_cfg as nc, "+
 				" 	t_house AS h, "+
 				" 	t_waterelect AS we, "+
@@ -148,6 +149,7 @@ public class CheckinService {
 				" 	c.houseid = h.id "+
 				" AND c.houseid = we.houseid "+
 				" AND c.roomno = we.roomno "+
+				" AND c.customid = cus.id "+
 				" AND rm.year = we.year "+
 				" AND rm.month = we.month "+
 				" AND c.houseid = rm.houseid "+

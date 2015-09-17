@@ -17,7 +17,7 @@
 	</licenses>
 	
 	<properties>
-		<jdk.version>1.7</jdk.version>
+		<jdk.version>1.8</jdk.version>
 		<spring.version>4.2.0.RELEASE</spring.version>
 		<!-- <spring.version>3.2.8.RELEASE</spring.version>  -->
 		<jstl.version>1.2</jstl.version>

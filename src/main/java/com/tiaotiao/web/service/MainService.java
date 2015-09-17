@@ -1,6 +1,7 @@
 package com.tiaotiao.web.service;
 
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
@@ -25,50 +26,75 @@ public class MainService {
 	@Resource
 	private Dao dao;
 
+	@Resource
+	private PermissionService permissionService;
+	
 	private Logger logger = Logger.getLogger(MainService.class.getName());
 	
 	/**
-	 * 得到待办待抄手电数据
+	 * 待办待抄水电数据
 	 * @param houseid
 	 * @param roomno
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> getMainRoomWaterElectMapByParams(Map<String, String> params,  final PageRequest pageRequest) throws Exception{
+	public Page<Map<String, Object>> getMainRoomWaterElectMapByParams(Map<String, String> params,  final PageRequest pageRequest,String username) throws Exception{
 		int year = DateUtil.getThisYear();
 		int month  = DateUtil.getThisMonth() ; 
-		int pre_month = month - 1 ;
-		Object[] sql_params = { year,pre_month,year,month};
-		String sql = " select  "+
-				" ci.houseid, "+
-				" h.housename, "+
-				" rt.typename, "+
-				" ci.roomno, "+
-				" ci.customname, "+
-				" CONCAT_WS('-',we.year,we.month,we.day) as pre_s_date, "+
-				" we.water, "+
-				" we.elect "+
-				" from  "+
-				" t_house as h, "+
-				" t_room as r, "+
-				" t_room_type as rt, "+
-				" t_checkin as ci, "+
-				" t_waterelect as we "+
-				" where h.id = r.houseid "+
-				" and r.houseid = ci.houseid "+
-				" and r.roomno = ci.roomno  "+
-				" and r.typecode = rt.typecode "+
-				" and ci.houseid = we.houseid "+
-				" and ci.roomno = we.roomno "+
-				" and we.year = ? "+
-				" and we.month = ? "+
-				" and (ci.houseid,ci.roomno) not in "+
-				" ( "+
-				" 	select houseid,roomno from t_waterelect "+
-				"   where 1=1 "+
-				"   and year = ? "+
-				"   and month = ? "+
+		Object[] sql_params = { year,month};
+		String sql = " SELECT "+
+				" 	h.housename, "+
+				" 	r.houseid, "+
+				" 	r.roomno, "+
+				" 	cus.customname, "+
+				" 	rt.typename, "+
+				" 	CONCAT_WS('-', c.year, c.month, c.day) as in_date, "+
+				"   CONCAT_WS('-',rm.year,rm.month,rm.day) as pre_s_date, "+
+				" 	rm.day as cin_day , "+
+				" 	we.water, "+
+				" 	we.elect "+
+				" FROM "+
+				" 	t_room AS r, "+
+				" 	t_room_type AS rt, "+
+				" 	t_house AS h, "+
+				" 	t_checkin AS c, "+
+				" 	t_custom AS cus, "+
+				" 	t_waterelect AS we, "+
+				" 	v_waterelect_last AS wel, "+
+				"   t_room_money AS rm, "+
+				" 	v_room_money_last AS rml "+
+				" WHERE "+
+				" 	r.houseid = h.id "+
+				" AND c.houseid = r.houseid "+
+				" AND c.roomno = r.roomno "+
+				" AND r.typecode = rt.typecode "+
+				" AND c.houseid = we.houseid "+
+				" AND c.roomno = we.roomno "+
+				" AND c.houseid = rm.houseid "+
+				" AND c.roomno = rm.roomno "+
+				" AND c.customid = cus.id "+
+				" AND rm.year = rml.last_year "+
+				" AND rm.month = rml.last_month "+
+				" AND c.houseid = rml.houseid "+
+				" AND c.roomno = rml.roomno "+
+				" AND c.houseid = wel.houseid "+
+				" AND c.roomno = wel.roomno "+
+				" AND we.year = wel.last_year "+
+				" AND we.month = wel.last_month "+
+				" AND (r.houseid, r.roomno) NOT IN ( "+
+				" 	SELECT "+
+				" 		houseid, "+
+				" 		roomno "+
+				" 	FROM "+
+				" 		t_waterelect "+
+				" 	WHERE "+
+				" 		1 = 1 "+
+				" 	AND YEAR = ? "+
+				" 	AND MONTH = ? "+
 				" ) ";
+				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+") ";
+				sql = sql + " order by rm.day   ";
+				logger.log(Level.INFO, sql);
 				
 		return dao.find(sql, sql_params, pageRequest);
 	}
@@ -79,62 +105,56 @@ public class MainService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> getMainRoomMoneyMapByParams(Map<String, String> params,  final PageRequest pageRequest) throws Exception{
+	public Page<Map<String, Object>> getMainRoomMoneyMapByParams(Map<String, String> params,  final PageRequest pageRequest,String username) throws Exception{
 		int year = DateUtil.getThisYear();
 		int month  = DateUtil.getThisMonth() ; 
 		int pre_month = month - 1 ;
 		Object[] sql_params = { year,month,year,pre_month};
 		
-		// pre_s_date 上月收租日期 , cin_day 应收日期 
-		String sql = " SELECT "+
-				"     tmp.housename, "+
-				"     tmp.houseid, "+
-				"     tmp.roomno, "+
-				"     rm.monthmoney, "+
-				"     rm.pressmoney, "+
-				"     CONCAT_WS('-',rm.year,rm.month,rm.day) as pre_s_date, "+
-				"     rm.roommoney, " +
-				"     tmp.typename, "+
-				"     tmp.cin_day "+
-				" FROM "+
-				"     ( "+
-				"         SELECT "+
-				"             h.housename, "+
-				"             r.houseid, "+
-				"             r.roomno, "+
-				"             c.monthmoney, "+
-				"             c.pressmoney, " +
-				"             rt.typename," +
-				"             c.day as cin_day "+
-				"         FROM "+
-				"             t_room as r, " + 
-				"             t_room_type as rt, " +
-				"             t_house as h, " +
-				"             t_checkin as c " +
-				"         WHERE " +
-				"             r.houseid = h.id " +
-				"         AND r.houseid = c.houseid " +
-				"         AND r.roomno = c.roomno " +
-				"         AND r.houseid = c.houseid " + 
-				"	      AND r.typecode = rt.typecode " +
-				"     ) AS tmp "+
-				" LEFT JOIN t_room_money as rm ON tmp.houseid = rm.houseid "+
-				" AND tmp.roomno = rm.roomno "+
-				" WHERE "+
-				"     (tmp.houseid, tmp.roomno) NOT IN ( "+
-				"         SELECT "+
-				"             houseid, "+
-				"             roomno "+
-				"         FROM "+
-				"             t_room_money "+
-				"         WHERE "+
-				"             1 = 1 " +
-				" and year =  ? " +
-				" and month =  ? " +
-				" ) "+
-				" and rm.year =  ? " +
-				" and rm.month =  ? "; 
-				
-		return dao.find(sql, sql_params, pageRequest);
+		// pre_s_date 上月收租日期 , cin_day 应收日 
+		String sql = " 		SELECT "+
+				" 			h.housename, "+
+				" 			r.houseid, "+
+				" 			r.roomno, "+
+				" 			cus.id as customid, "+
+				" 			cus.customname, "+
+				" 			rm.monthmoney, "+
+				" 			rm.pressmoney, "+
+				" 			rt.typename, "+
+				" 			CONCAT_WS('-',c.year,c.month,c.day) as in_date, "+
+				" 			CONCAT_WS('-',rm.year,rm.month,rm.day) as pre_s_date, "+
+				" 			rm.roommoney, "+
+				" 			c.day AS cin_day "+
+				" 		FROM "+
+				" 			t_room AS r, "+
+				" 			t_room_type AS rt, "+
+				" 			t_house AS h, "+
+				" 			t_checkin AS c, "+
+				" 			t_custom AS cus, "+
+				" 			v_room_money_last AS rml, "+
+				" 			t_room_money AS rm "+
+				" 		WHERE "+
+				" 			r.houseid = h.id "+
+				" 		AND r.houseid = c.houseid "+
+				" 		AND r.roomno = c.roomno "+
+				" 		AND c.customid = cus.id "+
+				" 		AND r.houseid = c.houseid "+
+				" 		AND c.houseid = rml.houseid "+
+				" 		AND c.roomno = rml.roomno "+
+				" 		AND rm.houseid = rml.houseid "+
+				" 		AND rm.roomno = rml.roomno "+
+				" 		AND rm.year = rml.last_year "+
+				" 		AND rm.month = rml.last_month "+
+				" 		AND rt.typecode = r.typecode " ;
+//				" 		AND r.houseid IN ( "+
+//				" 		'89635a0e-418a-11e5-9172-fdf195657018', "+
+//				" 		'97c2b41f-418a-11e5-9172-ade6bde32708' "+
+//				" 		) "+
+//				" 		AND rm.month <> 9 "; 
+				sql = sql + " and rm.month <>  " + month;
+				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+")";
+				sql = sql + " order by rm.day   ";
+		logger.log(Level.INFO, sql);
+		return dao.find(sql, null, pageRequest);
 	}
 }

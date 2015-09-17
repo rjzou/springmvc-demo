@@ -58,13 +58,13 @@
 			<thead> 
 				<tr>
 					<th>#</th>
-					<th>栋</th>
-					<th>房间号</th>
+					<th>栋 / 房间号 / 房型</th>
+					<th>客户名称</th>
 					<th>上月实收月租</th>
 					<th>上月实收押金</th>
 					<th>上月收租日期</th>
 					<th>上月实收费用</th>
-					<th>本月应收日期</th>
+					<th>本月应收日</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -72,8 +72,8 @@
 				<c:forEach items="${list.content}" var="item" varStatus="status">
 					<tr>
 						<td>${status.count }</td>
-						<td>${item.housename }</td>
-						<td>${item.roomno }</td>
+						<td>${item.housename } / ${item.roomno } / ${item.typename }</td>
+						<td>${item.customname }</td>
 						<td>${item.monthmoney } 元</td>
 						<td>${item.pressmoney } 元</td>
 						<td>${item.pre_s_date }</td>

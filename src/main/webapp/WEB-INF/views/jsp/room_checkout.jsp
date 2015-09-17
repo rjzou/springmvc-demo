@@ -58,7 +58,7 @@
 			<thead>
 				<tr>
 					<th>#</th>
-					<th>栋 - 房间号 - 房型</th>
+					<th>栋 / 房间号 / 房型</th>
 					<th>客户姓名</th>
 					<th>入住时间</th>
 					<th>上次收租时间</th>
@@ -72,7 +72,7 @@
 				<c:forEach items="${list.content}" var="item" varStatus="status">
 					<tr>
 						<td>${status.count }</td>
-						<td>${item.housename } - ${item.roomno } - ${item.typename }</td>
+						<td>${item.housename } / ${item.roomno } / ${item.typename }</td>
 						<td>${item.customname }</td>
 						<td>${item.in_date }</td>
 						<td>${item.pre_s_date }</td>

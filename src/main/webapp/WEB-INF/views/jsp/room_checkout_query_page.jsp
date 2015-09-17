@@ -48,7 +48,11 @@
         </tr>
         <tr>
             <th class="col-sm-2">入住日期</th>
-            <td><span class="label label-success">${params.in_date}</span> 已经入住 <span class="label label-success">${params.in_days}</span> 天</td>
+            <td><span class="label label-success">${params.in_date}</span> 已经入住 <span class="label label-info">${params.in_days}</span> 天</td>
+        </tr>
+         <tr>
+            <th class="col-sm-2">退房日期</th>
+            <td><span class="label label-warning">${params.out_date}</span></td>
         </tr>
 		</table>
 		

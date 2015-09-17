@@ -46,6 +46,15 @@ public class WaterElectController extends BaseController {
 	@Resource
 	private WaterElectCfgService waterelectCfgService;
 
+	/**
+	 * 抄水表
+	 * @param model
+	 * @param params
+	 * @param cpage
+	 * @param hsr
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/room_waterelect", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
 		String username  = hsr.getUserPrincipal().getName();
@@ -101,7 +110,6 @@ public class WaterElectController extends BaseController {
 		we.setWaterprice(waterprice);
 		we.setElect(inputElect);
 		we.setElectprice(electprice);
-
 		we.setYear(year);
 		we.setMonth(month);
 		we.setDay(day);

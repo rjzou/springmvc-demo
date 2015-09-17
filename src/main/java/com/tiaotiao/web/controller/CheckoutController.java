@@ -47,6 +47,15 @@ public class CheckoutController extends BaseController {
 	@Resource
 	private WaterElectService waterelectService;
 	
+	/**
+	 * 退房
+	 * @param model
+	 * @param params
+	 * @param cpage
+	 * @param hsr
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/room_checkout", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
 		String username  = hsr.getUserPrincipal().getName();
@@ -144,6 +153,15 @@ public class CheckoutController extends BaseController {
 		return "room_tocheckout";
 	}
 	
+	/**
+	 * 退房查询
+	 * @param model
+	 * @param params
+	 * @param cpage
+	 * @param hsr
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/room_checkout_query", method = RequestMethod.GET)
 	public String roomCheckoutQuery(ModelMap model ,@RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
 		String username  = hsr.getUserPrincipal().getName();
@@ -188,6 +206,7 @@ public class CheckoutController extends BaseController {
 //		params.put("pressmoney", query.get("pressmoney").toString());
 		params.put("in_date", query.get("in_date").toString());
 		params.put("in_days", query.get("in_days").toString());
+		params.put("out_date", query.get("out_date").toString());
 //		params.put("s_date", query.get("s_date").toString());
 //		params.put("s_date", query.get("s_date").toString());
 //		params.put("s_date", query.get("s_date").toString());

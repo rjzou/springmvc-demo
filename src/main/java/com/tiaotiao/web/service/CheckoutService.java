@@ -43,12 +43,12 @@ public class CheckoutService {
 	 * @throws Exception
 	 */
 	public int insertCheckout(Checkout checkout) throws Exception{
-		Object[] params = { checkout.getHouseid(), checkout.getRoomno(),checkout.getUsername(),checkout.getIphone(),checkout.getUserid(), 
+		Object[] params = { checkout.getHouseid(), checkout.getRoomno(),checkout.getCustomid(), 
 				checkout.getMonthmoney(),checkout.getPressmoney(),checkout.getWater(),checkout.getElect(),checkout.getInternet(),
 				checkout.getIp(), checkout.getTrash(),checkout.getPaymoney(),checkout.getKeycount(),checkout.getKeyprice(),
 				checkout.getYear(),checkout.getMonth(),checkout.getDay(), checkout.getCreated()};
-		String sql = "insert into t_checkout(houseid,roomno,username,iphone,userid,monthmoney,pressmoney,water,elect,internet,ip,trash,paymoney,keycount,keyprice,year,month,day,created) "
-				+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+		String sql = "insert into t_checkout(houseid,roomno,customid,monthmoney,pressmoney,water,elect,internet,ip,trash,paymoney,keycount,keyprice,year,month,day,created) "
+				+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 		int n = dao.update(sql, params);
 		return n;
 	}
@@ -123,7 +123,7 @@ public class CheckoutService {
 				" 	h.housename, "+
 				" 	r.houseid, "+
 				" 	r.roomno, "+
-				" 	c.customname, "+
+				" 	cus.customname, "+
 				" 	rm.monthmoney, " +
 				" 	rm.pressmoney, " +
 				" 	r.description, " + 
@@ -135,6 +135,7 @@ public class CheckoutService {
 				" 	t_room_type as rt, "+
 				" 	t_house as h, "+
 				" 	t_checkin as c, "+
+				" 	t_custom as cus, "+
 				" 	t_room_money as rm, "+
 				" 	v_room_money_last as rml "+
 				" WHERE "+
@@ -142,6 +143,7 @@ public class CheckoutService {
 				" AND r.houseid = c.houseid "+
 				" AND r.roomno = c.roomno "+
 				" AND r.typecode = rt.typecode "+
+				" AND c.customid = cus.id "+
 				" AND c.houseid = rm.houseid "+
 				" AND c.roomno = rm.roomno "+
 				" AND c.houseid = rml.houseid "+
@@ -175,36 +177,57 @@ public class CheckoutService {
 		String roomtypeid = params.get("roomtypeid");
 		int year = DateUtil.getThisYear();
 		int month = DateUtil.getThisMonth();
-		int pre_month = month - 1 ;
-		Object[] sql_params = { year , pre_month,year , pre_month, year , month };
+		Object[] sql_params = {year , month };
 		String sql = " SELECT "+
 				" 	h.housename, "+
 				" 	r.houseid, "+
 				" 	r.roomno, "+
-				" 	c.customname, "+
-				" 	CONCAT_WS('-',c.year,c.month,c.day) as in_date, "+
-				" 	rm.pre_s_date, "+
+				" 	cus.customname, "+
+				" 	rt.typename, "+
+				" 	CONCAT_WS('-', c.year, c.month, c.day) as in_date, "+
+				"   CONCAT_WS('-',rm.year,rm.month,rm.day) as pre_s_date, "+
 				" 	we.water, "+
-				" 	we.elect, "+
-				" 	r.created "+
+				" 	rm.day as cin_day, "+
+				" 	we.elect "+
 				" FROM "+
-				" 	t_room as r, "+
-				" 	t_house as h, "+
-				" 	t_checkin as c,"
-				+ " (select houseid,roomno,water,elect from t_waterelect where year=? and month=?) as we, "
-				+ " (select houseid,roomno,CONCAT_WS('-',year,month,day) as pre_s_date from t_room_money where year=? and month=?) as rm "+
+				" 	t_room AS r, "+
+				" 	t_room_type AS rt, "+
+				" 	t_house AS h, "+
+				" 	t_checkin AS c, "+
+				" 	t_custom AS cus, "+
+				" 	t_waterelect AS we, "+
+				" 	v_waterelect_last AS wel, "+
+				"   t_room_money AS rm, "+
+				" 	v_room_money_last AS rml "+
 				" WHERE "+
 				" 	r.houseid = h.id "+
 				" AND c.houseid = r.houseid "+
 				" AND c.roomno = r.roomno "+
+				" AND r.typecode = rt.typecode "+
 				" AND c.houseid = we.houseid "+
 				" AND c.roomno = we.roomno "+
 				" AND c.houseid = rm.houseid "+
 				" AND c.roomno = rm.roomno "+
-				" and (r.houseid,r.roomno) not in "+
-				" (select houseid,roomno from t_waterelect where 1=1"+
-				" and year = ? " +
-				" and month = ? ) ";
+				" AND c.customid = cus.id "+
+				" AND rm.year = rml.last_year "+
+				" AND rm.month = rml.last_month "+
+				" AND c.houseid = rml.houseid "+
+				" AND c.roomno = rml.roomno "+
+				" AND c.houseid = wel.houseid "+
+				" AND c.roomno = wel.roomno "+
+				" AND we.year = wel.last_year "+
+				" AND we.month = wel.last_month "+
+				" AND (r.houseid, r.roomno) NOT IN ( "+
+				" 	SELECT "+
+				" 		houseid, "+
+				" 		roomno "+
+				" 	FROM "+
+				" 		t_waterelect "+
+				" 	WHERE "+
+				" 		1 = 1 "+
+				" 	AND YEAR = ? "+
+				" 	AND MONTH = ? "+
+				" ) ";
 				if (houseid != null && houseid.trim().length() > 0 ) {
 					sql = sql + " and r.houseid in ("+houseid+")";
 				}
@@ -266,7 +289,7 @@ public class CheckoutService {
 				"     r.houseid, " +
 				"     r.roomno, " + 
 				"	  rt.typename," +
-				"     c.customname," +
+				"     cus.customname," +
 				"     rm.monthmoney, " +
 				"     rm.pressmoney, " +
 				"     CONCAT_WS('-',c.inyear,c.inmonth,c.inday) as in_date, " +
@@ -279,12 +302,14 @@ public class CheckoutService {
 				"     t_house AS h," + 
 				"     t_room_type AS rt, " +
 				"     t_checkout AS c, " +
+				"     t_custom AS cus, " +
 				"     t_room_money_out AS rm " +
 				" WHERE " +
 				"     r.houseid = h.id " +
 				" AND r.houseid = c.houseid " +
 				" AND r.roomno = c.roomno " + 
 				" AND r.typecode = rt.typecode " + 
+				" AND c.customid = cus.id " + 
 				" AND r.houseid = rm.houseid " +
 				" AND r.roomno = rm.roomno ";
 //				" AND rm.year = ? " + 
@@ -318,17 +343,20 @@ public class CheckoutService {
 				" 	h.housename, "+
 				" 	r.houseid, "+
 				" 	r.roomno, "+
-				" 	c.customname, "+
+				" 	cus.customname, "+
 				" 	CONCAT_WS('-', c.inyear, c.inmonth, c.inday) AS in_date, " + 
+				" 	CONCAT_WS('-', c.year, c.month, c.day) AS out_date, " + 
 				"   datediff(CONCAT_WS('-', c.year, c.month, c.day), CONCAT_WS('-', c.inyear, c.inmonth, c.inday)) as in_days "+
 				" FROM "+
 				" 	t_room AS r, "+
 				" 	t_house AS h, "+
-				" 	t_checkout AS c "+
+				" 	t_checkout AS c, "+
+				" 	t_custom AS cus "+
 				" WHERE "+
 				" 	r.houseid = h.id "+
 				" AND r.houseid = c.houseid "+
 				" AND r.roomno = c.roomno "+
+				" AND c.customid = cus.id "+
 				" AND c.houseid = ? "+
 				" AND c.roomno = ? " ;
 		

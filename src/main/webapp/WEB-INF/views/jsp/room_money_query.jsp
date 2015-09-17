@@ -57,7 +57,7 @@
 			<thead>
 				<tr>
 					<th>#</th>
-					<th>栋 - 房间号 - 户型</th>
+					<th>栋 / 房间号 / 房型</th>
 					<th>客户姓名</th>
 					<th>入住日期</th>
 					<th>实收日期</th>
@@ -71,7 +71,7 @@
 				<c:forEach items="${list.content}" var="item" varStatus="status">
 					<tr>
 						<td>${status.count }</td>
-						<td>${item.housename } - ${item.roomno } - ${item.typename }</td>
+						<td>${item.housename } / ${item.roomno } / ${item.typename }</td>
 						<td>${item.customname }</td>
 						<td>${item.in_day }</td>
 						<td>${item.s_date }</td>

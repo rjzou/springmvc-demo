@@ -95,59 +95,54 @@ public class RoomMoneyService {
 		int year = DateUtil.getThisYear();
 		int month = DateUtil.getThisMonth();
 		int pre_month = month - 1;
-		String sql = " SELECT "+
-				"     tmp.housename, "+
-				"     tmp.houseid, "+
-				"     tmp.roomno, "+
-				"     rm.monthmoney, "+
-				"     rm.pressmoney, "+
-				"     CONCAT_WS('-',rm.year,rm.month,rm.day) as pre_s_date, "+
-				"     rm.roommoney, " +
-				"     tmp.typecode, "+
-				"     tmp.cin_day "+
-				" FROM "+
-				"     ( "+
-				"         SELECT "+
-				"             h.housename, "+
-				"             r.houseid, "+
-				"             r.roomno, "+
-				"             c.monthmoney, "+
-				"             c.pressmoney, " +
-				"             r.typecode," +
-				"             c.day as cin_day "+
-				"         FROM "+
-				"             t_room as r, "+
-				"             t_house as h, "+
-				"             t_checkin as c "+
-				"         WHERE "+
-				"             r.houseid = h.id "+
-				"         AND r.houseid = c.houseid "+
-				"         AND r.roomno = c.roomno "+
-				"         AND r.houseid = c.houseid "+
-				"     ) AS tmp "+
-				" LEFT JOIN t_room_money as rm ON tmp.houseid = rm.houseid "+
-				" AND tmp.roomno = rm.roomno "+
-				" WHERE "+
-				"     (tmp.houseid, tmp.roomno) NOT IN ( "+
-				"         SELECT "+
-				"             houseid, "+
-				"             roomno "+
-				"         FROM "+
-				"             t_room_money "+
-				"         WHERE "+
-				"             1 = 1 ";
-				sql = sql + " and year =  " + year;
-				sql = sql + " and month =  " + month;
-				sql = sql + " ) ";
-				sql = sql + " and rm.year =  " + year;
-				sql = sql + " and rm.month =  " + pre_month;
+		String sql = " 		SELECT "+
+					" 			h.housename, "+
+					" 			r.houseid, "+
+					" 			r.roomno, "+
+					" 			cus.id as customid, "+
+					" 			cus.customname, "+
+					" 			rm.monthmoney, "+
+					" 			rm.pressmoney, "+
+					" 			rt.typename, "+
+					" 			CONCAT_WS('-',c.year,c.month,c.day) as in_date, "+
+					" 			CONCAT_WS('-',rm.year,rm.month,rm.day) as pre_s_date, "+
+					" 			rm.roommoney, "+
+					" 			c.day AS cin_day "+
+					" 		FROM "+
+					" 			t_room AS r, "+
+					" 			t_room_type AS rt, "+
+					" 			t_house AS h, "+
+					" 			t_checkin AS c, "+
+					" 			t_custom AS cus, "+
+					" 			v_room_money_last AS rml, "+
+					" 			t_room_money AS rm "+
+					" 		WHERE "+
+					" 			r.houseid = h.id "+
+					" 		AND r.houseid = c.houseid "+
+					" 		AND r.roomno = c.roomno "+
+					" 		AND c.customid = cus.id "+
+					" 		AND r.houseid = c.houseid "+
+					" 		AND c.houseid = rml.houseid "+
+					" 		AND c.roomno = rml.roomno "+
+					" 		AND rm.houseid = rml.houseid "+
+					" 		AND rm.roomno = rml.roomno "+
+					" 		AND rm.year = rml.last_year "+
+					" 		AND rm.month = rml.last_month "+
+					" 		AND rt.typecode = r.typecode ";
+//					" 		AND r.houseid IN ( "+
+//					" 		'89635a0e-418a-11e5-9172-fdf195657018', "+
+//					" 		'97c2b41f-418a-11e5-9172-ade6bde32708' "+
+//					" 		) "+
+//					" 		AND rm.month <> 9 ";
+				sql = sql + " and rm.month <>  " + month;
 				if (houseid != null && houseid.trim().length() > 0 ) {
-					sql = sql + " AND tmp.houseid in ("+houseid+")";
+					sql = sql + " AND r.houseid in ("+houseid+")";
 				}
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
-					sql = sql + " AND tmp.typecode in ('"+roomtypeid+"')";
+					sql = sql + " AND r.typecode in ('"+roomtypeid+"')";
 				}
-				sql = sql +" and tmp.houseid in ("+permissionService.getUserHouses(username)+")";
+				sql = sql +" and r.houseid in ("+permissionService.getUserHouses(username)+")";
+				
 		return dao.find(sql, null, pageRequest);
 	}
 	
@@ -160,7 +155,7 @@ public class RoomMoneyService {
 				"     r.houseid, " +
 				"     r.roomno, " + 
 				"	  rt.typename," +
-				"     c.customname," +
+				"     cus.customname," +
 				"     rm.monthmoney, " +
 				"     rm.pressmoney, " +
 				"     CONCAT_WS('-',c.year,c.month,c.day) as in_day, " +
@@ -173,12 +168,14 @@ public class RoomMoneyService {
 				"     t_house AS h," + 
 				"     t_room_type AS rt, " +
 				"     t_checkin AS c, " +
-				"     t_room_money AS rm " +
+				"     t_room_money AS rm, " +
+				"     t_custom AS cus " +
 				" WHERE " +
 				"     r.houseid = h.id " +
 				" AND r.houseid = c.houseid " +
 				" AND r.roomno = c.roomno " + 
 				" AND r.typecode = rt.typecode " + 
+				" AND c.customid = cus.id " + 
 				" AND r.houseid = rm.houseid " +
 				" AND r.roomno = rm.roomno ";
 				if (houseid != null && houseid.trim().length() > 0 ) {
@@ -191,7 +188,7 @@ public class RoomMoneyService {
 					sql = sql + " AND rt.typecode in ('"+roomtypeid+"')";
 				}
 				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+") ";
-				sql = sql + " order by c.year desc,c.month desc,c.day desc,c.created desc ";
+				sql = sql + " order by rm.year desc,rm.month desc,rm.day desc,rm.created desc ";
 		return dao.find(sql, null, pageRequest);
 	}
 	
@@ -266,9 +263,9 @@ public class RoomMoneyService {
 					"     h.housename, "+
 					"     c.houseid, "+
 					"     c.roomno, "+
-					"     c.customname, "+
-					"     c.iphone, "+
-					"     c.cardid, "+
+					"     cus.customname, "+
+					"     cus.iphone, "+
+					"     cus.cardid, "+
 					"     rm.monthmoney, "+
 					"     rm.pressmoney, "+
 //					"     c.internet, "+
@@ -281,6 +278,7 @@ public class RoomMoneyService {
 					"     c.created "+
 					" FROM "+
 					"     t_checkin as c, "+
+					"     t_custom as cus, "+
 					"     t_house as h, "+
 					"     t_waterelect as we , "+ 
 					"  	  t_room_money as rm"+
@@ -290,6 +288,7 @@ public class RoomMoneyService {
 					" AND c.roomno = we.roomno " + 
 					" AND c.houseid = rm.houseid " + 
 					" AND c.roomno = rm.roomno " + 
+					" AND c.customid = cus.id " + 
 					" AND we.year = rm.year " + 
 					" AND we.month = rm.month " + 
 					" AND c.houseid = ? "+

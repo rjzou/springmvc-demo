@@ -60,7 +60,7 @@
 			<thead>
 				<tr>
 					<th>#</th>
-					<th>栋 - 房间号 - 房型</th>
+					<th>栋 / 房间号 / 房型</th>
 					<th>参考月租</th>
 					<th>参考押金</th>
 					<th>操作</th>
@@ -71,7 +71,7 @@
 				<c:forEach items="${list.content}" var="item" varStatus="status">
 					<tr>
 						<td>${status.count }</td>
-						<td>${item.housename } - ${item.roomno } - ${item.typename }</td>
+						<td>${item.housename } / ${item.roomno } / ${item.typename }</td>
 						<td>${item.monthmoney }</td>
 						<td>${item.pressmoney }</td>
 						<td>

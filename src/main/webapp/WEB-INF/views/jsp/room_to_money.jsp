@@ -25,9 +25,9 @@
             <div class="alert alert-danger" role="alert">${danger}</div>
             <script type="text/javascript">
             function autojump(){
-            	location.href="${ctx}/room_money";
+            	location.href="${ctx}/room_towaterelect?houseid=${params.houseid}&roomno=${params.roomno}";
             }
-            setTimeout("autojump()",100000);
+            setTimeout("autojump()",10000);
             </script>
       </c:if>  
       <div class="form-group">

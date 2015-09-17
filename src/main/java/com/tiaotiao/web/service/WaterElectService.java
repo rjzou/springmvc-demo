@@ -43,8 +43,8 @@ public class WaterElectService {
 	 * @throws Exception
 	 */
 	public int updateWaterElect(WaterElect we) throws Exception{
-		Object[] params = { we.getWater(),we.getElect(),we.getUpdated(),we.getHouseid(), we.getRoomno()};
-		String sql = "update t_waterelect set water = ?,elect = ?,updated =? where houseid=? and roomno =? ";
+		Object[] params = { we.getWater(),we.getElect(),we.getUpdated(),we.getHouseid(), we.getRoomno(),we.getYear(),we.getMonth()};
+		String sql = "update t_waterelect set water = ?,elect = ?,updated =? where houseid=? and roomno =? and year = ? and month = ? ";
 		int n = dao.update(sql, params);
 		return n;
 	}

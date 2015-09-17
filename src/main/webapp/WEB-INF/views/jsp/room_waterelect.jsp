@@ -32,13 +32,13 @@
 			<thead>
 				<tr>
 					<th>#</th>
-					<th>栋</th>
-					<th>房间号</th>
+					<th>栋 / 房间号 / 房型</th>
 					<th>入住姓名</th>
 					<th>入住时间</th>
 					<th>上次抄表时间</th>
 					<th>上次水读数</th>
 					<th>上次电读数</th>
+					<th>本月应抄表日</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -46,13 +46,13 @@
 				<c:forEach items="${list.content}" var="item" varStatus="status">
 					<tr>
 						<td>${status.count }</td>
-						<td>${item.housename }</td>
-						<td>${item.roomno }</td>
+						<td>${item.housename } / ${item.roomno } / ${item.typename }</td>
 						<td>${item.customname }</td>
 						<td>${item.in_date }</td>
 						<td>${item.pre_s_date }</td>
 						<td>${item.water }</td>
 						<td>${item.elect }</td>
+						<td>${item.cin_day }</td>
 						<td>
 							<a class="btn btn-info btn-sm" href="${ctx}/room_towaterelect?houseid=${item.houseid }&roomno=${item.roomno }" role="button">抄表</a>
 						</td>

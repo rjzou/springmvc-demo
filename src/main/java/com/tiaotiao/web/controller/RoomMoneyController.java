@@ -56,6 +56,15 @@ public class RoomMoneyController extends BaseController {
 	@Resource
 	private NetCfgService netCfgService;
 	
+	/**
+	 * 收房租
+	 * @param model
+	 * @param params
+	 * @param cpage
+	 * @param hsr
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/room_money", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
 		String username  = hsr.getUserPrincipal().getName();
@@ -99,7 +108,7 @@ public class RoomMoneyController extends BaseController {
 		WaterElect prewe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month -1);
 		WaterElect curwe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month);
 		if (curwe == null) {
-			model.addAttribute("danger", "本月该房间还没有抄水电表，请先抄水电表,10秒钟自动返回");
+			model.addAttribute("danger", "本月该房间还没有抄水电表，请先抄水电表,10秒钟自动跳转抄水表!");
 		}else{
 			int usedWater = curwe.getWater() - prewe.getWater();
 			int usedElect = curwe.getElect() - prewe.getElect();
@@ -139,7 +148,7 @@ public class RoomMoneyController extends BaseController {
 		int monthmoney = Integer.valueOf(params.get("monthmoney"));
 		int pressmoney = Integer.valueOf(params.get("pressmoney"));
 		double roommoney = Double.valueOf(params.get("roommoney"));
-		int netprice = Integer.valueOf(params.get("netprice"));
+		double netprice = Double.valueOf(params.get("netprice"));
 		
 		RoomMoney rm =new RoomMoney();
 		rm.setHouseid(houseid);
@@ -229,7 +238,15 @@ public class RoomMoneyController extends BaseController {
 		model.put("params", params);
 		return "room_to_money";
 	}
-		
+	/**
+	 * 收租查询	
+	 * @param model
+	 * @param params
+	 * @param cpage
+	 * @param hsr
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/room_money_query", method = RequestMethod.GET)
 	public String roomMoneyQuery(ModelMap model ,@RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
 		String username  = hsr.getUserPrincipal().getName();
