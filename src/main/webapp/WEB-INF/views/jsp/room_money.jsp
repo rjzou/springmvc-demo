@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="row">
-  <form class="navbar-form navbar-left" role="search" action="${ctx}/room_checkin" method="post">
+  <form class="navbar-form navbar-left" role="search" action="${ctx}/room_money" method="post">
    <div class="form-group">
   <select class="selectpicker" name="selectHouse"  title="请选择..." multiple>
 	  	<c:forEach var="house" items="${houses}">  

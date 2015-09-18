@@ -1,80 +1,58 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@include file="/tag.jsp"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <title>Maven + Spring MVC</title>
  
-<spring:url value="/resources/core/css/hello.css" var="coreCss" />
-<spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
+<spring:url value="http://ethaizone.github.io/Bootstrap-Confirmation/assets/css/bootstrap.css" var="bootstrapCss" />
 <link href="${bootstrapCss}" rel="stylesheet" />
-<link href="${coreCss}" rel="stylesheet" />
+
+ <link href="http://ethaizone.github.io/Bootstrap-Confirmation/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="http://ethaizone.github.io/Bootstrap-Confirmation/assets/css/docs.css" rel="stylesheet">
+    <link href="http://ethaizone.github.io/Bootstrap-Confirmation/assets/js/google-code-prettify/prettify.css" rel="stylesheet">
 </head>
  
-<nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-	<div class="navbar-header">
-		<a class="navbar-brand" href="#">Spring 3 MVC Project</a>
-	</div>
-  </div>
-</nav>
  
-<div class="jumbotron">
-  <div class="container">
-	<h1>${title}</h1>
-	<p>
-		<c:if test="${not empty name}">
-			Hello ${name}
-		</c:if>
- 
-		<c:if test="${empty name}">
-			Welcome Welcome!
-		</c:if>
-    </p>
-    <p>
-	<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-    </p>
-  </div>
-</div>
- 
-<div class="container">
- 
-  <div class="row">
-	<div class="col-md-4">
-		<h2>Heading</h2>
-		<p>ABC</p>
-		<p>
-		<a class="btn btn-default" href="#" role="button">View details</a>
-		</p>
-	</div>
-	<div class="col-md-4">
-		<h2>Heading</h2>
-		<p>ABC</p>
-		<p>
-		<a class="btn btn-default" href="#" role="button">View details</a>
-		</p>
-	</div>
-	<div class="col-md-4">
-		<h2>Heading</h2>
-		<p>ABC</p>
-		<p>
-		<a class="btn btn-default" href="#" role="button">View details</a>
-		</p>
-	</div>
-  </div>
- 
-  <hr>
-  <footer>
-	<p>&copy; Mkyong.com 2015</p>
-  </footer>
-</div>
- 
-<spring:url value="/resources/core/css/hello.js" var="coreJs" />
-<spring:url value="/resources/core/css/bootstrap.min.js" var="bootstrapJs" />
- 
-<script src="${coreJs}"></script>
-<script src="${bootstrapJs}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
- 
+<body>
+<h4>Four directions</h4>
+          <div class="bs-docs-example tooltip-demo">
+            <ul class="bs-docs-tooltip-examples">
+              <li><a class="btn" data-toggle="confirmation" data-placement="left">Confirmation on left</a></li>
+              <li><a class="btn" data-toggle="confirmation" data-placement="top">Confirmation on top</a></li>
+              <li><a class="btn" data-toggle="confirmation" data-placement="bottom">Confirmation on bottom</a></li>
+              <li><a class="btn" data-toggle="confirmation" data-placement="right">Confirmation on right</a></li>
+            </ul>
+          </div>
+
+          <h4>Singleton <span class="label label-important">New feature!</span></h4>
+          <div class="bs-docs-example tooltip-demo">
+            <ul class="bs-docs-tooltip-examples">
+              <li><a class="btn" data-toggle="confirmation-singleton" data-placement="left">Confirmation on left</a></li>
+              <li><a class="btn" data-toggle="confirmation-singleton" data-placement="top">Confirmation on top</a></li>
+              <li><a class="btn" data-toggle="confirmation-singleton" data-placement="bottom">Confirmation on bottom</a></li>
+              <li><a class="btn" data-toggle="confirmation-singleton" data-placement="right">Confirmation on right</a></li>
+            </ul>
+          </div>
+
+          <h4>Popout <span class="label label-important">New feature!</span></h4>
+          <div class="bs-docs-example tooltip-demo">
+            <ul class="bs-docs-tooltip-examples">
+              <li><a class="btn" data-toggle="confirmation-popout" data-placement="left">Confirmation on left</a></li>
+              <li><a class="btn" data-toggle="confirmation-popout" data-placement="top">Confirmation on top</a></li>
+              <li><a class="btn" data-toggle="confirmation-popout" data-placement="bottom">Confirmation on bottom</a></li>
+              <li><a class="btn" data-toggle="confirmation-popout" data-placement="right">Confirmation on right</a></li>
+            </ul>
+          </div>
+<script src="http://ethaizone.github.io/Bootstrap-Confirmation/assets/js/jquery.js"></script>
+<script src="http://ethaizone.github.io/Bootstrap-Confirmation/assets/js/bootstrap-transition.js"></script>
+  <script src="http://ethaizone.github.io/Bootstrap-Confirmation/assets/js/bootstrap-tooltip.js"></script>
+
+<script src="http://ethaizone.github.io/Bootstrap-Confirmation/assets/js/holder/holder.js"></script>
+    <script src="http://ethaizone.github.io/Bootstrap-Confirmation/assets/js/google-code-prettify/prettify.js"></script>
+
+<script src="http://ethaizone.github.io/Bootstrap-Confirmation/assets/js/application.js"></script>
+<script src="http://ethaizone.github.io/Bootstrap-Confirmation/bootstrap-confirmation.js"></script>
 </body>
 </html>

@@ -39,11 +39,11 @@
 			</option> 
 		</c:forEach>
   </select>
-   <input type="hidden" id="roomtypeid" name="roomtypeid" />
+   <input type="hidden" id="roomtypeid" name="roomtypeid" value="${params.roomtypeid}"/>
   </div>
   <div class="form-group">
   
-    <input type="text" class="form-control" placeholder="输入房间号">
+    <input type="text" class="form-control" placeholder="输入房间号"  id="roomno" name="roomno" value="${params.roomno}"/>
   </div>
    	<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />

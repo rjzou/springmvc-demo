@@ -59,11 +59,7 @@ public class RoomService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> selectAllRoom(Map<String, String> params, final PageRequest pageRequest,String username) throws Exception{
-		String houseid = params.get("houseid");
-		String roomno = params.get("roomno");
-		String roomtypeid = params.get("roomtypeid");
-//		Object[] params = { houseid,roomno};
+	public Page<Map<String, Object>> selectAllRoom(String houseid,String roomtypeid,String roomno, final PageRequest pageRequest,String username) throws Exception{
 		String sql = " SELECT "+
 				" 	h.housename, "+
 				" 	r.houseid, "+
@@ -82,13 +78,13 @@ public class RoomService {
 				" 	r.houseid = h.id "+
 				" and r.typecode = rt.typecode ";
 				if (houseid != null && houseid.trim().length() > 0 ) {
-					sql = sql + " AND r.houseid in ('"+houseid+"')";
+					sql = sql + " AND r.houseid in ("+houseid+")";
 				}
 				if (roomno != null && roomno.trim().length() > 0 ) {
-					sql = sql + " AND r.roomno in ("+roomno+")";
+					sql = sql + " AND r.roomno  like  '%"+roomno+"%'";
 				}
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
-					sql = sql + " AND r.typecode in ('"+roomtypeid+"')";
+					sql = sql + " AND r.typecode in ("+roomtypeid+")";
 				}
 				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+") ";
 		return dao.find(sql, null, pageRequest);

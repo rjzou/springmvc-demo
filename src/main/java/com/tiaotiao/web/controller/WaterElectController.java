@@ -15,15 +15,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tiaotiao.web.entity.House;
+import com.tiaotiao.web.entity.RoomType;
 import com.tiaotiao.web.entity.WaterElect;
 import com.tiaotiao.web.entity.WaterElectCfg;
 import com.tiaotiao.web.service.CheckinService;
 import com.tiaotiao.web.service.CheckoutService;
 import com.tiaotiao.web.service.HouseService;
 import com.tiaotiao.web.service.RoomService;
+import com.tiaotiao.web.service.RoomTypeService;
 import com.tiaotiao.web.service.WaterElectCfgService;
 import com.tiaotiao.web.service.WaterElectService;
 import com.tiaotiao.web.utils.DateUtil;
+import com.tiaotiao.web.utils.MyStringUtil;
  
 @Controller
 public class WaterElectController extends BaseController {
@@ -45,6 +48,9 @@ public class WaterElectController extends BaseController {
 	
 	@Resource
 	private WaterElectCfgService waterelectCfgService;
+	
+	@Resource
+	private RoomTypeService roomtypeService;
 
 	/**
 	 * 抄水表
@@ -58,14 +64,19 @@ public class WaterElectController extends BaseController {
 	@RequestMapping(value = "/room_waterelect", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
 		String username  = hsr.getUserPrincipal().getName();
+		String houseid = MyStringUtil.convertToInSql(params.get("houseid"));
+		String roomtypeid = MyStringUtil.convertToInSql(params.get("roomtypeid"));
+		String roomno = params.get("roomno");
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = checkoutService.selectAllNotWaterElectRoom(params, page,username); 
+		Page<Map<String, Object>> list = checkoutService.selectAllNotWaterElectRoom(houseid,roomtypeid,roomno, page,username); 
+		List<RoomType> types = roomtypeService.selectAllRoomType();
+		model.put("types", types);
 		List<House> houses = houseService.selectAllHouse(username);
+		model.put("houses", houses);
 		model.put("p", cpage);
 		model.put("list", list);
 		model.put("params", params);
 		params.put("page_id", "room_waterelect");
-		model.put("houses", houses);
 		return "room_waterelect";
 	}
 	

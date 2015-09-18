@@ -5,20 +5,17 @@
 <html lang="en">
 <head>
 <meta name="theme" content="basic_theme" />
-<link rel="stylesheet" href="${ctx}/resources/css/bootstrap-select.css">
-<script src="${ctx}/resources/js/bootstrap-select.js"></script>
-<script src="${ctx}/resources/js/bootstrap-confirmation.min.js"></script>
 </head>
 <body>
 <div class="row">
-	<form role="form" method="post" action="${ctx}/room_checkout_add">
+	<form role="form" id="form1" method="post" action="${ctx}/room_checkout_add">
 	  <c:if test="${!empty message}">  
             <div class="alert alert-success" role="alert">${message}</div>
             <script type="text/javascript">
             function autojump(){
             	location.href="${ctx}/room_checkout";
             }
-            setTimeout("autojump()",100000);
+            setTimeout("autojump()",10000);
             </script>
       </c:if>
       <c:if test="${!empty danger}">  
@@ -27,13 +24,9 @@
             function autojump(){
             	location.href="${ctx}/room_checkout";
             }
-            setTimeout("autojump()",100000);
+            setTimeout("autojump()",10000);
             </script>
       </c:if>  
-      <div class="form-group">
-      	<button type="submit" class="btn btn-primary" data-toggle="confirmation"  data-placement="bottom" data-popout="true" <c:if test="${!empty danger}">disabled</c:if> >确认退房</button>
-		<a class="btn btn-default" href="${ctx}/room_checkout" role="button">返回</a>
-	  </div>
       <table class="table table-bordered">
         <tr>
             <th class="col-sm-2">楼房</th>
@@ -119,16 +112,22 @@
  	<input type="hidden" id="coutmoney" name="coutmoney" value="${params.coutmoney}"/>
  		<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
-		<button type="submit" class="btn btn-primary" data-toggle="confirmation" data-placement="top" data-popout="true" <c:if test="${!empty danger}">disabled</c:if> >确认退房</button>
+		<button type="submit" class="btn btn-primary" data-toggle="confirmation" data-placement="top" <c:if test="${!empty danger}">disabled</c:if> >确认退房</button>
 		<a class="btn btn-default" href="${ctx}/room_checkout" role="button">返回</a>
 	</form>
 </div>
+<script src="${ctx}/resources/js/bootstrap-confirmation.js"></script>
 <script type="text/javascript">
-$($('[data-toggle="confirmation"]').confirmation({
-	title:"确定要退房吗?",
-	onConfirm: function(event) { return true; },
-	onCancel: function(event) { return false; }
-}));
+$(function() {
+	$('[data-toggle="confirmation"]').confirmation({
+		title:"只有在收到房租后才点确认操作，确定收到房租了吗?",
+		btnOkClass:'btn btn-sm btn-success',
+		btnOkLabel:"确认",
+		btnCancelLabel:"取消",
+		onConfirm: function() { $("#form1").submit(); },
+		onCancel: function() { return false; }
+	});
+});
 </script>
 </body>
 </html>

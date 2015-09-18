@@ -25,6 +25,7 @@ import com.tiaotiao.web.service.RoomTypeService;
 import com.tiaotiao.web.service.WaterElectService;
 import com.tiaotiao.web.utils.DateUtil;
 import com.tiaotiao.web.utils.GuidUtil;
+import com.tiaotiao.web.utils.MyStringUtil;
  
 @Controller
 public class CheckoutController extends BaseController {
@@ -59,8 +60,11 @@ public class CheckoutController extends BaseController {
 	@RequestMapping(value = "/room_checkout", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
 		String username  = hsr.getUserPrincipal().getName();
+		String houseid = MyStringUtil.convertToInSql(params.get("houseid"));
+		String roomtypeid = MyStringUtil.convertToInSql(params.get("roomtypeid"));
+		String roomno = params.get("roomno");
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = checkoutService.getAllRoomfulByParams(params, page, username); 
+		Page<Map<String, Object>> list = checkoutService.getAllRoomfulByParams(houseid,roomtypeid,roomno, page, username); 
 		model.put("p", cpage);
 		model.put("list", list);
 		List<RoomType> types = roomtypeService.selectAllRoomType();
@@ -165,8 +169,11 @@ public class CheckoutController extends BaseController {
 	@RequestMapping(value = "/room_checkout_query", method = RequestMethod.GET)
 	public String roomCheckoutQuery(ModelMap model ,@RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
 		String username  = hsr.getUserPrincipal().getName();
+		String houseid = MyStringUtil.convertToInSql(params.get("houseid"));
+		String roomtypeid = MyStringUtil.convertToInSql(params.get("roomtypeid"));
+		String roomno = params.get("roomno");
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = checkoutService.queryAllCheckOutRoomByParams(params, page,username); 
+		Page<Map<String, Object>> list = checkoutService.queryAllCheckOutRoomByParams(houseid,roomtypeid,roomno, page,username); 
 		model.put("p", cpage);
 		model.put("list", list);
 		List<RoomType> types = roomtypeService.selectAllRoomType();

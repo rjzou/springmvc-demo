@@ -22,6 +22,7 @@ import com.tiaotiao.web.service.CheckoutService;
 import com.tiaotiao.web.service.HouseService;
 import com.tiaotiao.web.service.RoomService;
 import com.tiaotiao.web.service.RoomTypeService;
+import com.tiaotiao.web.utils.MyStringUtil;
  
 @Controller
 public class RoomController extends BaseController {
@@ -44,8 +45,11 @@ public class RoomController extends BaseController {
 	@RequestMapping(value = "/room", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
 		String username  = hsr.getUserPrincipal().getName();
+		String houseid = MyStringUtil.convertToInSql(params.get("houseid"));
+		String roomtypeid = MyStringUtil.convertToInSql(params.get("roomtypeid"));
+		String roomno = params.get("roomno");
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = roomService.selectAllRoom(params, page ,username); 
+		Page<Map<String, Object>> list = roomService.selectAllRoom(houseid,roomtypeid,roomno, page ,username); 
 		List<House> houses = houseService.selectAllHouse(username);
 		List<RoomType> types = roomtypeService.selectAllRoomType();
 		model.put("types", types);

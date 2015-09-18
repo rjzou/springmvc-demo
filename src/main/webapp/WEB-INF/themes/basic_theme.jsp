@@ -10,7 +10,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" href="${ctx}/resources/favicon.ico">
 
     <title>出租房智能管理系统V1.0</title>
 
@@ -56,6 +56,7 @@
                 <li><a href="${ctx}/room_checkout">现在退房</a></li>
                 <li><a href="${ctx}/room_checkout_query">退房查询</a></li>
                 <li><a href="${ctx}/room_waterelect">抄水表</a></li>
+                <li><a href="${ctx}/custom_query">客户查询</a></li>
               </ul>
             </li>
             <li class="dropdown">
@@ -99,8 +100,8 @@
             </li>
            
           </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
+          <form class="navbar-form navbar-right" action="https://www.baidu.com/baidu" method="get" target="_blank">
+            <input type="text" class="form-control" name="word" placeholder="Search...">
           </form>
         </div>
       </div>
@@ -119,6 +120,7 @@
             <li <c:if test="${params.page_id == 'room_checkout'}">class="active" </c:if>><a href="${ctx}/room_checkout">现在退房</a></li>
             <li <c:if test="${params.page_id == 'room_checkout_query'}">class="active" </c:if>><a href="${ctx}/room_checkout_query">退房查询</a></li>
             <li <c:if test="${params.page_id == 'room_waterelect'}">class="active" </c:if>><a href="${ctx}/room_waterelect">抄水电表</a></li>
+            <li <c:if test="${params.page_id == 'custom_query'}">class="active" </c:if>><a href="${ctx}/custom_query">客户查询</a></li>
           </ul>
           <ul class="nav nav-sidebar">
             <li <c:if test="${params.page_id == 'netcfg'}">class="active" </c:if>><a href="${ctx}/netcfg">网络开关</a></li>

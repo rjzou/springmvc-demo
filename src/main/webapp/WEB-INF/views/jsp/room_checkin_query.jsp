@@ -75,7 +75,7 @@
 						<td>${item.monthmoney } 元</td>
 						<td>${item.pressmoney } 元</td>
 						<td>
-							<a class="btn btn-primary btn-sm" href="${ctx}/room_checkin_query_page?houseid=${item.houseid }&roomno=${item.roomno }&year=${item.d_year }&month=${item.d_month }" role="button">查看详细</a>
+							<a class="btn btn-primary btn-sm" href="${ctx}/room_checkin_query_page?houseid=${item.houseid }&roomno=${item.roomno }&year=${item.d_year }&month=${item.d_month }" role="button">详情</a>
 						</td>
 					</tr>
 				</c:forEach>

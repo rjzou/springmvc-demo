@@ -11,20 +11,40 @@
 <body>
 <div class="row">
   <form class="navbar-form navbar-left" role="search">
-  <div class="form-group">
-  <select class="selectpicker"  title="请选择..." multiple>
+<div class="form-group">
+  <select class="selectpicker" name="selectHouse"  title="请选择..." multiple>
 	  	<c:forEach var="house" items="${houses}">  
-	  	<option value="${house.id}"> 
+	  	<option value="${house.id}"  <c:if test="${fn:contains(params.houseid, house.id) == true }">selected="selected"</c:if> > 
 			${house.housename}  
 			</option> 
 		</c:forEach>
   </select>
+   <input type="hidden" id="houseid" name="houseid" value="${params.houseid}"/>
+  <script type="text/javascript">
+  function to_search(){
+	 var v_select_houses = $(".selectpicker[name='selectHouse']").val();
+	 var v_select_room_type = $(".selectpicker[name='selectRoomtype']").val();
+	 $("#houseid").val(v_select_houses);
+	 $("#roomtypeid").val(v_select_room_type);
+	 return true;
+  }
+  </script>
+  </div>
+  <div class="form-group">
+	  <select class="selectpicker" name="selectRoomtype"  title="请选择..." multiple>
+		  	<c:forEach var="type" items="${types}">  
+		  	<option value="${type.typecode}" <c:if test="${fn:contains(params.roomtypeid, type.typecode) == true }">selected="selected"</c:if>> 
+				${type.typename}  
+				</option> 
+			</c:forEach>
+	  </select>
+	   <input type="hidden" id="roomtypeid" name="roomtypeid" value="${params.roomtypeid}"/>
   </div>
   <div class="form-group">
   
-    <input type="text" class="form-control" placeholder="Search">
+    <input type="text" class="form-control" placeholder="Search"   id="roomno" name="roomno" value="${params.roomno}"/>
   </div>
-  <button type="submit" class="btn btn-default">查询</button>
+  <button type="submit" class="btn btn-default" onclick="return to_search();">查询</button>
 </form>
 </div><!-- /.row -->
 	<div class="table-responsive">

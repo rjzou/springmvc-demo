@@ -89,9 +89,9 @@ public class RoomMoneyService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> getAllRoomfulMapByMonth(Map<String, String> params, final PageRequest pageRequest,String username) throws Exception{
-		String houseid = params.get("houseid"); 
-		String roomtypeid = params.get("roomtypeid");
+	public Page<Map<String, Object>> getAllRoomfulMapByMonth(String houseid,String roomtypeid,String roomno, final PageRequest pageRequest,String username) throws Exception{
+//		String houseid = params.get("houseid"); 
+//		String roomtypeid = params.get("roomtypeid");
 		int year = DateUtil.getThisYear();
 		int month = DateUtil.getThisMonth();
 		int pre_month = month - 1;
@@ -139,17 +139,17 @@ public class RoomMoneyService {
 					sql = sql + " AND r.houseid in ("+houseid+")";
 				}
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
-					sql = sql + " AND r.typecode in ('"+roomtypeid+"')";
+					sql = sql + " AND r.typecode in ("+roomtypeid+")";
+				}
+				if (roomno != null && roomno.trim().length() > 0 ) {
+					sql = sql + " AND r.roomno  like  '%"+roomno+"%'";
 				}
 				sql = sql +" and r.houseid in ("+permissionService.getUserHouses(username)+")";
 				
 		return dao.find(sql, null, pageRequest);
 	}
 	
-	public Page<Map<String, Object>> queryAllRoomMoneyByParams(Map<String, String> params, final PageRequest pageRequest,String username) throws Exception{
-		String houseid = params.get("houseid");
-		String roomtypeid = params.get("roomtypeid");
-		String roomno = params.get("roomno");
+	public Page<Map<String, Object>> queryAllRoomMoneyByParams(String houseid,String roomtypeid,String roomno, final PageRequest pageRequest,String username) throws Exception{
 		String sql = " SELECT "+
 				"     h.housename, " +
 				"     r.houseid, " +
@@ -182,10 +182,10 @@ public class RoomMoneyService {
 					sql = sql + " AND c.houseid in ("+houseid+")";
 				}
 				if (roomno != null && roomno.trim().length() > 0 ) {
-					sql = sql + " AND c.roomno in ("+roomno+")";
+					sql = sql + " AND c.roomno  like  '%"+roomno+"%'";
 				}
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
-					sql = sql + " AND rt.typecode in ('"+roomtypeid+"')";
+					sql = sql + " AND rt.typecode in ("+roomtypeid+")";
 				}
 				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+") ";
 				sql = sql + " order by rm.year desc,rm.month desc,rm.day desc,rm.created desc ";
@@ -194,13 +194,11 @@ public class RoomMoneyService {
 	
 	public Map<String,Object> getRoomMoneyQueryPageMapById(String houseid,int roomno,int year,int month) throws Exception{
 		Object[] params = { houseid,roomno,year,month};
-//		int year = DateUtil.getThisYear();
-//		int month = DateUtil.getThisMonth() -1 ;
 		String sql = " SELECT "+
                 "     h.housename, "+
                 "     r.houseid, "+
                 "     r.roomno, "+
-                "     c.customname,"+
+                "     cus.customname,"+
                 "     rm.monthmoney, "+
                 "     rm.pressmoney, "+
                 "     CONCAT_WS('-',c.year,c.month,c.day) as in_day, " + 
@@ -226,7 +224,8 @@ public class RoomMoneyService {
                 "     t_checkin AS c, "+ 
                 "     t_waterelect AS we,"+
                 "     t_room_money AS rm,"+ 
-                "     t_net_cfg as nc "+
+                "     t_net_cfg AS nc, "+
+                "     t_custom AS cus "+
                 " WHERE "+
                 "     r.houseid = h.id "+
                 " AND r.houseid = c.houseid "+
@@ -235,6 +234,7 @@ public class RoomMoneyService {
                 " AND c.roomno = we.roomno " + 
                 " AND c.roomno = nc.roomno " + 
                 " AND c.houseid = nc.houseid " + 
+                " AND c.customid = cus.id " + 
                 " AND we.year = rm.year "+ 
                 " AND we.month = rm.month "+
                 " AND r.houseid = rm.houseid "+

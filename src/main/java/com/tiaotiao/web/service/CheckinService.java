@@ -10,6 +10,8 @@ import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.ObjectUtils.Null;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import com.tiaotiao.web.entity.NetCfg;
 import com.tiaotiao.web.entity.Room;
 import com.tiaotiao.web.entity.RoomMoney;
 import com.tiaotiao.web.entity.User;
+import com.tiaotiao.web.entity.UserHouses;
 import com.tiaotiao.web.entity.WaterElect;
 import com.tiaotiao.web.utils.Dao;
 import com.tiaotiao.web.utils.DateUtil;
@@ -91,6 +94,18 @@ public class CheckinService {
 		String sql = "select houseid,roomno,customid,trash,keycount,keyprice,year,month,day,created from t_checkin where houseid = ? and roomno = ? ";
 		return dao.findFirst(Checkin.class,sql, params);
 	}
+	/**
+	 * 
+	 * @param customid
+	 * @return
+	 * @throws Exception
+	 */
+	public Checkin getCheckinByCustomId(String customid) throws Exception{
+		Object[] params = { customid };
+		String sql = "select houseid,roomno,customid,trash,keycount,keyprice,year,month,day,created from t_checkin where customid = ? ";
+		return dao.findFirst(Checkin.class,sql, params);
+	}
+	
 //	/**
 //	 * 
 //	 * @param params
@@ -174,9 +189,8 @@ public class CheckinService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> selectAllEmptyRoom(Map<String, String> params, final PageRequest pageRequest,String username) throws Exception{
-		String houseid = params.get("houseid");
-		String roomtypeid = params.get("roomtypeid");
+	public Page<Map<String, Object>> selectAllEmptyRoom(String houseid,String roomtypeid,String roomno, final PageRequest pageRequest,String username) throws Exception{
+		
 		String sql = "select h.housename,r.houseid,r.roomno,r.monthmoney,r.pressmoney,r.description,rt.typename "
 				+ " from t_room as r,t_room_type as rt,t_house as h "
 				+ " where r.houseid = h.id "
@@ -187,7 +201,10 @@ public class CheckinService {
 					sql = sql + " and r.houseid in ("+houseid+")";
 				}
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
-					sql = sql + " and r.typecode in ('"+roomtypeid+"')";
+					sql = sql + " and r.typecode in ("+roomtypeid+")";
+				}
+				if (roomno != null && roomno.trim().length() > 0 ) {
+					sql = sql + " and r.roomno  like  '%"+roomno+"%'";
 				}
 				sql = sql +" and r.houseid in ("+permissionService.getUserHouses(username)+")";
 				
@@ -204,14 +221,7 @@ public class CheckinService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Page<Map<String, Object>> queryAllRoomfulByParams(Map<String, String> params, final PageRequest pageRequest,String username) throws Exception{
-		String houseid = params.get("houseid");
-		String roomtypeid = params.get("roomtypeid");
-		String roomno = params.get("roomno");
-		int year = DateUtil.getThisYear();
-		int month = DateUtil.getThisMonth();
-		Object[] sql_params = {year,month};
-		
+	public Page<Map<String, Object>> queryAllRoomfulByParams(String houseid,String roomtypeid,String roomno, final PageRequest pageRequest,String username) throws Exception{
 		String sql = " SELECT "+
 				"     h.housename, " +
 				"     r.houseid, " +
@@ -231,6 +241,7 @@ public class CheckinService {
 				"     t_room_type AS rt, " +
 				"     t_checkin AS c, " +
 				"     t_room_money AS rm, " +
+				"     v_room_money_last AS rml, " +
 				"     t_custom AS cus " +
 				" WHERE " +
 				"     r.houseid = h.id " +
@@ -239,16 +250,19 @@ public class CheckinService {
 				" AND r.typecode = rt.typecode " + 
 				" AND r.houseid = rm.houseid " +
 				" AND r.roomno = rm.roomno " +
+				" AND rm.houseid = rml.houseid " +
+				" AND rm.roomno = rml.roomno " +
+				" AND rm.year = rml.last_year " +
+				" AND rm.month = rml.last_month " +
 				" AND c.customid = cus.id " ;
-//			    " AND rm.month = ? ";
 				if (houseid != null && houseid.trim().length() > 0 ) {
 					sql = sql + " AND c.houseid in ("+houseid+")";
 				}
 				if (roomno != null && roomno.trim().length() > 0 ) {
-					sql = sql + " AND c.roomno in ("+roomno+")";
+					sql = sql + " AND c.roomno  like  '%"+roomno+"%'";
 				}
 				if (roomtypeid != null && roomtypeid.trim().length() > 0 ) {
-					sql = sql + " AND rt.typecode in ('"+roomtypeid+"')";
+					sql = sql + " AND rt.typecode in ("+roomtypeid+")";
 				}
 				sql = sql + " and r.houseid in ("+permissionService.getUserHouses(username)+")";
 				sql = sql + " order by c.year desc,c.month desc,c.day desc,c.created desc ";

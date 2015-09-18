@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,7 @@ import com.tiaotiao.web.service.RoomService;
 import com.tiaotiao.web.service.RoomTypeService;
 import com.tiaotiao.web.service.WaterElectService;
 import com.tiaotiao.web.utils.DateUtil;
+import com.tiaotiao.web.utils.MyStringUtil;
  
 @Controller
 public class RoomMoneyController extends BaseController {
@@ -68,8 +70,13 @@ public class RoomMoneyController extends BaseController {
 	@RequestMapping(value = "/room_money", method = RequestMethod.GET)
 	public String printIndex(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
 		String username  = hsr.getUserPrincipal().getName();
+		
+		String houseid = MyStringUtil.convertToInSql(params.get("houseid"));
+		String roomtypeid = MyStringUtil.convertToInSql(params.get("roomtypeid"));
+		String roomno = params.get("roomno");
+		
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = roomMoneyService.getAllRoomfulMapByMonth(params, page,username); 
+		Page<Map<String, Object>> list = roomMoneyService.getAllRoomfulMapByMonth(houseid,roomtypeid,roomno, page,username); 
 		model.put("p", cpage);
 		model.put("list", list);
 		List<RoomType> types = roomtypeService.selectAllRoomType();
@@ -80,6 +87,11 @@ public class RoomMoneyController extends BaseController {
 		model.put("params", params);
 		return "room_money";
 	}
+	@RequestMapping(value = "/room_money", method = RequestMethod.POST)
+	public String roomMoneySearch(ModelMap model , @RequestParam Map<String, String> params,  @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
+		return this.printIndex(model, params, cpage,hsr);
+	}
+	
 	@RequestMapping(value = "/room_to_money", method = RequestMethod.GET)
 	public String roomToMoney(ModelMap model, @RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage) throws Exception {
 		String houseid = params.get("houseid");
@@ -250,8 +262,11 @@ public class RoomMoneyController extends BaseController {
 	@RequestMapping(value = "/room_money_query", method = RequestMethod.GET)
 	public String roomMoneyQuery(ModelMap model ,@RequestParam Map<String, String> params, @RequestParam(value = "p", defaultValue = "1") int cpage,HttpServletRequest hsr) throws Exception {
 		String username  = hsr.getUserPrincipal().getName();
+		String houseid = MyStringUtil.convertToInSql(params.get("houseid"));
+		String roomtypeid = MyStringUtil.convertToInSql(params.get("roomtypeid"));
+		String roomno = params.get("roomno");
 		PageRequest page = new PageRequest(cpage - 1, PAGE_NUMERIC);
-		Page<Map<String, Object>> list = roomMoneyService.queryAllRoomMoneyByParams(params, page,username); 
+		Page<Map<String, Object>> list = roomMoneyService.queryAllRoomMoneyByParams(houseid,roomtypeid,roomno, page,username); 
 		model.put("p", cpage);
 		model.put("list", list);
 		List<RoomType> types = roomtypeService.selectAllRoomType();
