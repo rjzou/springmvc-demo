@@ -249,7 +249,7 @@ public class RoomMoneyService {
 	}
 	
 	/**
-	 *  显示入住信息
+	 *  收房租操作页面
 	 * @param house_id
 	 * @param room_no
 	 * @return
@@ -268,7 +268,6 @@ public class RoomMoneyService {
 					"     cus.cardid, "+
 					"     rm.monthmoney, "+
 					"     rm.pressmoney, "+
-//					"     c.internet, "+
 					"     c.trash, "+
 					"     c.keycount, "+
 					"     c.keyprice, "+
@@ -282,7 +281,7 @@ public class RoomMoneyService {
 					"     t_house as h, "+
 					"     t_waterelect as we , "+ 
 					"  	  t_room_money as rm, "+
-					"  	  v_room_money_last AS rml "+
+					"  	  v_room_money_last as rml "+
 					" WHERE "+
 					"     c.houseid = h.id "+
 					" AND c.houseid = we.houseid "+

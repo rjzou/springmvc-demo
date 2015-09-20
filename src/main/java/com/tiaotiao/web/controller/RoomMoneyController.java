@@ -97,7 +97,7 @@ public class RoomMoneyController extends BaseController {
 		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
 		Map<String,Object> checkin = roomMoneyService.getRoomMoneyCheckinMapById(houseid,roomno);
-		NetCfg netCfg = netCfgService.getNetCfgById(houseid, roomno);
+		
 		params.put("houseid", String.valueOf(checkin.get("houseid")));
 		params.put("roomno", String.valueOf(checkin.get("roomno")));
 		params.put("housename", String.valueOf(checkin.get("housename")));
@@ -112,13 +112,18 @@ public class RoomMoneyController extends BaseController {
 		params.put("water", String.valueOf(checkin.get("water")));
 		params.put("elect", String.valueOf(checkin.get("elect")));
 		params.put("trash", String.valueOf(checkin.get("trash")));//卫生费
-		params.put("needinternet", "0"); //default
-		params.put("netprice", String.valueOf(checkin.get("netprice"))); //default
+		
+		NetCfg netCfg = netCfgService.getNetCfgById(houseid, roomno);
+		if (netCfg != null) {
+			params.put("needinternet", "1");
+			params.put("netprice", String.valueOf(netCfg.getNetprice()));//网费
+		}else{
+			params.put("needinternet", "0"); //default
+			params.put("netprice", "0"); //default
+		}
 		
 		int year = DateUtil.getThisYear();
 		int month = DateUtil.getThisMonth();// 获取月份
-//		WaterElect prewe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month -1);
-//		WaterElect curwe = waterElectService.selectWaterelectByIdAndYearMonth(houseid, roomno,cur_year,cur_month);
 		WaterElect we = waterElectService.getWaterElectById(houseid, roomno,year,month);
 		if (we == null) {
 			model.addAttribute("danger", "本月该房间还没有抄水电表，请先抄水电表,10秒钟自动跳转抄水表!");
@@ -136,15 +141,10 @@ public class RoomMoneyController extends BaseController {
 			double roommoney = Integer.valueOf(checkin.get("monthmoney").toString()) + 
 					usedWaterPrice + usedElectPrice  + 
 					Integer.valueOf(checkin.get("trash").toString());
-			//+ Integer.valueOf(checkin.get("internet").toString())
 			
 			if (netCfg != null) {
-				params.put("needinternet", "1");
-				params.put("netprice", String.valueOf(netCfg.getNetprice()));//网费
 				roommoney = roommoney + netCfg.getNetprice();
 			}
-//			String msg ="需要收取 ";
-//			params.put("msg", msg);
 			params.put("roommoney", String.valueOf(roommoney));
 		}
 		params.put("page_id", "room_money");

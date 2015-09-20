@@ -49,20 +49,19 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">常用 <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="${ctx}/room_checkin">开始入住</a></li>
-                <li><a href="${ctx}/room_checkin_query">入住查询</a></li>
-                <li role="separator" class="divider"></li>
                 <li><a href="${ctx}/room_money">收房租</a></li>
-                <li><a href="${ctx}/room_money_query">收租查询</a></li>
                 <li><a href="${ctx}/room_checkout">现在退房</a></li>
-                <li><a href="${ctx}/room_checkout_query">退房查询</a></li>
                 <li><a href="${ctx}/room_waterelect">抄水表</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="${ctx}/room_checkin_query">入住查询</a></li>
+                <li><a href="${ctx}/room_money_query">收租查询</a></li>
+                <li><a href="${ctx}/room_checkout_query">退房查询</a></li>
                 <li><a href="${ctx}/custom_query">客户查询</a></li>
               </ul>
             </li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">配置 <span class="caret"></span></a>
               <ul class="dropdown-menu">
-              	<li><a href="${ctx}/netcfg">网络开关</a></li>
                 <li><a href="${ctx}/house">楼房配置</a></li>
                 <li><a href="${ctx}/room">房间配置</a></li>
                 <li><a href="${ctx}/waterelectcfg">水电价配置</a></li>
@@ -112,18 +111,18 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li <c:if test="${params.page_id == 'room_checkin'}">class="active" </c:if>><a href="${ctx}/room_checkin">开始入住 <span class="sr-only">(current)</span></a></li>
-            <li <c:if test="${params.page_id == 'room_checkin_query'}">class="active" </c:if>><a href="${ctx}/room_checkin_query">入住查询</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
             <li <c:if test="${params.page_id == 'room_money'}">class="active" </c:if>><a href="${ctx}/room_money">收房租</a></li>
-            <li <c:if test="${params.page_id == 'room_money_query'}">class="active" </c:if>><a href="${ctx}/room_money_query">收租查询</a></li>
             <li <c:if test="${params.page_id == 'room_checkout'}">class="active" </c:if>><a href="${ctx}/room_checkout">现在退房</a></li>
-            <li <c:if test="${params.page_id == 'room_checkout_query'}">class="active" </c:if>><a href="${ctx}/room_checkout_query">退房查询</a></li>
             <li <c:if test="${params.page_id == 'room_waterelect'}">class="active" </c:if>><a href="${ctx}/room_waterelect">抄水电表</a></li>
-            <li <c:if test="${params.page_id == 'custom_query'}">class="active" </c:if>><a href="${ctx}/custom_query">客户查询</a></li>
+            
           </ul>
           <ul class="nav nav-sidebar">
-            <li <c:if test="${params.page_id == 'netcfg'}">class="active" </c:if>><a href="${ctx}/netcfg">网络开关</a></li>
+           <li <c:if test="${params.page_id == 'room_checkin_query'}">class="active" </c:if>><a href="${ctx}/room_checkin_query">入住查询</a></li>
+           <li <c:if test="${params.page_id == 'room_money_query'}">class="active" </c:if>><a href="${ctx}/room_money_query">收租查询</a></li>
+           <li <c:if test="${params.page_id == 'room_checkout_query'}">class="active" </c:if>><a href="${ctx}/room_checkout_query">退房查询</a></li>
+           <li <c:if test="${params.page_id == 'custom_query'}">class="active" </c:if>><a href="${ctx}/custom_query">客户查询</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
           	<li <c:if test="${params.page_id == 'house'}">class="active" </c:if>><a href="${ctx}/house">楼房配置</a></li>
             <li <c:if test="${params.page_id == 'room'}">class="active" </c:if>><a href="${ctx}/room">房间配置</a></li>
             <li <c:if test="${params.page_id == 'waterelectcfg'}">class="active" </c:if>><a href="${ctx}/waterelectcfg">水电价配置</a></li>

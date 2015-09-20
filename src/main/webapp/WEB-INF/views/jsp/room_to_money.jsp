@@ -93,7 +93,7 @@
 	            <span class="label label-danger" id="lmonthmoney">${params.monthmoney}</span>+<span class="label label-danger">${params.usedwaterprice}</span>
 	            +<span class="label label-danger">${params.usedelectprice}</span>+<span class="label label-danger" id="lnetprice">${params.netprice}</span>
 	            +<span class="label label-danger">${params.trash}</span>
-	             = <h3>需要收取费用 <span class="label label-warning" id="lroommoney">${params.roommoney}</span> 元</h3>
+	             = <h3>需要收取 <span class="label label-warning" id="lroommoney">${params.roommoney}</span> 元 月租</h3>
               		</c:otherwise>
 				</c:choose>
              </td>
@@ -144,7 +144,7 @@ function inputChange(){
 	var v_netprice = parseFloat($("#netprice").val());
 	var v_trash = parseFloat('${params.trash}');
 	$("#lmonthmoney").text(v_monthmoney);
-	$("#lnetprice").text(v_netprice);
+	$("#lnetprice").text(v_netprice.toFixed(1));
 	var v_roommoney = (v_monthmoney + v_usedwaterprice + v_usedelectprice + v_netprice + v_trash).toFixed(1);
 	$("#lroommoney").text(v_roommoney);
 	$("#roommoney").text(v_roommoney);
