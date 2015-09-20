@@ -5,8 +5,8 @@
 <html lang="en">
 <head>
     <meta name="theme" content="basic_theme" />
-	<link rel="stylesheet" href="${ctx}/resources/css/bootstrap-select.css">
-	<script src="${ctx}/resources/js/bootstrap-select.js"></script>
+	<link rel="stylesheet" href="${ctx_cdn}/resources/css/bootstrap-select.css">
+	<script src="${ctx_cdn}/resources/js/bootstrap-select.js"></script>
 </head>
 <body>
 <ul class="nav nav-pills">

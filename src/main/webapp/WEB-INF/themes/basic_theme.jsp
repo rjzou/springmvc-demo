@@ -10,18 +10,18 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="${ctx}/resources/favicon.ico">
+    <link rel="icon" href="${ctx_cdn}/resources/favicon.ico">
 
     <title>出租房智能管理系统V1.0</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="${ctx}/resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${ctx_cdn}/resources/css/bootstrap.min.css">
 
     <!-- Custom styles for this template -->
-    <link href="${ctx}/resources/css/dashboard.css" rel="stylesheet">
+    <link href="${ctx_cdn}/resources/css/dashboard.css" rel="stylesheet">
 
- 	<script type="text/javascript" src="${ctx}/resources/js/jquery-1.11.3.min.js"></script>
-  	<script type="text/javascript" src="${ctx}/resources/js/bootstrap.min.js"></script>
+ 	<script type="text/javascript" src="${ctx_cdn}/resources/js/jquery-1.11.3.min.js"></script>
+  	<script type="text/javascript" src="${ctx_cdn}/resources/js/bootstrap.min.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>

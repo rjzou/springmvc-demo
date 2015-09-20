@@ -6,3 +6,4 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
+<c:set var="ctx_cdn" value="http://7xl8m1.com1.z0.glb.clouddn.com" />

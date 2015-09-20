@@ -5,11 +5,11 @@
 <html lang="en">
 <head>
 <meta name="theme" content="basic_theme" />
-<script src="${ctx}/resources/js/bootstrap-confirmation.min.js"></script>
+<script src="${ctx_cdn}/resources/js/bootstrap-confirmation.min.js"></script>
 </head>
 <body>
 <div class="row">
-	<form role="form" method="post" action="${ctx}/house_del">
+	<form role="form" id="form1" method="post" action="${ctx}/house_del">
 	  <c:if test="${!empty message}">  
             <div class="alert alert-success" role="alert">${message}</div>
       </c:if> 
@@ -34,12 +34,18 @@
 		<a class="btn btn-default" href="${ctx}/house" role="button">返回</a>
 	</form>
 </div>
+<script src="${ctx_cdn}/resources/js/bootstrap-confirmation.js"></script>
 <script type="text/javascript">
-$($('[data-toggle="confirmation"]').confirmation({
-	title:"确定要删除该楼栋信息吗?",
-	onConfirm: function(event) { return true; },
-	onCancel: function(event) { return false; }
-}));
+$(function() {
+	$('[data-toggle="confirmation"]').confirmation({
+		title:"确定要删除该楼栋信息吗?",
+		btnOkClass:'btn btn-sm btn-success',
+		btnOkLabel:"确认",
+		btnCancelLabel:"取消",
+		onConfirm: function() { $("#form1").submit(); },
+		onCancel: function() { return false; }
+	});
+});
 </script>
 </body>
 </html>

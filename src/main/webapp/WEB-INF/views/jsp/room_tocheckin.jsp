@@ -5,11 +5,11 @@
 <html lang="en">
 <head>
 <meta name="theme" content="basic_theme" />
-<link rel="stylesheet" href="${ctx}/resources/css/bootstrap-select.css">
-<link rel="stylesheet" href="${ctx}/resources/css/typeahead.css">
-<script  type="text/javascript" src="${ctx}/resources/js/bootstrap-select.js"></script>
-<script type="text/javascript" src="${ctx}/resources/js/typeahead.bundle.js"></script>
- <script type="text/javascript" src="${ctx}/resources/js/handlebars.js"></script>
+<link rel="stylesheet" href="${ctx_cdn}/resources/css/bootstrap-select.css">
+<link rel="stylesheet" href="${ctx_cdn}/resources/css/typeahead.css">
+<script  type="text/javascript" src="${ctx_cdn}/resources/js/bootstrap-select.js"></script>
+<script type="text/javascript" src="${ctx_cdn}/resources/js/typeahead.bundle.js"></script>
+ <script type="text/javascript" src="${ctx_cdn}/resources/js/handlebars.js"></script>
 </head>
 <body>
 <div class="row">

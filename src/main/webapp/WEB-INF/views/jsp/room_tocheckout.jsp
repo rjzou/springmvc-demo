@@ -151,7 +151,7 @@
   		从收租算起不足一个星期，房租费按30元/天计算;超过一个星期房租费不予退还;
   	</p>
 </div>
-<script src="${ctx}/resources/js/bootstrap-confirmation.js"></script>
+<script src="${ctx_cdn}/resources/js/bootstrap-confirmation.js"></script>
 <script type="text/javascript">
 $(function() {
 	$('[data-toggle="confirmation"]').confirmation({
