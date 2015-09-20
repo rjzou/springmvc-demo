@@ -85,10 +85,10 @@ public class CheckoutController extends BaseController {
 	public String roomCheckoutAdd(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
 		String houseid = params.get("houseid");
 		int roomno = Integer.valueOf(params.get("roomno"));
-		double coutmoney = Double.valueOf(params.get("coutmoney"));
+		double sumbackmoney = Double.valueOf(params.get("sumbackmoney"));
 		String newId = GuidUtil.guid();
 		try {
-			int n = checkoutService.checkout(newId, houseid, roomno , coutmoney);
+			int n = checkoutService.checkout(newId, houseid, roomno , sumbackmoney);
 			if (n > 0) {
 					model.addAttribute("message", "操作退房成功,10秒钟自动返回");
 			}else{
@@ -117,7 +117,7 @@ public class CheckoutController extends BaseController {
 		params.put("pressmoney", String.valueOf(checkin.get("pressmoney")));
 		params.put("roommoney", String.valueOf(checkin.get("roommoney")));
 		params.put("pre_s_date", String.valueOf(checkin.get("pre_s_date")));//上次收租时间
-//		params.put("day", String.valueOf(checkin.get("day")));
+		params.put("in_days", String.valueOf(checkin.get("in_days")));
 		params.put("water", String.valueOf(checkin.get("water")));
 		params.put("elect", String.valueOf(checkin.get("elect")));
 		params.put("netprice", String.valueOf(checkin.get("netprice")));//网费
@@ -142,15 +142,28 @@ public class CheckoutController extends BaseController {
 			params.put("electprice", String.valueOf(we.getElectprice()));
 			params.put("usedwaterprice", String.valueOf(usedWaterPrice));
 			params.put("usedelectprice", String.valueOf(usedElectPrice));
-			double coutmoney = Integer.valueOf(checkin.get("pressmoney").toString()) - 
+			int pressmoney =Integer.valueOf(checkin.get("pressmoney").toString());
+			double backpressmoney = pressmoney - 
 					usedWaterPrice -usedElectPrice - Integer.valueOf(checkin.get("netprice").toString()) - 
-					Integer.valueOf(checkin.get("trash").toString())-sumkeyprice;
+					Integer.valueOf(checkin.get("trash").toString());
 			String msg ="需要收取 ";
-			if (coutmoney > 0) {
-				msg = "需要退还 ";
+			if (backpressmoney > 0) {
+				msg = "押金退还 ";
 			}
 			params.put("msg", msg);
-			params.put("coutmoney", String.valueOf(coutmoney));
+			params.put("backpressmoney", String.valueOf(backpressmoney));
+			
+			int monthmoney =Integer.valueOf(checkin.get("monthmoney").toString());
+			int in_days =Integer.valueOf(checkin.get("in_days").toString());
+			if (in_days < 7) {
+				//30元一天
+				monthmoney = monthmoney - (30 * 3);
+			}
+			else{
+				monthmoney = 0 ;
+			}
+			params.put("backmonthmoney", String.valueOf(monthmoney));
+			params.put("sumbackmoney", String.valueOf(backpressmoney + monthmoney));
 		}
 		params.put("page_id", "room_checkout");
 		model.put("params", params);

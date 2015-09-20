@@ -78,7 +78,7 @@ public class CustomService {
 	 * @throws Exception
 	 */
 	public List<Custom> getCustomList() throws Exception{
-		String sql = "select customname,iphone,cardid,year,month,day,created,updated from t_custom ";
+		String sql = "select id,customname,iphone,cardid,year,month,day,created,updated from t_custom ";
 		logger.log(Level.INFO, sql);
 		return dao.find(Custom.class,sql);
 	}

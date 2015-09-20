@@ -65,7 +65,6 @@
 					<th>实收月租</th>
 					<th>实收押金</th>
 					<th>操作</th>
-					<th>备注</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -82,7 +81,6 @@
 							<a class="btn btn-primary btn-sm" href="${ctx}/room_tocheckout?houseid=${item.houseid }&roomno=${item.roomno }" role="button">退房</a>
 							<a class="btn btn-info btn-sm" href="${ctx}/room_checkin_query_page?houseid=${item.houseid }&roomno=${item.roomno }&return_url=${ctx}/room_checkout" role="button">详情</a>
 						</td>
-						<td>${item.description }</td>
 					</tr>
 				</c:forEach>
 			</tbody>

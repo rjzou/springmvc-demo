@@ -149,6 +149,7 @@ public class CheckinService {
 				" 		rm.month, "+
 				" 		rm.day "+
 				" 	) AS pre_s_date, "+
+				" 	datediff(now(), CONCAT_WS('-', rm.year, rm.month, rm.day)) as in_days,  "+
 				" 	we.water, "+
 				" 	we.elect, "+
 				" 	c.created "+

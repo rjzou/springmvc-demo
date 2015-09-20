@@ -58,13 +58,13 @@ public class CheckoutService {
 	 * @param newId 退房编号
 	 * @param houseid 需要退房的楼栋号
 	 * @param roomno 需要退房的房间号
-	 * @param coutmoney  退回的金额
+	 * @param sumbackmoney  退回的金额
 	 * @return 0 退房失败，1 退房成功
 	 * @throws Exception
 	 */
-	public int checkout(String newId,String houseid,int roomno,double coutmoney) throws Exception{
+	public int checkout(String newId,String houseid,int roomno,double sumbackmoney) throws Exception{
 		Connection conn = dao.getConn(false);
-		Object[] params = { newId , houseid , roomno , coutmoney};
+		Object[] params = { newId , houseid , roomno , sumbackmoney};
 		String pro_sql = " {CALL p_check_out(?,?,?,?)} ";
 		Object[] result = dao.execProc(pro_sql, conn, params);
 		int n = Integer.valueOf(result[0].toString());

@@ -32,6 +32,7 @@
       <input type="hidden" id="roomno" name="roomno" value="${params.roomno}"/>
 	  <input type="hidden" id="method" name="method" value="${params.method}"/>
 	  <input type="hidden" id="customid" name="customid" value="${params.customid}"/>
+	  <!--  <input type="hidden" id="tmpcustomid" name="tmpcustomid"/>  -->
 		<div class="form-group scrollable-dropdown-menu">
 			<label class="control-label" for="inputCustomname">客户姓名</label>
 			<input type="text" class="form-control typeahead" id="inputCustomname" name="inputCustomname" value="${params.inputCustomname}"
@@ -117,6 +118,7 @@
 <script type="text/javascript">
 function save(){
 	$("#method").val('save');
+	//$("#custom_id").val($("#tmpcustomid").val());
 	return true;	
 }
 function calc(){
@@ -166,12 +168,13 @@ function intenetHandler(o){
     	            '没有找到相关数据',
     	            '</div>'
     	        ].join('\n'),
-    	        suggestion: Handlebars.compile('<div><strong>{{customname}}</strong> / {{iphone}} / {{cardid}}</div>')
+    	        suggestion: Handlebars.compile('<div><strong><i class="glyphicon glyphicon-user"></i> {{customname}}</strong>  <p class="text-warning"><i class="glyphicon glyphicon-phone"></i> {{iphone}}</p>  <p class="text-success"><i class="glyphicon glyphicon-send"></i> {{cardid}}</p></div>')
     	    }
     	  });
     	
     	input_typeahead.bind('typeahead:select', function(ev, suggestion) {
-  		    //console.log('Selection: ' + suggestion.customname);
+  		   // console.log('Selection: ' + suggestion.id);
+  		   // $("#tmpcustomid").val(suggestion.id);
   		    $("#inputIphone").val(suggestion.iphone);
   			$("#inputCardid").val(suggestion.cardid);
   		});

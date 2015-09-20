@@ -45,6 +45,10 @@
             <td><span class="label label-success">${params.pre_s_date}</span></td>
         </tr>
         <tr>
+            <th class="col-sm-2">本月已住天数</th>
+            <td><span class="label label-success">${params.in_days}</span> 天</td>
+        </tr>
+        <tr>
             <th class="col-sm-2">实收月租(元)</th>
             <td><span class="label label-success">${params.monthmoney}</span></td>
         </tr>
@@ -60,7 +64,14 @@
 				       <span class="label label-danger">没有抄水表</span>
 				    </c:when>
 				    <c:otherwise>
-				        (${params.curwater}-${params.water})*${params.waterprice} = <span class="label label-danger">${params.usedwaterprice}</span>
+				        
+				        <div class="col-xs-2">
+				        <input  type="number" id="curwater" name="curwater" class="form-control  input-sm" value="${params.curwater}"  oninput="inputChange();"/>
+				        </div>
+				         <strong>-${params.water} * ${params.waterprice} 
+				         = </strong>
+				        
+				        <span class="label label-danger" id="spanusedwaterprice">${params.usedwaterprice}</span>
 				    </c:otherwise>
 				</c:choose>
             </td>
@@ -73,7 +84,13 @@
 				       <span class="label label-danger">没有抄电表</span>
 				    </c:when>
 				    <c:otherwise>
-				        (${params.curelect}-${params.elect})*${params.electprice} = <span class="label label-danger">${params.usedelectprice}</span>
+				        <div class="col-xs-2">
+				        <input  type="number" id="curelect" class="form-control  input-sm" name="curelect" value="${params.curelect}" oninput="inputChange();"/>
+				        </div>
+				        <strong>
+				        -${params.elect}  *  ${params.electprice} 
+				        = </strong>
+				        <span class="label label-danger" id="spanusedelectprice">${params.usedelectprice}</span>
 				    </c:otherwise>
 				</c:choose>
             </td>
@@ -88,20 +105,33 @@
         </tr>
          <tr>
             <th class="col-sm-2">钥匙押金(元)</th>
-            <td>${params.keycount} 个 * ${params.keyprice} 元/个 = <span class="label label-danger">${params.sumkeyprice}</span></td>
+            <td>
+            	标配${params.keycount} 个 * ${params.keyprice} 元/个 = <span class="label label-success">${params.sumkeyprice}</span>
+            </td>
+        </tr>
+          <tr>
+            <th class="col-sm-2">归还(个)</th>
+            <td>
+            	
+            	<div class="col-xs-2">
+            		<input  type="number" id="keycount" name="keycount" class="form-control  input-sm" value="${params.keycount}"  oninput="inputChange();"/>
+            	</div>
+            </td>
         </tr>
         <tr>
-            <th class="col-sm-2">需要退费(押金-水费-电费-网费-卫生费-钥匙押金)</th>
+            <th class="col-sm-2">退房总费用</th>
             <td>
             	 <c:choose>
 				    <c:when test="${!empty danger}">
 				       <h3><span class="label label-danger">没有抄水电表</span></h3>
 				    </c:when>
 				    <c:otherwise>
-	            <span class="label label-success">${params.pressmoney}</span> - <span class="label label-danger">${params.usedwaterprice}</span>
-	             - <span class="label label-danger">${params.usedelectprice}</span> - <span class="label label-danger">${params.netprice}</span>
-	             - <span class="label label-danger">${params.trash}</span> - <span class="label label-danger">${params.sumkeyprice}</span>
-	             = <h3>${params.msg}<span class="label label-warning">${params.coutmoney} 元</span></h3>
+	            <span class="label label-success">${params.pressmoney}</span> - <span class="label label-danger" id="lusedwaterprice">${params.usedwaterprice}</span>
+	             - <span class="label label-danger" id="lusedelectprice">${params.usedelectprice}</span> - <span class="label label-danger">${params.netprice}</span>
+	             - <span class="label label-danger">${params.trash}</span> - <span class="label label-danger" id="lkeyprice">0.0</span> 
+	             = <h4>${params.msg}<span class="label label-warning" id="lcoutmoney">${params.backpressmoney}</span> 元</h4>
+	             <h4>房租退还<span class="label label-warning">${params.backmonthmoney}</span> 元</h4>
+	             <h3>共计需退还<span class="label label-warning" id="lsumbackmoney">${params.sumbackmoney}</span> 元</h3>
               		</c:otherwise>
 				</c:choose>
              </td>
@@ -109,12 +139,17 @@
 		</table>
  	<input type="hidden" id="houseid" name="houseid" value="${params.houseid}"/>
  	<input type="hidden" id="roomno" name="roomno" value="${params.roomno}"/>
- 	<input type="hidden" id="coutmoney" name="coutmoney" value="${params.coutmoney}"/>
+ 	<input type="hidden" id="sumbackmoney" name="sumbackmoney" value="${params.sumbackmoney}"/>
  		<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
 		<button type="submit" class="btn btn-primary" data-toggle="confirmation" data-placement="top" <c:if test="${!empty danger}">disabled</c:if> >确认退房</button>
 		<a class="btn btn-default" href="${ctx}/room_checkout" role="button">返回</a>
 	</form>
+	<br/>
+	<p>
+		<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  		从收租算起不足一个星期，房租费按30元/天计算;超过一个星期房租费不予退还;
+  	</p>
 </div>
 <script src="${ctx}/resources/js/bootstrap-confirmation.js"></script>
 <script type="text/javascript">
@@ -128,6 +163,32 @@ $(function() {
 		onCancel: function() { return false; }
 	});
 });
+
+function inputChange(){
+	var v_monthmoney = parseFloat('${params.monthmoney}');
+	var v_pressmoney = parseFloat('${params.pressmoney}');
+	var v_curwater = parseFloat($('#curwater').val());
+	var v_curelect = parseFloat($('#curelect').val());
+	var v_water = parseFloat('${params.water}');
+	var v_elect = parseFloat('${params.elect}');
+	var v_waterprice =  parseFloat('${params.waterprice}');
+	var v_electprice =  parseFloat('${params.electprice}');
+	var v_usedwaterprice = (v_curwater - v_water ) * v_waterprice ;
+	var v_usedelectprice = (v_curelect - v_elect ) * v_electprice ;
+	var v_netprice = parseFloat('${params.netprice}');
+	var v_trash = parseFloat('${params.trash}');
+	var v_keycount = $("#keycount").val();
+	var v_loseprice = (2 - v_keycount) * 10;
+	$("#lusedwaterprice,#spanusedwaterprice").text(v_usedwaterprice.toFixed(1));
+	$("#lusedelectprice,#spanusedelectprice").text(v_usedelectprice.toFixed(1));
+	$("#lkeyprice").text(v_loseprice.toFixed(1));
+	var v_coutmoney = (v_pressmoney - v_usedwaterprice - v_usedelectprice - v_netprice - v_trash - v_loseprice).toFixed(1);
+	$("#lcoutmoney").text(v_coutmoney);
+	var v_backmonthmoney = parseFloat('${params.backmonthmoney}');
+	var v_sumbackmoney = (parseFloat(v_coutmoney)  + v_backmonthmoney).toFixed(1)
+	$("#lsumbackmoney").text(v_sumbackmoney);
+	$("#sumbackmoney").val(v_sumbackmoney);
+}
 </script>
 </body>
 </html>
