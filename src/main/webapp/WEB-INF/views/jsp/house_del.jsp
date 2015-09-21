@@ -5,7 +5,6 @@
 <html lang="en">
 <head>
 <meta name="theme" content="basic_theme" />
-<script src="${ctx_cdn}/resources/js/bootstrap-confirmation.min.js"></script>
 </head>
 <body>
 <div class="row">
@@ -34,7 +33,7 @@
 		<a class="btn btn-default" href="${ctx}/house" role="button">返回</a>
 	</form>
 </div>
-<script src="${ctx_cdn}/resources/js/bootstrap-confirmation.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.3/bootstrap-confirmation.min.js"></script>
 <script type="text/javascript">
 $(function() {
 	$('[data-toggle="confirmation"]').confirmation({

@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
 <meta name="theme" content="basic_theme" />
-<script type="text/javascript" src="${ctx}/resources/js/validator.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.9.0/validator.min.js"></script>
 </head>
 <body>
 <div class="row">
@@ -13,16 +13,20 @@
 	  <c:if test="${!empty message}">  
             <div class="alert alert-success" role="alert">${message}</div>
       </c:if> 
+      <c:if test="${!empty error}">  
+            <div class="alert alert-danger" role="alert">${error}</div>
+      </c:if>  
  	<input type="hidden" id="hiddenid" name="hiddenid" value="${id}"/>
 		<div class="form-group">
-			<label class="control-label" for="inputHousename">楼房名字</label> 
+			<label class="control-label" for="housename">楼房名字</label> 
 			<input
-				type="text" class="form-control" id="inputHousename" name="inputHousename"  value="${housename}"
+				type="text" class="form-control" id="housename" name="housename"  value="${params.housename}"
 				placeholder="输入楼房名字" required>
+				<div class="help-block with-errors"></div>
 		</div>
 		<div class="form-group">
-			<label class="control-label" for="inputDescription">备注</label>
-			<input type="text" class="form-control" id="inputDescription" name="inputDescription" value="${description}"
+			<label class="control-label" for="description">备注</label>
+			<input type="text" class="form-control" id="description" name="description" value="${params.description}"
 				placeholder="备注">
 		</div>
 			<input type="hidden" name="${_csrf.parameterName}"

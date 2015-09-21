@@ -15,8 +15,7 @@
     <title>出租房智能管理系统V1.0</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="${ctx_cdn}/resources/css/bootstrap.min.css">
-
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.5/custom/bootstrap.min.css">
     <!-- Custom styles for this template -->
     <link href="${ctx_cdn}/resources/css/dashboard.css" rel="stylesheet">
 

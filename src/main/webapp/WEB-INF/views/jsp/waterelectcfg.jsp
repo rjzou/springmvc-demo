@@ -6,7 +6,8 @@
 <head>
     <meta name="theme" content="basic_theme" />
 	<link rel="stylesheet" href="${ctx_cdn}/resources/css/bootstrap-select.css">
-	<script src="${ctx_cdn}/resources/js/bootstrap-select.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
+
 </head>
 <body>
 <div class="row">

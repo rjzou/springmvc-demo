@@ -7,10 +7,10 @@
 <meta name="theme" content="basic_theme" />
 <link rel="stylesheet" href="${ctx_cdn}/resources/css/bootstrap-select.css">
 <link rel="stylesheet" href="${ctx_cdn}/resources/css/typeahead.css">
-<script  type="text/javascript" src="${ctx_cdn}/resources/js/bootstrap-select.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="${ctx_cdn}/resources/js/typeahead.bundle.js"></script>
 <script type="text/javascript" src="${ctx_cdn}/resources/js/handlebars.js"></script>
-<script type="text/javascript" src="${ctx}/resources/js/validator.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.9.0/validator.min.js"></script>
 </head>
 <body>
 <div class="row">

@@ -103,8 +103,8 @@ public class HouseController extends BaseController {
 	public String toHouseEdit(String id,ModelMap model, @RequestParam Map<String, String> params) throws Exception {
 		model.put("id", id);
 		House house = houseService.getHouseById(id);
-		model.put("housename", house.getHousename());
-		model.put("description", house.getDescription());
+		params.put("housename", house.getHousename());
+		params.put("description", house.getDescription());
 		params.put("page_id", "house");
 		model.put("params", params);
 		return "house_edit";
@@ -144,8 +144,8 @@ public class HouseController extends BaseController {
 	@RequestMapping(value = "/house_edit", method = RequestMethod.POST)
 	public String houseEdit(@RequestParam Map<String, String> params, ModelMap model) throws Exception {
 		String hiddenid = params.get("hiddenid");
-		String housename = params.get("inputHousename");
-		String description = params.get("inputDescription");
+		String housename = params.get("housename");
+		String description = params.get("description");
 		House house = new House();
 		house.setId(hiddenid);
 		house.setHousename(housename);
@@ -156,13 +156,13 @@ public class HouseController extends BaseController {
 			if (n > 0) {
 				model.addAttribute("message", "保存成功");
 			}else{
-				model.addAttribute("message", "保存失败");
+				model.addAttribute("error", "保存失败");
 			}
 		} catch (Exception e) {
 			if (e.getMessage().toLowerCase().indexOf("primary") > 0) {
-				model.addAttribute("message", "保存失败,已经存在的房间号,请重新输入");
+				model.addAttribute("error", "保存失败,已经存在的房间号,请重新输入");
 			}else{
-				model.addAttribute("message", "保存失败,错误信息:"+e.getMessage());
+				model.addAttribute("error", "保存失败,错误信息:"+e.getMessage());
 			}
 		}
 		params.put("page_id", "house");

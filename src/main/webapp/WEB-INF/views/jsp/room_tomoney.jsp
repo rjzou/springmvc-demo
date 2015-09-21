@@ -121,7 +121,7 @@
 		</div>
 	</form>
 </div>
-<script src="${ctx}/resources/js/bootstrap-confirmation.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.3/bootstrap-confirmation.min.js"></script>
 <script type="text/javascript">
 
 $(function() {
