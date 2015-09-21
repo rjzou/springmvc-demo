@@ -17,7 +17,7 @@
     <title>登录</title>
 
     <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="${ctx_cdn}/resources/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.5/custom/bootstrap.min.css">
 
     <!-- Custom styles for this template -->
     <link href="${ctx_cdn}/resources/css/signin.css" rel="stylesheet">

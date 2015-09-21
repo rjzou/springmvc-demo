@@ -48,9 +48,6 @@
   <input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
   <button type="submit" class="btn btn-default" onclick="return to_search();">查询</button>
-  <p class="text-left">
-  <span class="label label-info">本月有x间需要收房租</span>
-  </p>
 </form>
 </div><!-- /.row -->
 	<div class="table-responsive">

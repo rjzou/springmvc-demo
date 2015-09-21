@@ -42,14 +42,14 @@
    <input type="hidden" id="roomtypeid" name="roomtypeid" />
   </div>
   <div class="form-group">
-  
     <input type="text" class="form-control" placeholder="输入房间号">
   </div>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
   <button type="submit" class="btn btn-default" onclick="return to_search();">查询</button>
   <p class="text-left">
-   <span class="label label-success">在住 x 间</span>
-  <span class="label label-info">今天退房 x 间</span>
-  <span class="label label-warning">今天入住 x 间</span>
+   <span class="label label-success">在住 ${params.full_room_count} 间</span>
+  <span class="label label-info">今天退房  ${params.today_checkout_room_count} 间</span>
+  <span class="label label-warning">今天入住 ${params.today_checkin_room_count} 间</span>
   </p>
 </form>
 </div><!-- /.row -->

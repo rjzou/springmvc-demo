@@ -71,6 +71,12 @@ public class CheckoutController extends BaseController {
 		model.put("types", types);
 		List<House> houses = houseService.selectAllHouse(username);
 		model.put("houses", houses);
+		
+		Object[] room_tongji = checkoutService.getRoomCheckoutTongJi(username);
+		params.put("full_room_count", room_tongji[0].toString());
+		params.put("today_checkout_room_count", room_tongji[1].toString());
+		params.put("today_checkin_room_count", room_tongji[2].toString());
+		
 		params.put("page_id", "room_checkout");
 		model.put("params", params);
 		return "room_checkout";

@@ -423,4 +423,16 @@ public class CheckoutService {
 		return dao.find(sql, null, pageRequest);
 	}
 	
+	/**
+	 * 统计 在住x间, 今天退房x间, 今天入住x间
+	 * @return
+	 * @throws Exception
+	 */
+	public Object[] getRoomCheckoutTongJi(String username) throws Exception{
+		Connection conn = dao.getConn(false);
+		Object[] params = { username };
+		String pro_sql = " {CALL p_get_room_checkout_tongji(?)} ";
+		Object[] result = dao.execProc(pro_sql, conn, params);
+		return result;
+	}
 }
